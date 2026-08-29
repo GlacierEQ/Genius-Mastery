@@ -13,6 +13,7 @@ import yaml
 
 from genius.anatomy import ANATOMY_PROMPTS
 from genius.scaffold import create_domain
+from genius.sources import match_mega_skills
 
 
 BASE_FAMILIES = {
@@ -122,6 +123,7 @@ def synthesize_role(
     *,
     archetype: str | None = None,
     constraints: list[str] | None = None,
+    mega_skills_root: Path | None = None,
     force: bool = False,
 ) -> Path:
     """Create and enrich a Genius repository from a role + desired outcomes."""
@@ -152,6 +154,12 @@ def synthesize_role(
         for spec in families.values()
         for layer in spec["layers"]
     })
+
+    mega_skill_matches = (
+        match_mega_skills(role, outcomes, mega_skills_root)
+        if mega_skills_root is not None
+        else []
+    )
 
     synthesis = {
         "schema_version": 1,
@@ -193,6 +201,10 @@ def synthesize_role(
         ],
         "research_targets": all_targets,
         "required_vertical_layers": all_layers,
+        "matched_live_capabilities": mega_skill_matches,
+        "capability_match_state": (
+            "local-registry-matched" if mega_skills_root is not None else "registry-not-supplied"
+        ),
         "teaching_loop": [
             "explain",
             "demonstrate",
