@@ -287,21 +287,94 @@ reviews: []
     _write(
         root / "tools/validate.py",
         '''#!/usr/bin/env python3
-"""Thin local validator; prefer `genius validate` when the kernel is installed."""
+"""Standalone structural validator for a generated Genius repository."""
 from pathlib import Path
+import re
 import sys
-try:
-    from genius.validate import validate_repo
-except ImportError:
-    print("Install genius-mastery (pip install -e path/to/Genius-Mastery) for full validation.")
-    sys.exit(2)
-errs = validate_repo(Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve())
-if errs:
-    print("FAIL")
-    for e in errs:
-        print("  -", e)
-    sys.exit(1)
-print("PASS")
+import yaml
+
+REPO_RE = re.compile(r"^Genius-[A-Za-z0-9._-]+$")
+
+
+def load_yaml(path):
+    with path.open(encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def main():
+    root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
+    errors = []
+
+    genius_path = root / "GENIUS.yaml"
+    if not genius_path.exists():
+        errors.append("GENIUS.yaml missing")
+    else:
+        genius = load_yaml(genius_path) or {}
+        if genius.get("schema_version") != 2:
+            errors.append("GENIUS.yaml schema_version must be 2")
+        repo = genius.get("repository")
+        if not isinstance(repo, str) or not REPO_RE.match(repo):
+            errors.append("GENIUS.yaml repository identity invalid")
+        if genius.get("family") != "Genius":
+            errors.append("GENIUS.yaml family must be Genius")
+        if genius.get("doctrine") != "mastery-not-skills":
+            errors.append("GENIUS.yaml doctrine must be mastery-not-skills")
+
+        for field in ("composition_contract", "capability_anatomy_contract"):
+            target = genius.get(field)
+            if target and not (root / target).exists():
+                errors.append(f"{field} target missing: {target}")
+
+        role_target = genius.get("role_brief")
+        if role_target:
+            role_path = root / role_target
+            if not role_path.exists():
+                errors.append(f"role_brief target missing: {role_target}")
+            else:
+                role = load_yaml(role_path) or {}
+                if role.get("schema_version") != 1:
+                    errors.append("ROLE.yaml schema_version must be 1")
+                if not role.get("role"):
+                    errors.append("ROLE.yaml role missing")
+                outcomes = role.get("outcomes")
+                if not isinstance(outcomes, list) or not outcomes:
+                    errors.append("ROLE.yaml outcomes must be non-empty")
+
+    stack_path = root / "capabilities" / "STACK.yaml"
+    if not stack_path.exists():
+        errors.append("capabilities/STACK.yaml missing")
+    else:
+        stack = load_yaml(stack_path) or {}
+        if stack.get("schema_version") != 1:
+            errors.append("capabilities/STACK.yaml schema_version must be 1")
+        if not stack.get("id") or not stack.get("purpose"):
+            errors.append("capabilities/STACK.yaml identity incomplete")
+        objective = stack.get("objective") or {}
+        if not objective.get("desired_reality"):
+            errors.append("capabilities/STACK.yaml desired_reality missing")
+        if not isinstance(stack.get("layers"), dict) or not stack["layers"]:
+            errors.append("capabilities/STACK.yaml layers missing")
+        verification = stack.get("verification") or {}
+        if not verification.get("acceptance"):
+            errors.append("capabilities/STACK.yaml verification.acceptance missing")
+        if not isinstance(stack.get("mission_impact"), dict):
+            errors.append("capabilities/STACK.yaml mission_impact missing")
+
+    comp_path = root / "interfaces" / "COMPOSITION.yaml"
+    if not comp_path.exists():
+        errors.append("interfaces/COMPOSITION.yaml missing")
+
+    if errors:
+        print("FAIL")
+        for error in errors:
+            print("  -", error)
+        return 1
+    print("PASS")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
 ''',
     )
     _write(
