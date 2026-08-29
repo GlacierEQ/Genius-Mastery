@@ -1,20 +1,99 @@
 schema_version: 1
 items:
   - id: frontier-kernel-001
-    question: Can a single packaged genius CLI generate a fully self-validating domain repo that passes validate.py without the source checkout of the kernel?
-    why_it_matters: Removes template-drift and makes domain repos independently operable.
+    question: Can a packaged Genius-Mastery generate a fully self-validating descendant that passes its own validator without the Mastery source checkout?
+    why_it_matters: Proves the teacher-forge creates independently operable descendants rather than hidden dependents.
     related_claims: [kernel-identity-001]
     dependencies: [Genius-Mastery]
     evidence_to_resolve:
-      - installable wheel or equivalent
-      - generated repo CI green on clean checkout
+      - generated descendant standalone validator PASS
+      - generated descendant clean-checkout CI PASS
     status: open
-  - id: frontier-kernel-002
-    question: What is the minimal migration function set that upgrades any v1-style Genius metadata to v2 while preserving all evidence IDs and domain-authored files?
-    why_it_matters: Prevents permanent template drift across the family.
+
+  - id: frontier-synthesis-001
+    question: How should semantic role synthesis expand beyond deterministic keyword inference while remaining inspectable, evidence-bound, and provider-independent?
+    why_it_matters: A job title and desired outcomes should generate deep domain anatomy even when vocabulary does not match a hand-authored keyword.
+    related_claims: []
+    dependencies:
+      - mastery.kernel.synthesize
+      - mastery.kernel.anatomy-inspection
+    evidence_to_resolve:
+      - provider interface
+      - comparative role-synthesis benchmark
+      - transparent rationale for inferred capabilities
+    status: open
+
+  - id: frontier-discovery-001
+    question: How can the forge automatically discover live models, tools, APIs, MCP servers, connectors, runtimes, devices, and artifact systems available to the executing agent?
+    why_it_matters: Generated capability plans should reflect executable reality rather than generic assumptions.
+    related_claims: []
+    dependencies:
+      - mastery.kernel.capability-sources
+    evidence_to_resolve:
+      - normalized runtime capability inventory
+      - source/provider provenance
+      - live readback tests
+    status: open
+
+  - id: frontier-graph-001
+    question: How should recursive capability graphs represent substitutions, composition recipes, evidence, and multi-level emergent capability without flattening the lower layers?
+    why_it_matters: The Genius ladder depends on higher capabilities becoming reusable objects for the next spiral.
+    related_claims: []
+    dependencies:
+      - schemas/capability-graph.schema.json
+      - src/genius/graph.py
+    evidence_to_resolve:
+      - multi-level composition fixture
+      - graph referential-integrity tests
+      - composition trace from primitive to higher capability
+    status: open
+
+  - id: frontier-impact-001
+    question: How should mission sensitivity, criticality, substitutability, downstream centrality, and improvement leverage be measured from observed evidence?
+    why_it_matters: The system must know which tiny dependency is mission-critical and which improvements barely matter.
+    related_claims: []
+    dependencies:
+      - mastery.kernel.capability-anatomy
+      - capability graph
+    evidence_to_resolve:
+      - scoring model
+      - counterexample suite
+      - mission-specific ranking benchmark
+    status: open
+
+  - id: frontier-teaching-001
+    question: How should descendant reconstruction, transfer, explanation quality, and independence be measured and fed back into the forge?
+    why_it_matters: Mastery is demonstrated by producing stronger practitioners, not static output.
+    related_claims: []
+    dependencies:
+      - schemas/teaching.schema.json
+      - mastery.kernel.synthesize
+    evidence_to_resolve:
+      - learner challenge harness
+      - descendant outcome receipts
+      - generator improvement trace
+    status: open
+
+  - id: frontier-family-001
+    question: How should multiple complete Genius entities compose into cross-domain capability and ultimately a Colossal Agent without creating a rigid hierarchy?
+    why_it_matters: Genius entities are intended to become composable vertical intelligences, not isolated repositories.
+    related_claims: []
+    dependencies:
+      - sibling Genius composition contracts
+      - capability graph
+    evidence_to_resolve:
+      - cross-Genius composition contract
+      - at least one verified multi-Genius mission
+      - preserved provenance for each contributing capability
+    status: open
+
+  - id: frontier-migration-001
+    question: What migration functions upgrade older Genius-family metadata and scaffolds while preserving all evidence IDs and domain-authored work?
+    why_it_matters: The forge is evolving quickly and must improve descendants without destructive template replacement.
     related_claims: []
     dependencies: [Genius-Mastery]
     evidence_to_resolve:
-      - migration receipt
+      - lossless migration receipt
       - round-trip validation
+      - preserved custom-domain content
     status: open
