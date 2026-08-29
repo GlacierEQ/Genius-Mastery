@@ -92,11 +92,13 @@ mastery_loop:
   - synthesize
   - prove
   - expand
+  - teach
 evidence_required: true
 growth_model: open-ended-cumulative
 mastery_representation: claim-evidence-graph+vector
 composition_contract: interfaces/COMPOSITION.yaml
 capability_anatomy_contract: capabilities/STACK.yaml
+teaching_contract: teaching/TEACHING.yaml
 """,
     )
 
@@ -261,6 +263,42 @@ reviews: []
 """,
     )
     _write(
+        root / "teaching/TEACHING.yaml",
+        f"""schema_version: 1
+teacher: {name}
+subject: {purpose_title} mastery
+method:
+  explain:
+    - first principles
+    - dependencies and failure modes
+  demonstrate:
+    - complete one evidence-backed example
+  reconstruct:
+    - rebuild from a blank state without copying the answer
+  transfer:
+    - apply the method to a materially different case
+learner:
+  starting_state: novice-or-unknown
+  target_state: independently-reconstructs-and-transfers-verified-methods
+  allowed_support: []
+verification:
+  acceptance:
+    - Learner can explain the method in its own words.
+    - Learner can reconstruct the result from a blank state.
+    - Learner can transfer the method to a novel case.
+    - Learner can identify important failure modes and alternate routes.
+  evidence_refs: []
+  transfer_challenges: []
+  counterevidence: []
+outcome_metrics:
+  reconstruction_success: 0.0
+  transfer_success: 0.0
+  explanation_quality: 0.0
+  independence: 0.0
+""",
+    )
+
+    _write(
         root / "mastery/MAP.md",
         f"# Mastery Map: {name}\n\n(Populate first principles, mechanisms, and open questions.)\n",
     )
@@ -321,7 +359,7 @@ def main():
         if genius.get("doctrine") != "mastery-not-skills":
             errors.append("GENIUS.yaml doctrine must be mastery-not-skills")
 
-        for field in ("composition_contract", "capability_anatomy_contract"):
+        for field in ("composition_contract", "capability_anatomy_contract", "teaching_contract"):
             target = genius.get(field)
             if target and not (root / target).exists():
                 errors.append(f"{field} target missing: {target}")
@@ -360,6 +398,23 @@ def main():
             errors.append("capabilities/STACK.yaml verification.acceptance missing")
         if not isinstance(stack.get("mission_impact"), dict):
             errors.append("capabilities/STACK.yaml mission_impact missing")
+
+    teaching_path = root / "teaching" / "TEACHING.yaml"
+    if not teaching_path.exists():
+        errors.append("teaching/TEACHING.yaml missing")
+    else:
+        teaching = load_yaml(teaching_path) or {}
+        if teaching.get("schema_version") != 1:
+            errors.append("teaching/TEACHING.yaml schema_version must be 1")
+        if not teaching.get("teacher") or not teaching.get("subject"):
+            errors.append("teaching/TEACHING.yaml identity incomplete")
+        method = teaching.get("method") or {}
+        for phase in ("explain", "demonstrate", "reconstruct", "transfer"):
+            if not method.get(phase):
+                errors.append(f"teaching/TEACHING.yaml method.{phase} missing")
+        verification = teaching.get("verification") or {}
+        if not verification.get("acceptance"):
+            errors.append("teaching/TEACHING.yaml verification.acceptance missing")
 
     comp_path = root / "interfaces" / "COMPOSITION.yaml"
     if not comp_path.exists():
