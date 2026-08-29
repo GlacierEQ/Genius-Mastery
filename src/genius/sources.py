@@ -18,7 +18,24 @@ MEGA_REGISTRIES = {
 
 
 def _tokens(value: str) -> set[str]:
-    return set(re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)?", value.casefold()))
+    tokens = set(re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)?", value.casefold()))
+    # Also include un-hyphenated sub-tokens
+    expanded = set(tokens)
+    for t in tokens:
+        if "-" in t:
+            expanded.update(t.split("-"))
+    return expanded
+
+
+def _token_overlap(query_tokens: set[str], target_tokens: set[str]) -> set[str]:
+    matched = set()
+    for q in query_tokens:
+        for t in target_tokens:
+            if q == t:
+                matched.add(q)
+            elif len(q) >= 4 and len(t) >= 4 and (q.startswith(t) or t.startswith(q)):
+                matched.add(q)
+    return matched
 
 
 def _flatten_text(value: Any) -> list[str]:
@@ -89,8 +106,10 @@ def match_mega_skills(
         )
         body_tokens = _tokens(" ".join(_flatten_text(raw)))
 
-        identity_overlap = len(query_tokens.intersection(identity_tokens))
-        body_overlap = len(query_tokens.intersection(body_tokens))
+        id_matches = _token_overlap(query_tokens, identity_tokens)
+        body_matches = _token_overlap(query_tokens, body_tokens)
+        identity_overlap = len(id_matches)
+        body_overlap = len(body_matches)
         score = identity_overlap * 5 + body_overlap
 
         if score <= 0:
@@ -98,7 +117,7 @@ def match_mega_skills(
 
         clean = {key: value for key, value in capability.items() if key != "_raw"}
         clean["match_score"] = score
-        clean["matched_terms"] = sorted(query_tokens.intersection(body_tokens))
+        clean["matched_terms"] = sorted(body_matches.union(id_matches))
         ranked.append((score, str(clean.get("id", "")), clean))
 
     ranked.sort(key=lambda row: (-row[0], row[1]))
