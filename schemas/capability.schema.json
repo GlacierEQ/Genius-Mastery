@@ -201,6 +201,9 @@
         },
         "teaching": {
           "$ref": "#/$defs/layer"
+        },
+        "verification": {
+          "$ref": "#/$defs/layer"
         }
       },
       "additionalProperties": {
