@@ -31,6 +31,11 @@ provides:
     stage: implemented
     interface: sources/CAPABILITY_SOURCES.yaml
     evidence_refs: []
+  - id: mastery.kernel.teaching-contract
+    description: Machine-readable contract for explanation, demonstration, blank-state reconstruction, transfer, learner verification, and teaching outcome metrics
+    stage: implemented
+    interface: schemas/teaching.schema.json
+    evidence_refs: []
   - id: mastery.kernel.validate
     description: Local contract + referential integrity validator
     stage: mapped
