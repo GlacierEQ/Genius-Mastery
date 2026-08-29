@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/evidence.schema.json",
+  "title": "Evidence receipt (JSONL line)",
+  "type": "object",
+  "required": ["id", "timestamp", "claim_ids", "kind", "result"],
+  "properties": {
+    "id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "claim_ids": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "kind": { "type": "string" },
+    "artifact": { "type": "string" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "command": { "type": "string" },
+    "environment": { "type": "object" },
+    "result": { "type": "string", "enum": ["pass", "fail", "inconclusive", "counterevidence"] },
+    "reproducible": { "type": "boolean" },
+    "source_refs": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" },
+    "supersedes": { "type": "string" }
+  },
+  "additionalProperties": true
+}

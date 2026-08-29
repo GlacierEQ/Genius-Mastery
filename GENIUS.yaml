@@ -1,0 +1,24 @@
+schema_version: 2
+repository: Genius-Mastery
+purpose: Mastery
+family: Genius
+doctrine: mastery-not-skills
+mastery_loop:
+  - map
+  - research
+  - model
+  - build
+  - break
+  - measure
+  - verify
+  - operate
+  - explain
+  - synthesize
+  - prove
+  - expand
+evidence_required: true
+growth_model: open-ended-cumulative
+mastery_representation: claim-evidence-graph+vector
+composition_contract: interfaces/COMPOSITION.yaml
+kernel: true
+package_version: "0.2.0"

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/challenge.schema.json",
+  "title": "Challenge",
+  "type": "object",
+  "required": ["id", "tier", "objective", "success_criteria"],
+  "properties": {
+    "id": { "type": "string" },
+    "tier": {
+      "type": "string",
+      "enum": ["foundation", "reproduction", "implementation", "adversarial", "operational", "transfer", "frontier"]
+    },
+    "objective": { "type": "string" },
+    "prerequisites": { "type": "array", "items": { "type": "string" } },
+    "inputs": { "type": "object" },
+    "success_criteria": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "failure_criteria": { "type": "array", "items": { "type": "string" } },
+    "evidence_emitted": { "type": "array", "items": { "type": "string" } },
+    "claims_tested": { "type": "array", "items": { "type": "string" } },
+    "reproducibility": { "type": "string" }
+  },
+  "additionalProperties": true
+}

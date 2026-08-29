@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/composition.schema.json",
+  "title": "Composition contract",
+  "type": "object",
+  "required": ["spec_version", "repository"],
+  "properties": {
+    "spec_version": { "type": "integer", "minimum": 1 },
+    "repository": { "type": "string", "pattern": "^Genius-[A-Za-z0-9._-]+$" },
+    "provides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description", "stage"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "stage": { "type": "string" },
+          "interface": { "type": "string" },
+          "evidence_refs": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "consumes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["repository", "capability"],
+        "properties": {
+          "repository": { "type": "string" },
+          "capability": { "type": "string" },
+          "minimum_spec_version": { "type": "integer" },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

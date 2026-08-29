@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/genius.schema.json",
+  "title": "GENIUS.yaml contract",
+  "type": "object",
+  "required": ["schema_version", "repository", "purpose", "family", "doctrine"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 2 },
+    "repository": {
+      "type": "string",
+      "pattern": "^Genius-[A-Za-z0-9._-]+$"
+    },
+    "purpose": { "type": "string", "minLength": 1 },
+    "family": { "type": "string", "const": "Genius" },
+    "doctrine": { "type": "string", "const": "mastery-not-skills" },
+    "mastery_loop": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "evidence_required": { "type": "boolean" },
+    "growth_model": { "type": "string" },
+    "mastery_representation": { "type": "string" },
+    "composition_contract": { "type": "string" },
+    "kernel": { "type": "boolean" },
+    "package_version": { "type": "string" }
+  },
+  "additionalProperties": true
+}

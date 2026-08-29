@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/claim.schema.json",
+  "title": "Claim",
+  "type": "object",
+  "required": ["id", "statement", "dimension", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$" },
+    "statement": { "type": "string", "minLength": 10 },
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "foundations", "mechanisms", "implementation", "debugging",
+        "verification", "performance", "reliability", "security",
+        "observability", "operations", "synthesis_transfer",
+        "teaching", "original_work"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "mapped", "reproduced", "implemented",
+        "adversarially_verified", "operationally_verified",
+        "transferred", "frontier"
+      ]
+    },
+    "source_refs": { "type": "array", "items": { "type": "string" } },
+    "evidence_refs": { "type": "array", "items": { "type": "string" } },
+    "challenge_refs": { "type": "array", "items": { "type": "string" } },
+    "counterevidence_refs": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}
