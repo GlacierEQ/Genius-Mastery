@@ -1,6 +1,7 @@
 """Contract validation for a Genius repository root."""
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 from typing import Any
@@ -13,10 +14,82 @@ SUPPORTED_CAPABILITY_SCHEMA = 1
 SUPPORTED_ROLE_SCHEMA = 1
 SUPPORTED_TEACHING_SCHEMA = 1
 
+CLAIM_DIMENSIONS = {
+    "foundations", "mechanisms", "implementation", "debugging",
+    "verification", "performance", "reliability", "security",
+    "observability", "operations", "synthesis_transfer",
+    "teaching", "original_work",
+}
+CLAIM_STATUSES = {
+    "mapped", "reproduced", "implemented",
+    "adversarially_verified", "operationally_verified",
+    "transferred", "frontier",
+}
+EVIDENCE_RESULTS = {"pass", "fail", "inconclusive", "counterevidence"}
+
 
 def load_yaml(path: Path) -> Any:
     with path.open(encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def validate_claim_evidence_integrity(root: Path, errors: list[str]) -> None:
+    claims_path = root / "claims" / "CLAIMS.yaml"
+    claims = (load_yaml(claims_path) or {}).get("claims") or [] if claims_path.exists() else []
+    claim_ids: set[str] = set()
+
+    for claim in claims:
+        if not isinstance(claim, dict):
+            errors.append("claim entry must be a mapping")
+            continue
+        cid = claim.get("id")
+        if not cid:
+            errors.append("claim missing id")
+            continue
+        if cid in claim_ids:
+            errors.append(f"duplicate claim id: {cid}")
+        claim_ids.add(cid)
+        if claim.get("dimension") not in CLAIM_DIMENSIONS:
+            errors.append(f"claim {cid}: invalid dimension {claim.get('dimension')!r}")
+        if claim.get("status") not in CLAIM_STATUSES:
+            errors.append(f"claim {cid}: invalid status {claim.get('status')!r}")
+
+    ledger_path = root / "evidence" / "ledger.jsonl"
+    evidence: dict[str, dict[str, Any]] = {}
+    if ledger_path.exists():
+        for line_number, raw in enumerate(
+            ledger_path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            if not raw.strip():
+                continue
+            try:
+                item = json.loads(raw)
+            except json.JSONDecodeError as exc:
+                errors.append(f"evidence ledger line {line_number}: invalid JSON: {exc}")
+                continue
+            eid = item.get("id")
+            if not eid:
+                errors.append(f"evidence ledger line {line_number}: id missing")
+                continue
+            if eid in evidence:
+                errors.append(f"duplicate evidence id: {eid}")
+            evidence[eid] = item
+            if item.get("result") not in EVIDENCE_RESULTS:
+                errors.append(f"evidence {eid}: invalid result {item.get('result')!r}")
+
+    evidence_ids = set(evidence)
+    for claim in claims:
+        if not isinstance(claim, dict) or not claim.get("id"):
+            continue
+        cid = claim["id"]
+        for ref in claim.get("evidence_refs") or []:
+            if ref not in evidence_ids:
+                errors.append(f"claim {cid}: unknown evidence ref {ref}")
+
+    for eid, item in evidence.items():
+        for cid in item.get("claim_ids") or []:
+            if cid not in claim_ids:
+                errors.append(f"evidence {eid}: unknown claim ref {cid}")
 
 
 def validate_capability_stack(root: Path, errors: list[str]) -> None:
@@ -210,6 +283,7 @@ def validate_repo(root: Path) -> list[str]:
                 errors.append(f"duplicate capability id: {pid}")
             pids.add(pid)
 
+    validate_claim_evidence_integrity(root, errors)
     validate_capability_stack(root, errors)
     validate_capability_graph(root, data, errors)
     validate_role_brief(root, data, errors)
