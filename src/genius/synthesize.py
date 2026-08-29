@@ -12,6 +12,7 @@ from typing import Iterable
 import yaml
 
 from genius.anatomy import ANATOMY_PROMPTS
+from genius.graph import build_synthesis_graph
 from genius.scaffold import create_domain
 from genius.sources import match_mega_skills
 
@@ -219,6 +220,15 @@ def synthesize_role(
     }
     _write_yaml(root / "synthesis" / "PLAN.yaml", synthesis)
 
+    graph = build_synthesis_graph(
+        repo_name,
+        role,
+        outcomes,
+        families,
+        mega_skill_matches,
+    )
+    _write_yaml(root / "capabilities" / "GRAPH.yaml", graph)
+
     persona_lines = [
         f"# Persona: {role}",
         "",
@@ -393,6 +403,7 @@ def synthesize_role(
 
     genius_path = root / "GENIUS.yaml"
     genius = yaml.safe_load(genius_path.read_text(encoding="utf-8"))
+    genius["capability_graph"] = "capabilities/GRAPH.yaml"
     genius["role_brief"] = "ROLE.yaml"
     genius["synthesis_plan"] = "synthesis/PLAN.yaml"
     genius["persona"] = "persona/PERSONA.md"
