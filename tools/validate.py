@@ -43,6 +43,7 @@ def main() -> int:
         for field in (
             "composition_contract",
             "capability_anatomy_contract",
+            "capability_graph",
             "teaching_contract",
             "role_brief",
             "synthesis_plan",
@@ -70,6 +71,36 @@ def main() -> int:
             errors.append("capabilities/STACK.yaml verification.acceptance missing")
         if not isinstance(stack.get("mission_impact"), dict):
             errors.append("capabilities/STACK.yaml mission_impact missing")
+
+    graph_target = genius.get("capability_graph")
+    if graph_target:
+        graph_path = root / graph_target
+        if graph_path.exists():
+            graph = load_yaml(graph_path) or {}
+            nodes = graph.get("nodes")
+            edges = graph.get("edges")
+            if graph.get("schema_version") != 1:
+                errors.append("capability graph schema_version must be 1")
+            if not isinstance(nodes, list) or not isinstance(edges, list):
+                errors.append("capability graph nodes/edges must be lists")
+            else:
+                ids = {
+                    node.get("id")
+                    for node in nodes
+                    if isinstance(node, dict) and node.get("id")
+                }
+                if len(ids) != len(nodes):
+                    errors.append("capability graph node ids must be present and unique")
+                for edge in edges:
+                    if (
+                        not isinstance(edge, dict)
+                        or edge.get("from") not in ids
+                        or edge.get("to") not in ids
+                        or not edge.get("relation")
+                    ):
+                        errors.append("capability graph contains invalid edge")
+        else:
+            errors.append(f"capability_graph target missing: {graph_target}")
 
     teaching_path = root / (
         genius.get("teaching_contract")
