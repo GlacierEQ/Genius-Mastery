@@ -3,9 +3,11 @@ claims:
   - id: kernel-identity-001
     statement: Repository directory name, GitHub name, and GENIUS.yaml repository field must all equal the same Genius-{purpose} string matching ^Genius-[A-Za-z0-9._-]+$.
     dimension: foundations
-    status: mapped
+    status: verified
     source_refs: []
-    evidence_refs: []
+    evidence_refs:
+      - ev-bk-mastery-001
+      - ev-bk-mastery-002
     challenge_refs: []
     counterevidence_refs: []
   - id: kernel-schema-version-001
@@ -13,7 +15,8 @@ claims:
     dimension: foundations
     status: mapped
     source_refs: []
-    evidence_refs: []
+    evidence_refs:
+      - ev-bk-mastery-001
     challenge_refs: []
     counterevidence_refs: []
   - id: kernel-no-scalar-score-001
@@ -27,8 +30,10 @@ claims:
   - id: kernel-counterevidence-001
     statement: Counterevidence receipts are retained and linked; they are never deleted to improve perceived strength.
     dimension: verification
-    status: mapped
+    status: verified
     source_refs: []
-    evidence_refs: []
+    evidence_refs:
+      - ev-receipt-env-gap-001
     challenge_refs: []
-    counterevidence_refs: []
+    counterevidence_refs:
+      - ev-receipt-env-gap-001

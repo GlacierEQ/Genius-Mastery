@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-29T21:00:00Z",
+  "generated_at": "2026-08-29T21:47:00Z",
   "kernel": "Genius-Mastery",
   "repositories": [
     {
@@ -14,9 +14,10 @@
         "mastery.kernel.cli"
       ],
       "consumes": [],
-      "verified_at": null,
-      "revision": "0.2.0",
-      "url": "https://github.com/GlacierEQ/Genius-Mastery"
+      "verified_at": "2026-08-29T21:45:23Z",
+      "revision": "0.2.1",
+      "url": "https://github.com/GlacierEQ/Genius-Mastery",
+      "notes": "Buildkite casey-1/genius-mastery builds 1-2 PASS. Evidence ev-bk-mastery-001/002. Counterevidence ev-receipt-env-gap-001 retained."
     },
     {
       "repository": "Genius-Code",
@@ -24,10 +25,10 @@
       "spec_version": 2,
       "capabilities": ["code.testing.property"],
       "consumes": ["Genius-Mastery"],
-      "verified_at": "2026-08-29T20:50:00Z",
-      "revision": "0.1.1",
+      "verified_at": "2026-08-29T21:45:38Z",
+      "revision": "0.1.2",
       "url": "https://github.com/GlacierEQ/Genius-Code",
-      "notes": "First evidence receipt ev-property-sort-001"
+      "notes": "Local receipt ev-property-sort-001 plus Buildkite builds 1-2 PASS including Hypothesis property-sort."
     },
     {
       "repository": "Genius-Verification",
@@ -38,9 +39,10 @@
         "verification.model-checking.tla"
       ],
       "consumes": ["Genius-Mastery"],
-      "verified_at": null,
-      "revision": "0.1.0-seed",
-      "url": "https://github.com/GlacierEQ/Genius-Verification"
+      "verified_at": "2026-08-29T21:45:49Z",
+      "revision": "0.1.1",
+      "url": "https://github.com/GlacierEQ/Genius-Verification",
+      "notes": "Buildkite casey-1/genius-verification builds 1-2 PASS. Evidence ev-bk-verif-001/002."
     }
   ]
 }
