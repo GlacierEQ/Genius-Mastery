@@ -172,6 +172,7 @@ layers:
   security_integrity: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   resource_economics: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   human_interaction: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
+  teaching: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   domain_expertise: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   real_world_effect: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   learning_evolution: {{required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
