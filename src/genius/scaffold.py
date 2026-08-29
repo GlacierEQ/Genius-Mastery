@@ -169,6 +169,7 @@ layers:
   time_events_automation: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   swarm_multi_agent: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   orchestration: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
+  verification: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   observability: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   reliability_recovery: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
   security_integrity: {{inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}}
