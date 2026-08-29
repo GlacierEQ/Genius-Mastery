@@ -1,5 +1,7 @@
 # Genius-Mastery
 
+[![Buildkite](https://badge.buildkite.com/53fcc89c70c0eb2508067aa8108bf0f15d27da721a94f8c63c.svg)](https://buildkite.com/casey-1/genius-mastery)
+
 **Family control kernel** for the Genius repository ecosystem.
 
 Identity rule (no exceptions):
@@ -53,7 +55,7 @@ See `family/INDEX.json`.
 | Generator produces self-validating domain tree | Implemented (scaffold) |
 | Full migration engine v1→v2 | Not yet |
 | Published to PyPI | Not yet |
-| External GitHub Actions green | Unverified until observed |
+| Buildkite CI (`casey-1/genius-mastery`) | Observed PASS on [build #1](https://buildkite.com/casey-1/genius-mastery/builds/1) @ `18d584778006c26ece47903ec4d05de69f9ea9fd` |
 
 Never convert “file exists” into “system works.”
 

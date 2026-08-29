@@ -24,7 +24,10 @@ steps:
     timeout_in_minutes: 10
     command:
       - pip install -e ".[dev]"
-      - pytest -q
+      - mkdir -p .verification-artifacts
+      - pytest -q --junitxml=.verification-artifacts/junit.xml
+    artifact_paths:
+      - ".verification-artifacts/junit.xml"
     plugins:
       - docker#v5.14.0:
           image: "python:3.13-slim"
@@ -40,6 +43,22 @@ steps:
       - genius new SmokeTest --dest /tmp
       - genius validate /tmp/Genius-SmokeTest
       - rm -rf /tmp/Genius-SmokeTest
+    plugins:
+      - docker#v5.14.0:
+          image: "python:3.13-slim"
+          always-pull: true
+
+  - label: ":receipt: Buildkite receipt"
+    key: receipt
+    depends_on:
+      - unit
+      - cli-smoke
+    timeout_in_minutes: 5
+    command:
+      - mkdir -p .verification-artifacts
+      - python -c "import datetime,json,os,pathlib; p=pathlib.Path('.verification-artifacts/buildkite-verified-receipt.json'); rec={'schema':'glaciereq.genius-mastery.buildkite.v1','status':'PASS','commit':os.environ.get('BUILDKITE_COMMIT'),'branch':os.environ.get('BUILDKITE_BRANCH'),'build_id':os.environ.get('BUILDKITE_BUILD_ID'),'build_number':os.environ.get('BUILDKITE_BUILD_NUMBER'),'pipeline':os.environ.get('BUILDKITE_PIPELINE_SLUG'),'generated_at':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()}; p.write_text(json.dumps(rec,indent=2,sort_keys=True)+'\n')"
+    artifact_paths:
+      - ".verification-artifacts/buildkite-verified-receipt.json"
     plugins:
       - docker#v5.14.0:
           image: "python:3.13-slim"
