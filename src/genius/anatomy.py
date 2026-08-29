@@ -152,6 +152,11 @@ ANATOMY_PROMPTS: dict[str, list[str]] = {
         "Who or what selects models, agents, tools, connectors, skills, routes, resources, and sequencing?",
         "How does orchestration reroute around local failures while preserving successful work?",
     ],
+    "verification": [
+        "What claim, state transition, artifact, or real-world effect must be verified?",
+        "Which tests, independent readbacks, counterexamples, provenance, hashes, or cross-method checks are appropriate?",
+        "What evidence would disprove or narrow the claimed capability?",
+    ],
     "observability": [
         "What logs, traces, metrics, errors, latency, token, cost, resource, retrieval, tool, and result telemetry are needed?",
         "Can the entity explain why performance degraded rather than merely that it did?",
