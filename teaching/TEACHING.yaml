@@ -1,0 +1,47 @@
+schema_version: 1
+teacher: Genius-Mastery
+subject: Creating independently capable Genius entities
+
+method:
+  explain:
+    - kernel-up capability anatomy
+    - dependency, substitution, sensitivity, and leverage
+    - distinction between mapped hypotheses and verified mastery
+  demonstrate:
+    - synthesize a role-shaped Genius entity from a thin brief
+    - expose live capability sources without duplicating them
+  reconstruct:
+    - generate a fresh Genius entity from a blank destination
+    - validate the generated entity without relying on hidden local state
+  transfer:
+    - synthesize a materially different role and outcomes
+    - use descendant evidence to improve the forge itself
+
+learner:
+  starting_state: thin role brief or bare Genius scaffold
+  target_state: independently reconstructs, verifies, transfers, and teaches a domain capability
+  allowed_support:
+    - Genius-Mastery schemas and templates
+    - live capability registries
+    - authoritative research
+    - observed execution evidence
+
+verification:
+  acceptance:
+    - Generated entity passes its standalone validator.
+    - Generated entity exposes its role, persona, capability stack, synthesis plan, and teaching contract.
+    - Learner can reconstruct a verified method without copying a final answer.
+    - Learner can transfer the method to a novel case.
+    - Descendant failures are retained as forge improvement evidence.
+  evidence_refs: []
+  transfer_challenges:
+    - Researcher with outcome Indiana Jones
+    - Engineer with outcome production-grade self-healing system
+    - Analyst with outcome evidence-backed executive decision
+  counterevidence: []
+
+outcome_metrics:
+  reconstruction_success: 0.0
+  transfer_success: 0.0
+  explanation_quality: 0.0
+  independence: 0.0
