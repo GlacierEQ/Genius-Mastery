@@ -1,13 +1,34 @@
 schema_version: 1
+completed_foundations:
+  - installable Genius-Mastery package and genius CLI
+  - self-validating bare domain generator
+  - role-to-entity synthesis command
+  - universal kernel-up capability anatomy
+  - universal inspection prompts
+  - role, persona, teaching, synthesis, and vertical stack contracts
+  - optional real Mega Skills registry matching
+  - recursive capability graph seed
+  - entity-aware doctor diagnostics
+
 near_term:
-  - Implement full claim/evidence referential integrity in validate.py
-  - Package kernel as installable module (`genius` CLI)
-  - Migration functions v1 → v2 for any legacy metadata
-  - Generator that produces self-validating domain repos
+  - make current recursive capability graph regression green at exact head
+  - add clean-checkout CI fixture for a generated descendant
+  - normalize real Mega Skills dependency metadata into capability graph edges
+  - add lossless migration functions for older Genius-family scaffolds
+  - bind generated challenge prompts to executable challenge harnesses
+  - add self-hosted Genius-Mastery capability graph
+
 mid_term:
-  - Family scan + graph export
-  - Reusable workflow publication and consumption by domain repos
-  - Provenance/attestation hooks for released artifacts
+  - semantic role synthesis provider interface beyond deterministic keyword inference
+  - live model/tool/API/MCP/connector/runtime/device inventory adapters
+  - mission sensitivity and improvement-leverage engine
+  - descendant teaching-outcome measurement and forge feedback
+  - sibling Genius family scan and cross-domain composition resolution
+  - provenance/attestation hooks for generated and verified artifacts
+
 frontier:
-  - Automated challenge generation from weak vector dimensions
-  - Cross-repo composition resolution at org scale
+  - automatic capability invention from graph gaps and available compositions
+  - recursive higher-capability promotion after evidence
+  - cross-Genius mission orchestration
+  - Colossal Agent composition from complete vertical Genius entities
+  - automated challenge generation from weak or high-leverage dimensions
