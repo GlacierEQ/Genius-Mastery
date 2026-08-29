@@ -9,6 +9,7 @@ import yaml
 from genius.anatomy import ANATOMY_PROMPTS
 from genius.scaffold import create_domain
 from genius.synthesize import infer_families, synthesize_role
+from genius.sources import match_mega_skills
 from genius.validate import validate_repo
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -103,6 +104,76 @@ def test_synthesized_entity_interrogates_entire_vertical_stack(tmp_path):
     assert set(ANATOMY_PROMPTS).issubset(stack["layers"])
     for layer_name, prompts in ANATOMY_PROMPTS.items():
         assert stack["layers"][layer_name]["inspection_prompts"] == prompts
+
+
+def test_synthesis_can_match_real_capability_registry_shape(tmp_path):
+    mega = tmp_path / "mega-skills"
+    registry = mega / "registry"
+    registry.mkdir(parents=True)
+    (registry / "skills.json").write_text(
+        json.dumps({
+            "entries": [
+                {
+                    "id": "source-discovery",
+                    "display_name": "Source Discovery",
+                    "maturity": "active",
+                    "entrypoint": "skills/source-discovery/SKILL.md",
+                    "adds": "Research source discovery and provenance."
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+    (registry / "combo-skills.json").write_text(
+        json.dumps({
+            "entries": [
+                {
+                    "id": "field-research",
+                    "display_name": "Field Research",
+                    "maturity": "active",
+                    "entrypoint": "combo-skills/field-research/COMBO.md",
+                    "adds": "Research field observation and evidence preservation."
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+    (registry / "mega-skills.json").write_text(
+        json.dumps({
+            "entries": [
+                {
+                    "id": "apex-research-expedition",
+                    "display_name": "APEX Research Expedition",
+                    "maturity": "active",
+                    "entrypoint": "mega-skills/apex-research-expedition/MEGA.md",
+                    "adds": "Research expedition mission orchestration."
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+
+    matches = match_mega_skills("Researcher", ["Indiana Jones"], mega)
+    assert matches
+    assert all(item["source_repository"] == "GlacierEQ/mega-skills" for item in matches)
+
+    out = tmp_path / "out"
+    out.mkdir()
+    root = synthesize_role(
+        "Researcher",
+        ["Indiana Jones"],
+        out,
+        mega_skills_root=mega,
+    )
+    plan = yaml.safe_load(
+        (root / "synthesis" / "PLAN.yaml").read_text(encoding="utf-8")
+    )
+    assert plan["capability_match_state"] == "local-registry-matched"
+    assert plan["matched_live_capabilities"]
+    assert any(
+        item["id"] == "apex-research-expedition"
+        for item in plan["matched_live_capabilities"]
+    )
 
 
 def test_generated_repo_standalone_validator_passes(tmp_path):
