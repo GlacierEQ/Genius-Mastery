@@ -1,6 +1,12 @@
 # Genius Buildkite
 
-The core Genius repositories are designed to run repository-owned Buildkite pipelines from `.buildkite/pipeline.yml`.
+The core Genius repositories run repository-owned Buildkite pipelines from `.buildkite/pipeline.yml`.
+
+## Authoritative remote reconciliation
+
+The estate-level control path is `GlacierEQ/apex-control-plane/scripts/reconcile_genius_buildkite.py`. It reconciles all three Genius pipelines through the Buildkite REST API, inherits the established cluster, verifies pipeline readback, resolves exact GitHub `main` SHAs, triggers exact-commit builds, and emits a credential-free receipt.
+
+The local `.buildkite/bootstrap-genius.sh` remains a CLI fallback for environments where the APEX control-plane reconciler is not available.
 
 ## One-command family bootstrap
 
