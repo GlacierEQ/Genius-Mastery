@@ -11,6 +11,7 @@ from typing import Iterable
 
 import yaml
 
+from genius.anatomy import ANATOMY_PROMPTS
 from genius.scaffold import create_domain
 
 
@@ -334,6 +335,19 @@ def synthesize_role(
 
     stack_path = root / "capabilities" / "STACK.yaml"
     stack = yaml.safe_load(stack_path.read_text(encoding="utf-8"))
+    for layer_name, prompts in ANATOMY_PROMPTS.items():
+        layer = stack["layers"].setdefault(
+            layer_name,
+            {
+                "required": [],
+                "available": [],
+                "missing": [],
+                "alternate_routes": [],
+                "failure_modes": [],
+                "improvement_targets": [],
+            },
+        )
+        layer["inspection_prompts"] = list(prompts)
     stack["objective"]["desired_reality"] = (
         f"Act as an increasingly capable {role} that can achieve: "
         + "; ".join(outcomes)
