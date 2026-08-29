@@ -1,0 +1,19 @@
+spec_version: 1
+repository: Genius-Mastery
+provides:
+  - id: mastery.kernel.schemas
+    description: JSON Schema contracts for GENIUS.yaml, claims, evidence, sources, challenges, composition
+    stage: mapped
+    interface: schemas/
+    evidence_refs: []
+  - id: mastery.kernel.validate
+    description: Local contract + referential integrity validator
+    stage: mapped
+    interface: tools/validate.py
+    evidence_refs: []
+  - id: mastery.kernel.doctor
+    description: Diagnostic surface for vector, claims, evidence, frontier
+    stage: mapped
+    interface: tools/doctor.py
+    evidence_refs: []
+consumes: []

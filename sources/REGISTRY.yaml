@@ -1,0 +1,80 @@
+schema_version: 1
+sources:
+  - id: src-json-schema-2020-12
+    title: JSON Schema Specification 2020-12
+    url: https://json-schema.org/specification
+    authority: standard
+    publisher: JSON Schema
+    domain_tags: [contracts, schemas]
+    version: "2020-12"
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []
+    trust_notes: Canonical schema language used by Genius contracts.
+  - id: src-github-reusable-workflows
+    title: GitHub Reusable Workflows
+    url: https://docs.github.com/en/actions/reference/workflows-and-actions/reusing-workflow-configurations
+    authority: primary
+    publisher: GitHub
+    domain_tags: [automation, ci]
+    version: current
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []
+  - id: src-semver
+    title: Semantic Versioning
+    url: https://semver.org/
+    authority: standard
+    publisher: Tom Preston-Werner et al.
+    domain_tags: [interfaces, versioning]
+    version: "2.0.0"
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []
+  - id: src-bloom-mastery
+    title: Learning for Mastery (Bloom)
+    url: https://files.eric.ed.gov/fulltext/ED037405.pdf
+    authority: research
+    publisher: ERIC / Bloom
+    domain_tags: [learning-science]
+    version: classic
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []
+  - id: src-ericsson-deliberate
+    title: Deliberate Practice and Expert Performance (Ericsson et al.)
+    url: https://gwern.net/doc/psychology/writing/1993-ericsson.pdf
+    authority: research
+    publisher: Ericsson et al.
+    domain_tags: [learning-science]
+    version: classic
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []
+  - id: src-hypothesis
+    title: Hypothesis Property-Based Testing
+    url: https://hypothesis.readthedocs.io/en/latest/
+    authority: primary
+    publisher: Hypothesis project
+    domain_tags: [verification, testing]
+    version: current
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []
+  - id: src-slsa-provenance
+    title: SLSA Provenance Specification
+    url: https://slsa.dev/spec/v1.2/provenance
+    authority: standard
+    publisher: SLSA / OpenSSF
+    domain_tags: [security, provenance]
+    version: "v1.2"
+    first_seen: "2026-08-29"
+    last_verified: "2026-08-29"
+    supports_claims: []
+    challenges_claims: []

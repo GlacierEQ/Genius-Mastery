@@ -1,0 +1,14 @@
+schema_version: 1
+nodes: []
+edges: []
+relationship_types:
+  - prerequisite_of
+  - refines
+  - contradicts
+  - implements
+  - verifies
+  - benchmarks
+  - transfers_to
+  - composes_with
+  - supersedes
+  - derived_from

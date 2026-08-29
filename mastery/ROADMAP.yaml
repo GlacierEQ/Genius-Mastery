@@ -1,0 +1,13 @@
+schema_version: 1
+near_term:
+  - Implement full claim/evidence referential integrity in validate.py
+  - Package kernel as installable module (`genius` CLI)
+  - Migration functions v1 → v2 for any legacy metadata
+  - Generator that produces self-validating domain repos
+mid_term:
+  - Family scan + graph export
+  - Reusable workflow publication and consumption by domain repos
+  - Provenance/attestation hooks for released artifacts
+frontier:
+  - Automated challenge generation from weak vector dimensions
+  - Cross-repo composition resolution at org scale

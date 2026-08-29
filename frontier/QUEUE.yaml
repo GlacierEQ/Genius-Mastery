@@ -1,0 +1,20 @@
+schema_version: 1
+items:
+  - id: frontier-kernel-001
+    question: Can a single packaged genius CLI generate a fully self-validating domain repo that passes validate.py without the source checkout of the kernel?
+    why_it_matters: Removes template-drift and makes domain repos independently operable.
+    related_claims: [kernel-identity-001]
+    dependencies: [Genius-Mastery]
+    evidence_to_resolve:
+      - installable wheel or equivalent
+      - generated repo CI green on clean checkout
+    status: open
+  - id: frontier-kernel-002
+    question: What is the minimal migration function set that upgrades any v1-style Genius metadata to v2 while preserving all evidence IDs and domain-authored files?
+    why_it_matters: Prevents permanent template drift across the family.
+    related_claims: []
+    dependencies: [Genius-Mastery]
+    evidence_to_resolve:
+      - migration receipt
+      - round-trip validation
+    status: open

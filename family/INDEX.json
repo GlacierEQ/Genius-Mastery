@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-29T19:00:00Z",
+  "kernel": "Genius-Mastery",
+  "repositories": [
+    {
+      "repository": "Genius-Mastery",
+      "purpose": "Mastery",
+      "spec_version": 2,
+      "capabilities": [
+        "mastery.kernel.schemas",
+        "mastery.kernel.validate",
+        "mastery.kernel.doctor"
+      ],
+      "consumes": [],
+      "verified_at": null,
+      "revision": "seed-0.2.0",
+      "url": "https://github.com/GlacierEQ/Genius-Mastery"
+    },
+    {
+      "repository": "Genius-Code",
+      "purpose": "Code",
+      "spec_version": 2,
+      "capabilities": [],
+      "consumes": ["Genius-Mastery"],
+      "verified_at": null,
+      "revision": "seed",
+      "url": "https://github.com/GlacierEQ/Genius-Code"
+    }
+  ]
+}

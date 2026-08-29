@@ -1,0 +1,34 @@
+schema_version: 1
+claims:
+  - id: kernel-identity-001
+    statement: Repository directory name, GitHub name, and GENIUS.yaml repository field must all equal the same Genius-{purpose} string matching ^Genius-[A-Za-z0-9._-]+$.
+    dimension: foundations
+    status: mapped
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
+  - id: kernel-schema-version-001
+    statement: Unknown schema_version values must fail validation explicitly rather than silently downgrading.
+    dimension: foundations
+    status: mapped
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
+  - id: kernel-no-scalar-score-001
+    statement: Mastery is represented as a multi-dimensional vector of claims and evidence stages; a single global percentage is forbidden.
+    dimension: foundations
+    status: mapped
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
+  - id: kernel-counterevidence-001
+    statement: Counterevidence receipts are retained and linked; they are never deleted to improve perceived strength.
+    dimension: verification
+    status: mapped
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []

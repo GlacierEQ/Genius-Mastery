@@ -1,0 +1,8 @@
+schema_version: 1
+strategy: spaced-revalidation+transfer
+policies:
+  - revalidate volatile claims when upstream versions, standards, APIs, or threat models change
+  - revisit stable claims through retrieval, reconstruction, or transfer challenges
+  - stale evidence is preserved for lineage but does not masquerade as current proof
+  - passing once never creates permanent mastery status
+reviews: []
