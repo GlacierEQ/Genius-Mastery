@@ -57,6 +57,11 @@ def cmd_synthesize(args: argparse.Namespace) -> int:
             dest,
             archetype=args.archetype,
             constraints=list(args.constraint or []),
+            mega_skills_root=(
+                Path(args.mega_skills_root).resolve()
+                if args.mega_skills_root
+                else None
+            ),
             force=args.force,
         )
     except (ValueError, FileExistsError) as e:
@@ -129,6 +134,11 @@ def main(argv: list[str] | None = None) -> int:
         action="append",
         default=[],
         help="Optional constraint. Repeat as needed.",
+    )
+    p_syn.add_argument(
+        "--mega-skills-root",
+        default=None,
+        help="Optional local GlacierEQ/mega-skills checkout for real capability matching.",
     )
     p_syn.add_argument(
         "--dest",
