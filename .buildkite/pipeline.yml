@@ -3,10 +3,37 @@ env:
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
   PYTHONDONTWRITEBYTECODE: "1"
 
+agents:
+  queue: macos-self
+  os: macos
+
 steps:
+  - label: ":lock: Exact source + pipeline preflight"
+    key: source-preflight
+    timeout_in_minutes: 5
+    command: |
+      set -euo pipefail
+      actual="$(git rev-parse HEAD)"
+      test "$actual" = "$BUILDKITE_COMMIT"
+      test "$BUILDKITE_PIPELINE_SLUG" = "genius-mastery"
+      git diff --exit-code
+      args=(pipeline upload .buildkite/pipeline.yml --dry-run --format yaml)
+      help="$(buildkite-agent pipeline upload --help 2>&1)"
+      grep -q -- '--reject-parse-warnings' <<<"$help" && args+=(--reject-parse-warnings)
+      grep -q -- '--reject-secrets' <<<"$help" && args+=(--reject-secrets)
+      buildkite-agent "${args[@]}" >/dev/null
+
   - label: ":python: Contract + doctor"
     key: validate
+    depends_on: source-preflight
     timeout_in_minutes: 10
+    cancel_on_build_failing: true
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 1
+        - exit_status: 255
+          limit: 1
     command:
       - python --version
       - pip install -e ".[dev]"
@@ -17,28 +44,44 @@ steps:
       - docker#v5.14.0:
           image: "python:3.13-slim"
           always-pull: true
-          propagate-environment: true
+          pull-retries: 2
 
   - label: ":pytest: Unit tests"
     key: unit
     depends_on: validate
     timeout_in_minutes: 10
+    cancel_on_build_failing: true
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 1
+        - exit_status: 255
+          limit: 1
     command:
       - pip install -e ".[dev]"
       - mkdir -p .verification-artifacts
       - pytest -q --junitxml=.verification-artifacts/junit.xml
+      - sha256sum .verification-artifacts/junit.xml > .verification-artifacts/junit.xml.sha256
     artifact_paths:
       - ".verification-artifacts/junit.xml"
+      - ".verification-artifacts/junit.xml.sha256"
     plugins:
       - docker#v5.14.0:
           image: "python:3.13-slim"
           always-pull: true
-          propagate-environment: true
+          pull-retries: 2
 
   - label: ":hammer: CLI smoke"
     key: cli-smoke
     depends_on: validate
     timeout_in_minutes: 10
+    cancel_on_build_failing: true
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 1
+        - exit_status: 255
+          limit: 1
     command:
       - pip install -e .
       - genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
@@ -49,21 +92,17 @@ steps:
       - docker#v5.14.0:
           image: "python:3.13-slim"
           always-pull: true
-          propagate-environment: true
+          pull-retries: 2
 
-  - label: ":receipt: Buildkite receipt"
+  - label: ":receipt: Verified terminal receipt"
     key: receipt
     depends_on:
       - unit
       - cli-smoke
     timeout_in_minutes: 5
-    command:
-      - mkdir -p .verification-artifacts
-      - python -c "import datetime,json,os,pathlib; p=pathlib.Path('.verification-artifacts/buildkite-verified-receipt.json'); rec={'schema':'glaciereq.genius-mastery.buildkite.v1','status':'PASS','commit':os.environ.get('BUILDKITE_COMMIT'),'branch':os.environ.get('BUILDKITE_BRANCH'),'build_id':os.environ.get('BUILDKITE_BUILD_ID'),'build_number':os.environ.get('BUILDKITE_BUILD_NUMBER'),'pipeline':os.environ.get('BUILDKITE_PIPELINE_SLUG'),'generated_at':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()}; p.write_text(json.dumps(rec,indent=2,sort_keys=True)+'\n')"
+    command: |
+      set -euo pipefail
+      python3 tools/buildkite_receipt.py --repository Genius-Mastery
     artifact_paths:
       - ".verification-artifacts/buildkite-verified-receipt.json"
-    plugins:
-      - docker#v5.14.0:
-          image: "python:3.13-slim"
-          always-pull: true
-          propagate-environment: true
+      - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
