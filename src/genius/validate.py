@@ -9,11 +9,54 @@ import yaml
 
 REPO_NAME_RE = re.compile(r"^Genius-[A-Za-z0-9._-]+$")
 SUPPORTED_SCHEMA = 2
+SUPPORTED_CAPABILITY_SCHEMA = 1
 
 
 def load_yaml(path: Path) -> Any:
     with path.open(encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def validate_capability_stack(root: Path, errors: list[str]) -> None:
+    path = root / "capabilities" / "STACK.yaml"
+    if not path.exists():
+        return
+
+    data = load_yaml(path)
+    if not isinstance(data, dict):
+        errors.append("capabilities/STACK.yaml is not a mapping")
+        return
+    if data.get("schema_version") != SUPPORTED_CAPABILITY_SCHEMA:
+        errors.append(
+            "capabilities/STACK.yaml schema_version must be "
+            f"{SUPPORTED_CAPABILITY_SCHEMA}"
+        )
+    if not data.get("id"):
+        errors.append("capabilities/STACK.yaml id missing")
+    if not data.get("purpose"):
+        errors.append("capabilities/STACK.yaml purpose missing")
+
+    objective = data.get("objective")
+    if not isinstance(objective, dict) or not objective.get("desired_reality"):
+        errors.append("capabilities/STACK.yaml objective.desired_reality missing")
+
+    layers = data.get("layers")
+    if not isinstance(layers, dict) or not layers:
+        errors.append("capabilities/STACK.yaml layers must be a non-empty mapping")
+
+    verification = data.get("verification")
+    if not isinstance(verification, dict):
+        errors.append("capabilities/STACK.yaml verification missing")
+    else:
+        acceptance = verification.get("acceptance")
+        if not isinstance(acceptance, list) or not acceptance:
+            errors.append(
+                "capabilities/STACK.yaml verification.acceptance must be non-empty"
+            )
+
+    mission_impact = data.get("mission_impact")
+    if not isinstance(mission_impact, dict):
+        errors.append("capabilities/STACK.yaml mission_impact missing")
 
 
 def validate_repo(root: Path) -> list[str]:
@@ -74,4 +117,5 @@ def validate_repo(root: Path) -> list[str]:
                 errors.append(f"duplicate capability id: {pid}")
             pids.add(pid)
 
+    validate_capability_stack(root, errors)
     return errors
