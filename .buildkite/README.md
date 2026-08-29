@@ -1,63 +1,59 @@
 # Genius Buildkite
 
-The core Genius repositories run repository-owned Buildkite pipelines from `.buildkite/pipeline.yml`.
+The Genius family uses a two-layer Buildkite architecture.
 
-## Authoritative remote reconciliation
+## Control plane
 
-The estate-level control path is `GlacierEQ/apex-control-plane/scripts/reconcile_genius_buildkite.py`. It reconciles all three Genius pipelines through the Buildkite REST API, inherits the established cluster, verifies pipeline readback, resolves exact GitHub `main` SHAs, triggers exact-commit builds, and emits a credential-free receipt.
+`GlacierEQ/apex-control-plane/scripts/reconcile_genius_buildkite.py` is authoritative for the family. It:
 
-The local `.buildkite/bootstrap-genius.sh` remains a CLI fallback for environments where the APEX control-plane reconciler is not available.
+1. reconciles `genius-mastery`, `genius-code`, and `genius-verification`;
+2. reuses the proven Buildkite cluster and `macos-self` queue;
+3. verifies repository, cluster, branch, provider, and superseded-build settings by API readback;
+4. resolves each exact GitHub `main` SHA;
+5. reuses a healthy exact-head Buildkite projection or triggers a replacement build;
+6. waits for the referenced Buildkite build to reach terminal PASS;
+7. verifies the exact GitHub `buildkite/<slug>` success projection points to that same build;
+8. emits a credential-free family reconciliation receipt that is hashed into the APEX terminal receipt.
 
-## One-command family bootstrap
+Dispatch is not completion.
 
-From a checkout of `Genius-Mastery`:
+## Repository pipelines
+
+Each Genius repository owns only its domain execution in `.buildkite/pipeline.yml`.
+
+The Buildkite-side upload step performs source identity checks plus supported parse-warning/secret rejection before loading that file. Repository pipelines should not recreate that dynamic-upload gate.
+
+Container steps receive only explicitly required nonsecret Buildkite identity variables. Broad environment propagation is prohibited.
+
+Terminal receipts are generated outside the verification container on the trusted host and bind required proof artifacts by SHA-256.
+
+## Current routing
+
+| Repository | Pipeline | Role | Queue |
+|---|---|---|---|
+| `GlacierEQ/Genius-Mastery` | `genius-mastery` | mastery kernel | `macos-self` |
+| `GlacierEQ/Genius-Code` | `genius-code` | code domain | `macos-self` |
+| `GlacierEQ/Genius-Verification` | `genius-verification` | verification domain | `macos-self` |
+
+`oracle-arm64` remains an independent-runner target, not a production Genius evidence queue, until live Buildkite proof exists.
+
+## Fallback bootstrap
+
+From a `Genius-Mastery` checkout:
 
 ```sh
-bk auth login --org <org-slug>
-bash .buildkite/bootstrap-genius.sh <org-slug>
+bk auth login --org casey-1
+bash .buildkite/bootstrap-genius.sh casey-1
 ```
 
-If the Buildkite organization requires an explicit cluster:
+This is a recovery/provisioning path. The APEX reconciler remains authoritative for terminal verification.
 
-```sh
-bash .buildkite/bootstrap-genius.sh <org-slug> <cluster-name>
-```
+## Buildkite AI control
 
-Set `TRIGGER_BUILDS=0` to reconcile pipeline configuration without triggering builds.
-
-The bootstrap reconciles:
-
-- `Genius-Mastery` -> `genius-mastery`
-- `Genius-Code` -> `genius-code`
-- `Genius-Verification` -> `genius-verification`
-
-For every pipeline it:
-
-1. creates the pipeline if absent;
-2. points it at the GlacierEQ GitHub repository;
-3. sets `main` as the default branch;
-4. installs a Buildkite-side pipeline-upload step so the repository remains the source of CI truth;
-5. enables commit status publishing and pull-request builds;
-6. attempts GitHub webhook creation;
-7. reads the pipeline back;
-8. triggers a verification build unless `TRIGGER_BUILDS=0`.
-
-## AI control
-
-Buildkite's official remote MCP endpoint is:
+Official remote MCP endpoint:
 
 ```text
 https://mcp.buildkite.com/mcp
 ```
 
-For CI/CD control, enable the `user`, `pipelines`, and `builds` toolsets. Add `logs`, `tests`, and `annotations` for failure analysis.
-
-## Verification
-
-```sh
-bk pipeline validate --file .buildkite/pipeline.yml
-bk pipeline view <org-slug>/genius-mastery --json
-bk build view --pipeline <org-slug>/genius-mastery --summary
-```
-
-A committed pipeline file is configuration, not proof of execution. Completion requires a live Buildkite build result.
+For CI/CD use `user`, `pipelines`, and `builds`; add `logs`, `tests`, and `annotations` for failure analysis.
