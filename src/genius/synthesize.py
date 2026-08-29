@@ -270,7 +270,7 @@ def synthesize_role(
     )
     teaching_contract["verification"]["transfer_challenges"] = [
         f"Apply {target} to a novel {role} problem with evidence."
-        for target in all_targets[:8]
+        for target in all_targets
     ]
     _write_yaml(teaching_contract_path, teaching_contract)
 
