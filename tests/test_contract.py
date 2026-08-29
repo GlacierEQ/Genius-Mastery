@@ -6,6 +6,7 @@ import sys
 
 from genius.scaffold import create_domain
 from genius.synthesize import infer_families, synthesize_role
+from genius.validate import validate_repo
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -17,10 +18,13 @@ def test_genius_yaml_exists():
 def test_capability_kernel_surfaces_exist():
     assert (ROOT / "schemas" / "capability.schema.json").exists()
     assert (ROOT / "schemas" / "role-brief.schema.json").exists()
+    assert (ROOT / "schemas" / "teaching.schema.json").exists()
     assert (ROOT / "templates" / "CAPABILITY.yaml").exists()
+    assert (ROOT / "templates" / "TEACHING.yaml").exists()
     assert (ROOT / "docs" / "GENIUS_ENTITY_ANATOMY.md").exists()
     assert (ROOT / "docs" / "MASTER_TEACHER_FORGE.md").exists()
     assert (ROOT / "capabilities" / "STACK.yaml").exists()
+    assert (ROOT / "teaching" / "TEACHING.yaml").exists()
 
 
 def test_capability_schema_is_valid_json():
@@ -28,17 +32,28 @@ def test_capability_schema_is_valid_json():
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data["$schema"].endswith("2020-12/schema")
     assert data["properties"]["layers"]["type"] == "object"
+    assert "teaching" in data["properties"]["layers"]["properties"]
 
 
-def test_new_domain_inherits_vertical_capability_stack(tmp_path):
+def test_new_domain_inherits_vertical_capability_and_teaching(tmp_path):
     root = create_domain("Smoke Anatomy", tmp_path)
     stack = root / "capabilities" / "STACK.yaml"
+    teaching = root / "teaching" / "TEACHING.yaml"
     assert stack.exists()
-    text = stack.read_text(encoding="utf-8")
-    assert "vertical-excellence" in text
-    assert "capability_composition:" in text
-    assert "mission_impact:" in text
-    assert "alternate_routes:" in text
+    assert teaching.exists()
+
+    stack_text = stack.read_text(encoding="utf-8")
+    assert "vertical-excellence" in stack_text
+    assert "capability_composition:" in stack_text
+    assert "teaching:" in stack_text
+    assert "mission_impact:" in stack_text
+    assert "alternate_routes:" in stack_text
+
+    genius_text = (root / "GENIUS.yaml").read_text(encoding="utf-8")
+    assert "teaching_contract: teaching/TEACHING.yaml" in genius_text
+    assert "  - teach" in genius_text
+
+    assert validate_repo(root) == []
 
 
 def test_indiana_jones_researcher_infers_field_research():
@@ -59,6 +74,7 @@ def test_synthesize_role_creates_teaching_entity(tmp_path):
     assert (root / "persona" / "PERSONA.md").exists()
     assert (root / "synthesis" / "PLAN.yaml").exists()
     assert (root / "teaching" / "TEACHING_PLAN.md").exists()
+    assert (root / "teaching" / "TEACHING.yaml").exists()
 
     stack = (root / "capabilities" / "STACK.yaml").read_text(encoding="utf-8")
     assert "field observation" in stack
@@ -68,6 +84,22 @@ def test_synthesize_role_creates_teaching_entity(tmp_path):
     plan = (root / "synthesis" / "PLAN.yaml").read_text(encoding="utf-8")
     assert "GlacierEQ/mega-skills" in plan
     assert "teach-another" in plan
+
+    teaching = (root / "teaching" / "TEACHING.yaml").read_text(encoding="utf-8")
+    assert "Indiana Jones" in teaching
+    assert "geographic reasoning" in teaching
+
+    assert validate_repo(root) == []
+
+
+def test_generated_repo_standalone_validator_passes(tmp_path):
+    root = synthesize_role("Researcher", ["Indiana Jones"], tmp_path)
+    r = subprocess.run(
+        [sys.executable, str(root / "tools" / "validate.py"), str(root)],
+        capture_output=True,
+        text=True,
+    )
+    assert r.returncode == 0, r.stdout + r.stderr
 
 
 def test_cli_synthesize_role(tmp_path):
@@ -87,7 +119,9 @@ def test_cli_synthesize_role(tmp_path):
         text=True,
     )
     assert r.returncode == 0, r.stdout + r.stderr
-    assert (tmp_path / "Genius-Researcher" / "ROLE.yaml").exists()
+    generated = tmp_path / "Genius-Researcher"
+    assert (generated / "ROLE.yaml").exists()
+    assert (generated / "teaching" / "TEACHING.yaml").exists()
 
 
 def test_validator_passes():
