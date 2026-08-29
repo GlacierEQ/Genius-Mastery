@@ -104,7 +104,7 @@ steps:
     timeout_in_minutes: 5
     command: |
       set -euo pipefail
-      python3 tools/buildkite_receipt.py --repository Genius-Mastery
+      python3 tools/buildkite_receipt.py --repository Genius-Mastery --output artifacts/buildkite/verified-ci-receipt.json
     artifact_paths:
-      - ".verification-artifacts/buildkite-verified-receipt.json"
-      - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
+      - "artifacts/buildkite/verified-ci-receipt.json"
+      - "artifacts/buildkite/verified-ci-receipt.json.sha256"
