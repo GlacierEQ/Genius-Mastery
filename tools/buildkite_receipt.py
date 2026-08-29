@@ -30,6 +30,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository", required=True)
     parser.add_argument("--output", default=".verification-artifacts/buildkite-verified-receipt.json")
+    parser.add_argument("--artifact", action="append", default=[])
     args = parser.parse_args()
 
     commit = require_env("BUILDKITE_COMMIT")
@@ -53,6 +54,16 @@ def main() -> int:
         )
 
     subprocess.run(["git", "diff", "--exit-code"], check=True)
+
+    artifact_digests = {}
+    for raw_path in args.artifact:
+        path = Path(raw_path)
+        if not path.is_file():
+            raise RuntimeError(f"required verification artifact missing: {path}")
+        artifact_digests[path.as_posix()] = {
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "size_bytes": path.stat().st_size,
+        }
 
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -80,7 +91,9 @@ def main() -> int:
             "exact_source_checkout": True,
             "tracked_worktree_clean": True,
             "pipeline_identity_match": True,
+            "artifact_count": len(artifact_digests),
         },
+        "artifacts": artifact_digests,
         "credential_values_recorded": False,
     }
     encoded = (json.dumps(receipt, indent=2, sort_keys=True) + "\n").encode("utf-8")
