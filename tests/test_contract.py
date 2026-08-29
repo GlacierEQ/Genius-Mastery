@@ -4,6 +4,9 @@ import json
 import subprocess
 import sys
 
+import yaml
+
+from genius.anatomy import ANATOMY_PROMPTS
 from genius.scaffold import create_domain
 from genius.synthesize import infer_families, synthesize_role
 from genius.validate import validate_repo
@@ -90,6 +93,16 @@ def test_synthesize_role_creates_teaching_entity(tmp_path):
     assert "geographic reasoning" in teaching
 
     assert validate_repo(root) == []
+
+
+def test_synthesized_entity_interrogates_entire_vertical_stack(tmp_path):
+    root = synthesize_role("Researcher", ["Indiana Jones"], tmp_path)
+    stack = yaml.safe_load(
+        (root / "capabilities" / "STACK.yaml").read_text(encoding="utf-8")
+    )
+    assert set(ANATOMY_PROMPTS).issubset(stack["layers"])
+    for layer_name, prompts in ANATOMY_PROMPTS.items():
+        assert stack["layers"][layer_name]["inspection_prompts"] == prompts
 
 
 def test_generated_repo_standalone_validator_passes(tmp_path):
