@@ -22,6 +22,7 @@ def test_genius_yaml_exists():
 
 def test_capability_kernel_surfaces_exist():
     assert (ROOT / "schemas" / "capability.schema.json").exists()
+    assert (ROOT / "schemas" / "capability-graph.schema.json").exists()
     assert (ROOT / "schemas" / "role-brief.schema.json").exists()
     assert (ROOT / "schemas" / "teaching.schema.json").exists()
     assert (ROOT / "templates" / "CAPABILITY.yaml").exists()
@@ -94,6 +95,19 @@ def test_synthesize_role_creates_teaching_entity(tmp_path):
     assert "Indiana Jones" in teaching
     assert "geographic reasoning" in teaching
 
+    assert validate_repo(root) == []
+
+
+def test_synthesized_entity_emits_recursive_capability_graph(tmp_path):
+    root = synthesize_role("Researcher", ["Indiana Jones"], tmp_path)
+    graph = yaml.safe_load(
+        (root / "capabilities" / "GRAPH.yaml").read_text(encoding="utf-8")
+    )
+    kinds = {node["kind"] for node in graph["nodes"]}
+    assert {"role", "outcome", "capability-family", "capability-target"}.issubset(kinds)
+    assert graph["analysis"]["node_count"] == len(graph["nodes"])
+    assert graph["analysis"]["edge_count"] == len(graph["edges"])
+    assert graph["analysis"]["candidate_bottlenecks"]
     assert validate_repo(root) == []
 
 
@@ -194,6 +208,7 @@ def test_doctor_describes_synthesized_entity(tmp_path):
     assert "Indiana Jones" in report
     assert f"interrogated_layers: {len(ANATOMY_PROMPTS)}/{len(ANATOMY_PROMPTS)}" in report
     assert "Teaching:" in report
+    assert "Capability graph:" in report
     assert "current_bottleneck:" in report
 
 
