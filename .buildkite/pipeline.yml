@@ -7,7 +7,7 @@ agents:
   os: macos
 
 steps:
-  - label: ":microscope: Mastery verification"
+  - label: ":microscope: Mastery verified evidence"
     key: verify
     timeout_in_minutes: 15
     cancel_on_build_failing: true
@@ -19,6 +19,9 @@ steps:
           limit: 1
     command: |
       set -euo pipefail
+      apt-get update
+      apt-get install -y --no-install-recommends git
+      rm -rf /var/lib/apt/lists/*
       python --version
       python - <<'PY'
       import os
@@ -39,9 +42,17 @@ steps:
       genius validate /tmp/Genius-SmokeTest
       rm -rf /tmp/Genius-SmokeTest
       sha256sum .verification-artifacts/junit.xml > .verification-artifacts/junit.xml.sha256
+      python tools/buildkite_receipt.py \
+        --repository Genius-Mastery \
+        --output .verification-artifacts/buildkite-verified-receipt.json \
+        --artifact .verification-artifacts/junit.xml \
+        --artifact .verification-artifacts/junit.xml.sha256 \
+        --proof .buildkite/pipeline.yml
     artifact_paths:
       - ".verification-artifacts/junit.xml"
       - ".verification-artifacts/junit.xml.sha256"
+      - ".verification-artifacts/buildkite-verified-receipt.json"
+      - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
     plugins:
       - docker#v5.14.0:
           image: "python:3.13-slim"
@@ -49,20 +60,8 @@ steps:
           pull-retries: 2
           environment:
             - "BUILDKITE_COMMIT"
+            - "BUILDKITE_BRANCH"
+            - "BUILDKITE_BUILD_ID"
+            - "BUILDKITE_BUILD_NUMBER"
             - "BUILDKITE_PIPELINE_SLUG"
-
-  - label: ":receipt: Terminal evidence receipt"
-    key: receipt
-    depends_on: verify
-    timeout_in_minutes: 5
-    command: |
-      set -euo pipefail
-      buildkite-agent artifact download ".verification-artifacts/junit.xml" .
-      python3 tools/buildkite_receipt.py \
-        --repository Genius-Mastery \
-        --output artifacts/buildkite/verified-ci-receipt.json \
-        --proof .buildkite/pipeline.yml \
-        --proof .verification-artifacts/junit.xml
-    artifact_paths:
-      - "artifacts/buildkite/verified-ci-receipt.json"
-      - "artifacts/buildkite/verified-ci-receipt.json.sha256"
+            - "BUILDKITE_ORGANIZATION_SLUG"
