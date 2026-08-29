@@ -23,6 +23,7 @@ def doctor_report(root: Path) -> str:
     genius = load_yaml(root / "GENIUS.yaml") or {}
     role = _load_pointer(root, genius, "role_brief", "ROLE.yaml") or {}
     stack = _load_pointer(root, genius, "capability_anatomy_contract", "capabilities/STACK.yaml") or {}
+    graph = _load_pointer(root, genius, "capability_graph", "capabilities/GRAPH.yaml") or {}
     teaching = _load_pointer(root, genius, "teaching_contract", "teaching/TEACHING.yaml") or {}
     synthesis = _load_pointer(root, genius, "synthesis_plan", "synthesis/PLAN.yaml") or {}
     claims_data = load_yaml(root / "claims" / "CLAIMS.yaml") or {}
@@ -88,6 +89,22 @@ def doctor_report(root: Path) -> str:
         if scores:
             lines.append("  mission_impact: " + ", ".join(scores))
     lines.append("")
+
+    if graph:
+        lines.append("Capability graph:")
+        nodes = graph.get("nodes") or []
+        edges = graph.get("edges") or []
+        analysis = graph.get("analysis") or {}
+        lines.append(f"  nodes: {len(nodes)}")
+        lines.append(f"  edges: {len(edges)}")
+        lines.append(
+            f"  candidate_bottlenecks: {len(analysis.get('candidate_bottlenecks') or [])}"
+        )
+        high_leverage = analysis.get("high_leverage_nodes") or []
+        lines.append(f"  structural_high_leverage: {len(high_leverage)}")
+        for node_id in high_leverage[:5]:
+            lines.append(f"    - {node_id}")
+        lines.append("")
 
     if synthesis:
         lines.append("Synthesis:")
