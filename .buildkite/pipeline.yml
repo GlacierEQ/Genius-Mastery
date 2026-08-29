@@ -57,6 +57,7 @@ steps:
     timeout_in_minutes: 5
     command: |
       set -euo pipefail
+      buildkite-agent artifact download ".verification-artifacts/junit.xml" .
       python3 tools/buildkite_receipt.py \
         --repository Genius-Mastery \
         --output artifacts/buildkite/verified-ci-receipt.json \
