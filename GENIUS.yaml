@@ -20,5 +20,6 @@ evidence_required: true
 growth_model: open-ended-cumulative
 mastery_representation: claim-evidence-graph+vector
 composition_contract: interfaces/COMPOSITION.yaml
+capability_anatomy_contract: capabilities/STACK.yaml
 kernel: true
-package_version: "0.2.0"
+package_version: "0.3.0"
