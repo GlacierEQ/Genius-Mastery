@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/capability-graph.schema.json",
+  "title": "Genius Capability Graph",
+  "type": "object",
+  "required": ["schema_version", "repository", "nodes", "edges"],
+  "properties": {
+    "schema_version": {"type":"integer","const":1},
+    "repository": {"type":"string","pattern":"^Genius-[A-Za-z0-9._-]+$"},
+    "nodes": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["id","kind","label","state"],
+        "properties":{
+          "id":{"type":"string","minLength":1},
+          "kind":{"type":"string"},
+          "label":{"type":"string"},
+          "state":{"type":"string"},
+          "mission_impact":{"type":"number","minimum":0,"maximum":1},
+          "metadata":{"type":"object"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "required":["from","to","relation"],
+        "properties":{
+          "from":{"type":"string"},
+          "to":{"type":"string"},
+          "relation":{"type":"string"},
+          "evidence_refs":{"type":"array","items":{"type":"string"}},
+          "required_for_current_mission":{"type":"boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "analysis":{
+      "type":"object",
+      "properties":{
+        "node_count":{"type":"integer","minimum":0},
+        "edge_count":{"type":"integer","minimum":0},
+        "candidate_bottlenecks":{"type":"array","items":{"type":"string"}},
+        "high_leverage_nodes":{"type":"array","items":{"type":"string"}}
+      },
+      "additionalProperties":true
+    }
+  },
+  "additionalProperties": true
+}
