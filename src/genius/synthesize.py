@@ -260,6 +260,20 @@ def synthesize_role(
         encoding="utf-8",
     )
 
+    teaching_contract_path = root / "teaching" / "TEACHING.yaml"
+    teaching_contract = yaml.safe_load(
+        teaching_contract_path.read_text(encoding="utf-8")
+    )
+    teaching_contract["subject"] = f"{role} methods for: " + "; ".join(outcomes)
+    teaching_contract["learner"]["target_state"] = (
+        f"independently reconstructs, transfers, and teaches verified {role} methods"
+    )
+    teaching_contract["verification"]["transfer_challenges"] = [
+        f"Apply {target} to a novel {role} problem with evidence."
+        for target in all_targets[:8]
+    ]
+    _write_yaml(teaching_contract_path, teaching_contract)
+
     map_lines = [
         f"# Mastery Map: {repo_name}",
         "",
