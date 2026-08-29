@@ -50,11 +50,12 @@ The family-level question is:
 38. Security and integrity
 39. Resource economics and performance
 40. Human interaction and accessibility
-41. Domain expertise
-42. Real-world effect
-43. Outcome measurement, feedback, learning, evolution
-44. Genius-to-Genius composition
-45. Colossal-agent composition
+41. Teaching, reconstruction, transfer, and learner verification
+42. Domain expertise
+43. Real-world effect
+44. Outcome measurement, feedback, learning, evolution
+45. Genius-to-Genius composition
+46. Colossal-agent composition
 
 ## Recursive law
 
