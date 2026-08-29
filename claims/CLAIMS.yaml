@@ -37,3 +37,22 @@ claims:
     challenge_refs: []
     counterevidence_refs:
       - ev-receipt-env-gap-001
+  - id: teacher-forge-synthesis-001
+    statement: Genius-Mastery can synthesize a role and desired outcomes into a structured Genius descendant with role identity, persona, synthesis plan, vertical capability anatomy, teaching contract, frontier, and recursive capability graph.
+    dimension: synthesis_transfer
+    status: implemented
+    source_refs: []
+    evidence_refs:
+      - ev-gha-teacher-forge-001
+    challenge_refs: []
+    counterevidence_refs: []
+  - id: teacher-forge-teaching-001
+    statement: Generated Genius descendants include executable structural contracts for explanation, demonstration, blank-state reconstruction, transfer, and standalone validation rather than answer-only templates.
+    dimension: teaching
+    status: implemented
+    source_refs: []
+    evidence_refs:
+      - ev-gha-teacher-forge-001
+    challenge_refs: []
+    counterevidence_refs: []
+
