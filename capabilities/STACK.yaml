@@ -1,0 +1,116 @@
+schema_version: 1
+id: genius-mastery.vertical-excellence
+name: Genius Mastery Vertical Excellence
+purpose: Define, validate, and evolve the kernel-up anatomy shared by every Genius entity.
+state: implemented
+
+objective:
+  current_reality: Genius-Mastery provides family identity, schemas, validation, composition, evidence, and scaffolding.
+  desired_reality: Every Genius domain can describe and improve the complete path from substrate and model through skills, tools, action, verification, real-world effect, and retained gain.
+  success_conditions:
+    - A universal capability schema exists.
+    - A reusable human-editable capability template exists.
+    - New Genius repositories receive a vertical capability map automatically.
+    - Domain repositories can compose higher capabilities without flattening their lower-level dependencies.
+
+layers:
+  agent_kernel:
+    required: [family identity, composition law, evidence discipline, upward capability growth]
+    available: [GENIUS.yaml, interfaces/COMPOSITION.yaml, schemas/, src/genius/]
+    missing: []
+    alternate_routes: []
+    failure_modes: [schema drift, scaffold drift, capability semantics becoming documentation-only]
+    improvement_targets: [cross-repository capability graph, impact propagation engine]
+  capability_composition:
+    required: [atomic capabilities, dependency edges, emergent higher-order capabilities]
+    available: [interfaces/COMPOSITION.yaml, schemas/composition.schema.json, schemas/capability.schema.json]
+    missing: [automatic composition discovery]
+    alternate_routes: [manual composition mapping]
+    failure_modes: [mere concatenation without emergent capability, unverified capability claims]
+    improvement_targets: [composition search, capability algebra, cross-Genius composition]
+  verification:
+    required: [contract validation, evidence receipts, exact observed results]
+    available: [tools/validate.py, src/genius/validate.py, evidence/]
+    missing: [full capability-schema validation]
+    alternate_routes: [structural validator plus evidence review]
+    failure_modes: [file-exists treated as capability, stale evidence]
+    improvement_targets: [JSON Schema execution, capability evidence binding]
+  learning_evolution:
+    required: [bottleneck detection, improvement leverage, retained gain]
+    available: [mastery loop, frontier queue, evidence model]
+    missing: [automated downstream impact propagation]
+    alternate_routes: [manual impact analysis]
+    failure_modes: [improvement without propagation measurement]
+    improvement_targets: [sensitivity graph, leverage ranking, spiral recomposition]
+
+dependencies:
+  - id: mastery.kernel.schemas
+    relationship: requires
+    required_for_current_mission: true
+    alternate_routes: []
+  - id: mastery.kernel.validate
+    relationship: verifies
+    required_for_current_mission: true
+    alternate_routes: []
+
+action:
+  preconditions:
+    - Genius family identity and repository contract are present.
+  steps:
+    - Decompose a capability with the universal anatomy.
+    - Mark required, available, missing, and alternate routes by layer.
+    - Score mission impact instead of treating every detail equally.
+    - Compose working lower capabilities into higher capabilities.
+    - Verify the resulting effect and preserve evidence.
+    - Feed bottlenecks and gains into the next spiral.
+  expected_effects:
+    - Capability gaps become exact rather than vague.
+    - Working routes remain usable when optional routes degrade.
+    - Higher-order capability becomes a reusable node.
+  postconditions:
+    - The capability state is bounded by evidence.
+    - Improvement targets identify propagated mission gain.
+  alternate_routes: []
+  failure_modes:
+    - Treating the template as a checklist rather than a reasoning substrate.
+  recovery_routes:
+    - Return to observed current state and repopulate only mission-relevant layers.
+
+verification:
+  acceptance:
+    - schemas/capability.schema.json exists and is valid JSON.
+    - templates/CAPABILITY.yaml exists.
+    - docs/GENIUS_ENTITY_ANATOMY.md documents the kernel-up stack.
+    - Generated Genius repositories include capabilities/STACK.yaml.
+  tests: []
+  evidence_refs: []
+  independent_readback: []
+
+mission_impact:
+  mission_relevance: 1.0
+  necessity: 1.0
+  criticality: 1.0
+  sensitivity: 1.0
+  substitutability: 0.2
+  downstream_centrality: 1.0
+  improvement_leverage: 1.0
+  rationale: This contract becomes the shared anatomy through which every Genius domain describes real capability.
+
+evolution:
+  current_bottleneck: Convert the static anatomy into a live cross-repository capability and impact graph.
+  improvement_targets:
+    - automatic capability discovery
+    - dependency graph traversal
+    - sensitivity and leverage scoring
+    - Mega Skills ingestion
+    - connector and tool capability ingestion
+  affected_capabilities:
+    - mastery.kernel.schemas
+    - mastery.kernel.validate
+    - mastery.kernel.capability-anatomy
+  newly_possible_compositions:
+    - domain-specific vertical excellence stacks
+    - cross-Genius capability composition
+  next_frontier:
+    - capability graph compiler
+    - mission-aware bottleneck optimizer
