@@ -21,6 +21,16 @@ provides:
     stage: implemented
     interface: templates/CAPABILITY.yaml
     evidence_refs: []
+  - id: mastery.kernel.synthesize
+    description: Role-to-entity teacher forge that expands a thin job title and desired outcomes into a purpose-built Genius repository with persona, vertical anatomy, teaching plan, capability search targets, mastery map, and frontier
+    stage: implemented
+    interface: src/genius/synthesize.py
+    evidence_refs: []
+  - id: mastery.kernel.capability-sources
+    description: Registry of live reusable capability sources including Mega Skills, sibling Genius entities, runtime tools/connectors/models, and authoritative research
+    stage: implemented
+    interface: sources/CAPABILITY_SOURCES.yaml
+    evidence_refs: []
   - id: mastery.kernel.validate
     description: Local contract + referential integrity validator
     stage: mapped
