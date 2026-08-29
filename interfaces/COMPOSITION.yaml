@@ -2,9 +2,24 @@ spec_version: 1
 repository: Genius-Mastery
 provides:
   - id: mastery.kernel.schemas
-    description: JSON Schema contracts for GENIUS.yaml, claims, evidence, sources, challenges, composition
+    description: JSON Schema contracts for GENIUS.yaml, claims, evidence, sources, challenges, composition, and universal capability anatomy
     stage: mapped
     interface: schemas/
+    evidence_refs: []
+  - id: mastery.kernel.capability-anatomy
+    description: Kernel-up entity anatomy for decomposing any action or capability from physical substrate through real-world effect and retained gain
+    stage: implemented
+    interface: docs/GENIUS_ENTITY_ANATOMY.md
+    evidence_refs: []
+  - id: mastery.kernel.capability-schema
+    description: Machine-readable universal capability contract with vertical layers, dependencies, action semantics, verification, mission impact, and evolution
+    stage: implemented
+    interface: schemas/capability.schema.json
+    evidence_refs: []
+  - id: mastery.kernel.capability-template
+    description: Human-editable universal do-stuff template for instantiating a capability anatomy in any Genius domain
+    stage: implemented
+    interface: templates/CAPABILITY.yaml
     evidence_refs: []
   - id: mastery.kernel.validate
     description: Local contract + referential integrity validator
