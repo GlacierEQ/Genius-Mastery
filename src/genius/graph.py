@@ -2,7 +2,10 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from typing import Any
+
+import yaml
 
 
 def _slug(value: str) -> str:
@@ -62,15 +65,15 @@ def build_synthesis_graph(
             }
         )
 
-    target_to_families: dict[str, list[str]] = {}
     for family_name, spec in families.items():
         fid = f"family:{_slug(family_name)}"
+        family_state = str(spec.get("status") or spec.get("state") or "mapped")
         add_node(
             {
                 "id": fid,
                 "kind": "capability-family",
                 "label": family_name,
-                "state": "mapped",
+                "state": family_state,
                 "mission_impact": 0.8,
                 "metadata": {"layers": list(spec.get("layers") or [])},
             }
@@ -86,7 +89,6 @@ def build_synthesis_graph(
         )
         for target in spec.get("targets") or []:
             tid = f"target:{_slug(target)}"
-            target_to_families.setdefault(target, []).append(fid)
             add_node(
                 {
                     "id": tid,
@@ -94,7 +96,7 @@ def build_synthesis_graph(
                     "label": target,
                     "state": "research-and-verify",
                     "mission_impact": 0.6,
-                    "metadata": {},
+                    "metadata": {"family": family_name},
                 }
             )
             edges.append(
@@ -115,7 +117,10 @@ def build_synthesis_graph(
                 "kind": str(match.get("kind", "capability")),
                 "label": str(match.get("display_name") or match.get("id") or "unknown"),
                 "state": str(match.get("maturity") or "discovered"),
-                "mission_impact": min(1.0, 0.5 + 0.05 * float(match.get("match_score") or 0)),
+                "mission_impact": min(
+                    1.0,
+                    0.5 + 0.05 * float(match.get("match_score") or 0),
+                ),
                 "metadata": {
                     "source_repository": match.get("source_repository"),
                     "source_registry": match.get("source_registry"),
@@ -136,8 +141,6 @@ def build_synthesis_graph(
             }
         )
 
-    # Simple structural leverage seed: nodes used by more outgoing paths are
-    # useful candidates for future centrality/sensitivity analysis.
     out_degree: dict[str, int] = {}
     for edge in edges:
         out_degree[edge["from"]] = out_degree.get(edge["from"], 0) + 1
@@ -152,7 +155,8 @@ def build_synthesis_graph(
     candidate_bottlenecks = [
         node["id"]
         for node in nodes
-        if node["kind"] == "capability-target" and node["state"] != "verified"
+        if node["kind"] == "capability-target"
+        and node["state"] not in {"verified", "operationally_verified"}
     ]
 
     return {
@@ -171,3 +175,66 @@ def build_synthesis_graph(
             ),
         },
     }
+
+
+def _families_from_plan(plan: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    families: dict[str, dict[str, Any]] = {}
+    for item in plan.get("capability_families") or []:
+        if not isinstance(item, dict) or not item.get("id"):
+            continue
+        families[str(item["id"])] = {
+            "status": item.get("status") or "mapped",
+            "layers": list(item.get("layers") or []),
+            "targets": list(item.get("targets") or []),
+        }
+    return families
+
+
+def rebuild_graph(root: Path) -> Path:
+    """Rebuild capabilities/GRAPH.yaml from a Genius entity's own contracts."""
+    root = root.resolve()
+    genius_path = root / "GENIUS.yaml"
+    role_path = root / "ROLE.yaml"
+    plan_path = root / "synthesis" / "PLAN.yaml"
+
+    missing = [
+        path.relative_to(root).as_posix()
+        for path in (genius_path, role_path, plan_path)
+        if not path.exists()
+    ]
+    if missing:
+        raise ValueError(
+            "cannot rebuild capability graph; missing: " + ", ".join(missing)
+        )
+
+    genius = yaml.safe_load(genius_path.read_text(encoding="utf-8")) or {}
+    role = yaml.safe_load(role_path.read_text(encoding="utf-8")) or {}
+    plan = yaml.safe_load(plan_path.read_text(encoding="utf-8")) or {}
+
+    repository = str(genius.get("repository") or plan.get("repository") or root.name)
+    role_name = str(role.get("role") or plan.get("role") or genius.get("purpose") or "")
+    outcomes = list(role.get("outcomes") or plan.get("outcomes") or [])
+    if not role_name or not outcomes:
+        raise ValueError("role and at least one outcome are required to rebuild graph")
+
+    graph = build_synthesis_graph(
+        repository,
+        role_name,
+        outcomes,
+        _families_from_plan(plan),
+        list(plan.get("matched_live_capabilities") or []),
+    )
+
+    graph_path = root / "capabilities" / "GRAPH.yaml"
+    graph_path.parent.mkdir(parents=True, exist_ok=True)
+    graph_path.write_text(
+        yaml.safe_dump(graph, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
+
+    genius["capability_graph"] = "capabilities/GRAPH.yaml"
+    genius_path.write_text(
+        yaml.safe_dump(genius, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
+    return graph_path
