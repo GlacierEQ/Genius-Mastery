@@ -443,6 +443,12 @@
           "items": {
             "type": "string"
           }
+        },
+        "inspection_prompts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true
