@@ -1,0 +1,46 @@
+schema_version: 1
+sources:
+  - id: glaciereq-mega-skills
+    kind: capability-registry
+    repository: GlacierEQ/mega-skills
+    paths:
+      - registry/skills.json
+      - registry/combo-skills.json
+      - registry/mega-skills.json
+    relationship: discover-and-compose
+    copy_policy: reference-not-duplicate
+    purpose: Reuse real atomic, combo, and mission capabilities as ingredients in generated Genius entities.
+  - id: genius-family
+    kind: sibling-capabilities
+    repository_pattern: GlacierEQ/Genius-*
+    path: interfaces/COMPOSITION.yaml
+    relationship: cross-domain-composition
+    copy_policy: reference-not-duplicate
+    purpose: Discover capabilities exposed by other Genius entities.
+  - id: live-runtime
+    kind: executable-environment
+    surfaces:
+      - models
+      - tools
+      - APIs
+      - MCP servers
+      - connectors
+      - runtimes
+      - files
+      - devices
+      - browsers
+      - artifact generators
+    relationship: inspect-before-claim
+    purpose: Ground generated capability plans in what can actually execute.
+  - id: authoritative-research
+    kind: knowledge-and-evidence
+    surfaces:
+      - primary sources
+      - standards
+      - official documentation
+      - research papers
+      - source repositories
+      - benchmarks
+      - production receipts
+    relationship: research-and-verify
+    purpose: Turn inferred capability hypotheses into evidence-backed mastery.
