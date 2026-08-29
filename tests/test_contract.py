@@ -70,6 +70,10 @@ def test_indiana_jones_researcher_infers_field_research():
     assert "source discovery" in targets
     assert "field observation" in targets
     assert "geographic reasoning" in targets
+    assert "historical context" in targets
+    assert "artifact and document analysis" in targets
+    assert "language adaptation" in targets
+    assert "field safety and recovery" in targets
     assert "evidence preservation" in targets
 
 
