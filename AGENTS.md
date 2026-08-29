@@ -29,4 +29,6 @@ bk pipeline view genius-mastery --json
 bk build view --pipeline genius-mastery --summary
 ```
 
-The family bootstrap is `.buildkite/bootstrap-genius.sh`. It creates or reconciles the three core Genius pipelines, installs the repository-upload step, attempts GitHub webhook creation, and can trigger verification builds.
+The authoritative estate reconciler is `GlacierEQ/apex-control-plane/scripts/reconcile_genius_buildkite.py`. It performs API-level create/update, exact-SHA build dispatch, webhook reconciliation, readback, and receipt emission for all three core Genius pipelines.
+
+The local `.buildkite/bootstrap-genius.sh` is a CLI fallback when the APEX control-plane path is unavailable.
