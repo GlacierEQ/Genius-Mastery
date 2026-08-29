@@ -1,0 +1,35 @@
+schema_version: 1
+teacher: Genius-Replace-Me
+subject: Replace with capability or method
+
+method:
+  explain:
+    - first principles
+    - dependencies and failure modes
+  demonstrate:
+    - complete one evidence-backed example
+  reconstruct:
+    - rebuild from a blank state without copying the answer
+  transfer:
+    - apply the method to a materially different case
+
+learner:
+  starting_state: ""
+  target_state: ""
+  allowed_support: []
+
+verification:
+  acceptance:
+    - Learner can explain the method in its own words.
+    - Learner can reconstruct the result from a blank state.
+    - Learner can transfer the method to a novel case.
+    - Learner can identify important failure modes and alternate routes.
+  evidence_refs: []
+  transfer_challenges: []
+  counterevidence: []
+
+outcome_metrics:
+  reconstruction_success: 0.0
+  transfer_success: 0.0
+  explanation_quality: 0.0
+  independence: 0.0
