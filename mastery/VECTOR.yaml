@@ -29,9 +29,15 @@ dimensions:
   operations:
     claims_mapped: 1
   synthesis_transfer:
-    claims_mapped: 2
+    claims_mapped: 3
+    claims_with_evidence: 1
+    deepest_tier: implemented
+    notes: "Role-to-entity synthesis has exact-head CI evidence; semantic synthesis and clean descendant CI remain frontier."
   teaching:
-    claims_mapped: 0
+    claims_mapped: 1
+    claims_with_evidence: 1
+    deepest_tier: implemented
+    notes: "Teaching/reconstruction contracts and generated standalone validation are implemented; real learner outcome metrics remain zero."
   original_work:
     claims_mapped: 0
 notes: "Vector is diagnostic. Recompute from claims/evidence; never hand-write vanity scores."
