@@ -32,7 +32,7 @@ BASE_FAMILIES = {
         "targets": ["retrieval", "episodic continuity", "semantic indexing", "state resumption"],
     },
     "communication": {
-        "layers": ["language", "communication", "human_interaction"],
+        "layers": ["language", "communication", "human_interaction", "teaching"],
         "targets": ["interviewing", "explanation", "audience adaptation", "clear handoff"],
     },
 }
