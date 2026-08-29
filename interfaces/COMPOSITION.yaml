@@ -31,6 +31,16 @@ provides:
     stage: implemented
     interface: sources/CAPABILITY_SOURCES.yaml
     evidence_refs: []
+  - id: mastery.kernel.capability-source-adapter
+    description: Reference-only adapter that matches role briefs against real Skills, Combo Skills, and Mega Skills registries when a checkout is available
+    stage: implemented
+    interface: src/genius/sources.py
+    evidence_refs: []
+  - id: mastery.kernel.anatomy-inspection
+    description: Universal kernel-up inspection prompts that force synthesized entities to interrogate every capability layer before deciding mission relevance
+    stage: implemented
+    interface: src/genius/anatomy.py
+    evidence_refs: []
   - id: mastery.kernel.teaching-contract
     description: Machine-readable contract for explanation, demonstration, blank-state reconstruction, transfer, learner verification, and teaching outcome metrics
     stage: implemented
