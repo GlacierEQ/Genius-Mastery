@@ -35,6 +35,13 @@ layers:
     alternate_routes: [structural validator plus evidence review]
     failure_modes: [file-exists treated as capability, stale evidence]
     improvement_targets: [JSON Schema execution, capability evidence binding]
+  teaching:
+    required: [explain methods, reconstruct from blank state, transfer verified capability, teach another learner]
+    available: [docs/MASTER_TEACHER_FORGE.md, src/genius/synthesize.py, teaching surfaces in generated repos]
+    missing: [measured teaching effectiveness, learner outcome feedback]
+    alternate_routes: [human review, challenge reconstruction]
+    failure_modes: [answer memorization, static template copying, unverified instruction propagation]
+    improvement_targets: [teaching benchmarks, transfer challenges, descendant-quality metrics]
   learning_evolution:
     required: [bottleneck detection, improvement leverage, retained gain]
     available: [mastery loop, frontier queue, evidence model]
