@@ -65,6 +65,20 @@ def main() -> int:
             "size_bytes": path.stat().st_size,
         }
 
+    proof_artifacts = []
+    for raw_path in args.proof:
+        proof_path = Path(raw_path)
+        if not proof_path.is_file():
+            raise RuntimeError(f"required proof artifact missing: {proof_path}")
+        payload = proof_path.read_bytes()
+        proof_artifacts.append(
+            {
+                "path": proof_path.as_posix(),
+                "sha256": hashlib.sha256(payload).hexdigest(),
+                "size_bytes": len(payload),
+            }
+        )
+
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     receipt = {

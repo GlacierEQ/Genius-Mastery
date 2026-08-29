@@ -16,4 +16,20 @@ provides:
     stage: mapped
     interface: tools/doctor.py
     evidence_refs: []
-consumes: []
+  - id: mastery.ci.buildkite.contract
+    description: Fail-closed Genius-family Buildkite execution contract with exact-source terminal receipts and proof-artifact digests
+    stage: operational
+    interface: .buildkite/pipeline.yml
+    evidence_refs:
+      - ev-bk-mastery-001
+      - ev-bk-mastery-002
+  - id: mastery.ci.receipt
+    description: Credential-free terminal CI receipt generator binding Buildkite identity, exact Git source, and proof artifact SHA-256 digests
+    stage: operational
+    interface: tools/buildkite_receipt.py
+    evidence_refs:
+      - ev-bk-mastery-002
+consumes:
+  - repository: apex-control-plane
+    capability: execution.buildkite.genius-family
+    reason: APEX owns live Buildkite organization, cluster, webhook, and exact-head pipeline reconciliation.
