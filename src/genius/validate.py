@@ -10,6 +10,8 @@ import yaml
 REPO_NAME_RE = re.compile(r"^Genius-[A-Za-z0-9._-]+$")
 SUPPORTED_SCHEMA = 2
 SUPPORTED_CAPABILITY_SCHEMA = 1
+SUPPORTED_ROLE_SCHEMA = 1
+SUPPORTED_TEACHING_SCHEMA = 1
 
 
 def load_yaml(path: Path) -> Any:
@@ -20,6 +22,7 @@ def load_yaml(path: Path) -> Any:
 def validate_capability_stack(root: Path, errors: list[str]) -> None:
     path = root / "capabilities" / "STACK.yaml"
     if not path.exists():
+        errors.append("capabilities/STACK.yaml missing")
         return
 
     data = load_yaml(path)
@@ -54,9 +57,56 @@ def validate_capability_stack(root: Path, errors: list[str]) -> None:
                 "capabilities/STACK.yaml verification.acceptance must be non-empty"
             )
 
-    mission_impact = data.get("mission_impact")
-    if not isinstance(mission_impact, dict):
+    if not isinstance(data.get("mission_impact"), dict):
         errors.append("capabilities/STACK.yaml mission_impact missing")
+
+
+def validate_role_brief(root: Path, genius: dict[str, Any], errors: list[str]) -> None:
+    raw = genius.get("role_brief")
+    path = root / raw if isinstance(raw, str) and raw else root / "ROLE.yaml"
+    if not path.exists():
+        if raw:
+            errors.append(f"role_brief target missing: {raw}")
+        return
+    data = load_yaml(path)
+    if not isinstance(data, dict):
+        errors.append(f"{path.relative_to(root)} is not a mapping")
+        return
+    if data.get("schema_version") != SUPPORTED_ROLE_SCHEMA:
+        errors.append(f"{path.relative_to(root)} schema_version must be 1")
+    if not data.get("role"):
+        errors.append(f"{path.relative_to(root)} role missing")
+    outcomes = data.get("outcomes")
+    if not isinstance(outcomes, list) or not outcomes:
+        errors.append(f"{path.relative_to(root)} outcomes must be non-empty")
+
+
+def validate_teaching(root: Path, genius: dict[str, Any], errors: list[str]) -> None:
+    raw = genius.get("teaching_contract")
+    path = root / raw if isinstance(raw, str) and raw else root / "teaching" / "TEACHING.yaml"
+    if not path.exists():
+        if raw:
+            errors.append(f"teaching_contract target missing: {raw}")
+        return
+    data = load_yaml(path)
+    if not isinstance(data, dict):
+        errors.append(f"{path.relative_to(root)} is not a mapping")
+        return
+    if data.get("schema_version") != SUPPORTED_TEACHING_SCHEMA:
+        errors.append(f"{path.relative_to(root)} schema_version must be 1")
+    if not data.get("teacher") or not data.get("subject"):
+        errors.append(f"{path.relative_to(root)} teacher/subject incomplete")
+    method = data.get("method")
+    if not isinstance(method, dict):
+        errors.append(f"{path.relative_to(root)} method missing")
+    else:
+        for phase in ("explain", "demonstrate", "reconstruct", "transfer"):
+            values = method.get(phase)
+            if not isinstance(values, list) or not values:
+                errors.append(f"{path.relative_to(root)} method.{phase} must be non-empty")
+    verification = data.get("verification")
+    if not isinstance(verification, dict) or not verification.get("acceptance"):
+        errors.append(f"{path.relative_to(root)} verification.acceptance missing")
 
 
 def validate_repo(root: Path) -> list[str]:
@@ -86,30 +136,41 @@ def validate_repo(root: Path) -> list[str]:
     if data.get("doctrine") != "mastery-not-skills":
         errors.append("doctrine must be 'mastery-not-skills'")
 
-    # Claims uniqueness
+    for field in (
+        "composition_contract",
+        "capability_anatomy_contract",
+        "teaching_contract",
+        "role_brief",
+        "synthesis_plan",
+        "persona",
+        "teaching_plan",
+    ):
+        raw = data.get(field)
+        if raw and isinstance(raw, str) and not (root / raw).exists():
+            errors.append(f"{field} target missing: {raw}")
+
     claims_path = root / "claims" / "CLAIMS.yaml"
     if claims_path.exists():
         claims = (load_yaml(claims_path) or {}).get("claims") or []
         ids: set[str] = set()
-        for c in claims:
-            cid = c.get("id")
+        for claim in claims:
+            cid = claim.get("id")
             if not cid:
                 errors.append("claim missing id")
                 continue
             if cid in ids:
                 errors.append(f"duplicate claim id: {cid}")
             ids.add(cid)
-            if not c.get("statement") or len(str(c["statement"])) < 10:
+            if not claim.get("statement") or len(str(claim["statement"])) < 10:
                 errors.append(f"claim {cid}: statement too short or missing")
 
-    # Composition capability uniqueness
     comp_path = root / "interfaces" / "COMPOSITION.yaml"
     if comp_path.exists():
         comp = load_yaml(comp_path) or {}
         provides = comp.get("provides") or []
         pids: set[str] = set()
-        for p in provides:
-            pid = p.get("id")
+        for item in provides:
+            pid = item.get("id")
             if not pid:
                 errors.append("provides entry missing id")
                 continue
@@ -118,4 +179,6 @@ def validate_repo(root: Path) -> list[str]:
             pids.add(pid)
 
     validate_capability_stack(root, errors)
+    validate_role_brief(root, data, errors)
+    validate_teaching(root, data, errors)
     return errors
