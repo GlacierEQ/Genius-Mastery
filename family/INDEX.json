@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-29T19:00:00Z",
+  "generated_at": "2026-08-29T21:00:00Z",
   "kernel": "Genius-Mastery",
   "repositories": [
     {
@@ -10,22 +10,37 @@
       "capabilities": [
         "mastery.kernel.schemas",
         "mastery.kernel.validate",
-        "mastery.kernel.doctor"
+        "mastery.kernel.doctor",
+        "mastery.kernel.cli"
       ],
       "consumes": [],
       "verified_at": null,
-      "revision": "seed-0.2.0",
+      "revision": "0.2.0",
       "url": "https://github.com/GlacierEQ/Genius-Mastery"
     },
     {
       "repository": "Genius-Code",
       "purpose": "Code",
       "spec_version": 2,
-      "capabilities": [],
+      "capabilities": ["code.testing.property"],
+      "consumes": ["Genius-Mastery"],
+      "verified_at": "2026-08-29T20:50:00Z",
+      "revision": "0.1.1",
+      "url": "https://github.com/GlacierEQ/Genius-Code",
+      "notes": "First evidence receipt ev-property-sort-001"
+    },
+    {
+      "repository": "Genius-Verification",
+      "purpose": "Verification",
+      "spec_version": 2,
+      "capabilities": [
+        "verification.property.method",
+        "verification.model-checking.tla"
+      ],
       "consumes": ["Genius-Mastery"],
       "verified_at": null,
-      "revision": "seed",
-      "url": "https://github.com/GlacierEQ/Genius-Code"
+      "revision": "0.1.0-seed",
+      "url": "https://github.com/GlacierEQ/Genius-Verification"
     }
   ]
 }

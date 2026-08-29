@@ -8,53 +8,39 @@ Identity rule (no exceptions):
 Genius-{purpose}
 ```
 
-This repository is **not** a super-domain. It owns the shared machinery that every domain repository depends on:
+## Install (CLI)
 
-- family specification & naming normalization
-- generator (`genius new`)
-- schemas (claim, evidence, source, challenge, composition)
-- validator / doctor / audit
-- migration & upgrade engine
-- reusable CI workflows
-- evidence & source-quality standards
-- composition protocol
-- family index
+```bash
+git clone https://github.com/GlacierEQ/Genius-Mastery.git
+cd Genius-Mastery
+pip install -e .
+
+genius --version
+genius name "Distributed Systems"   # → Genius-Distributed-Systems
+genius validate .
+genius doctor .
+genius new Performance --dest /tmp  # scaffolds Genius-Performance
+```
+
+Requires Python ≥ 3.10 and PyYAML.
 
 ## Doctrine
 
 Mastery, not skills. Aspirations may be enormous; verified capability must point to evidence.
 
-Foundational loop:
-
 ```text
 MAP → RESEARCH → MODEL → BUILD → BREAK → MEASURE → VERIFY → OPERATE → EXPLAIN → SYNTHESIZE → PROVE → EXPAND ↺
 ```
 
-There is no artificial finish line.
+## Family (live)
 
-## Quick start
-
-```bash
-# Validate this kernel
-python tools/validate.py .
-
-# Doctor (strength/weakness surface)
-python tools/doctor.py .
-
-# Generate a new domain repo (local)
-python -m genius new Code
-```
-
-## Family topology
-
-| Repository | Role |
+| Repository | URL |
 |---|---|
-| **Genius-Mastery** | Kernel (this repo) |
-| Genius-Code | Flagship domain |
-| Genius-Verification | Verification primitives |
-| Genius-Systems / Performance / … | Domain mastery units |
+| Genius-Mastery | https://github.com/GlacierEQ/Genius-Mastery |
+| Genius-Code | https://github.com/GlacierEQ/Genius-Code |
+| Genius-Verification | https://github.com/GlacierEQ/Genius-Verification |
 
-Composition is capability-based, not reputation-based. See `interfaces/COMPOSITION.yaml`.
+See `family/INDEX.json`.
 
 ## Status (truthful)
 
@@ -62,16 +48,15 @@ Composition is capability-based, not reputation-based. See `interfaces/COMPOSITI
 |---|---|
 | Identity contract (GENIUS.yaml v2) | Implemented |
 | Core schemas | Implemented |
-| Local validator | Implemented |
-| Doctor / vector | Implemented (seed) |
-| Generator | Scaffold |
-| Migration engine | Scaffold |
-| Reusable GitHub workflows | Present |
-| Family INDEX | Present |
-| External CI run on GitHub | Unverified until Actions execute |
+| `genius` CLI (name/validate/doctor/new) | Implemented |
+| Installable via `pip install -e .` | Implemented |
+| Generator produces self-validating domain tree | Implemented (scaffold) |
+| Full migration engine v1→v2 | Not yet |
+| Published to PyPI | Not yet |
+| External GitHub Actions green | Unverified until observed |
 
 Never convert “file exists” into “system works.”
 
 ## License
 
-See LICENSE.
+MIT — see LICENSE.
