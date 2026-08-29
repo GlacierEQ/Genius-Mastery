@@ -61,6 +61,37 @@ def validate_capability_stack(root: Path, errors: list[str]) -> None:
         errors.append("capabilities/STACK.yaml mission_impact missing")
 
 
+def validate_capability_graph(root: Path, genius: dict[str, Any], errors: list[str]) -> None:
+    raw = genius.get("capability_graph")
+    path = root / raw if isinstance(raw, str) and raw else root / "capabilities" / "GRAPH.yaml"
+    if not path.exists():
+        if raw:
+            errors.append(f"capability_graph target missing: {raw}")
+        return
+    data = load_yaml(path)
+    if not isinstance(data, dict):
+        errors.append(f"{path.relative_to(root)} is not a mapping")
+        return
+    if data.get("schema_version") != 1:
+        errors.append(f"{path.relative_to(root)} schema_version must be 1")
+    nodes = data.get("nodes")
+    edges = data.get("edges")
+    if not isinstance(nodes, list) or not isinstance(edges, list):
+        errors.append(f"{path.relative_to(root)} nodes/edges must be lists")
+        return
+    node_ids = {node.get("id") for node in nodes if isinstance(node, dict) and node.get("id")}
+    if len(node_ids) != len(nodes):
+        errors.append(f"{path.relative_to(root)} node ids must be present and unique")
+    for edge in edges:
+        if not isinstance(edge, dict):
+            errors.append(f"{path.relative_to(root)} edge must be a mapping")
+            continue
+        if edge.get("from") not in node_ids or edge.get("to") not in node_ids:
+            errors.append(f"{path.relative_to(root)} edge references unknown node")
+        if not edge.get("relation"):
+            errors.append(f"{path.relative_to(root)} edge relation missing")
+
+
 def validate_role_brief(root: Path, genius: dict[str, Any], errors: list[str]) -> None:
     raw = genius.get("role_brief")
     path = root / raw if isinstance(raw, str) and raw else root / "ROLE.yaml"
@@ -139,6 +170,7 @@ def validate_repo(root: Path) -> list[str]:
     for field in (
         "composition_contract",
         "capability_anatomy_contract",
+        "capability_graph",
         "teaching_contract",
         "role_brief",
         "synthesis_plan",
@@ -179,6 +211,7 @@ def validate_repo(root: Path) -> list[str]:
             pids.add(pid)
 
     validate_capability_stack(root, errors)
+    validate_capability_graph(root, data, errors)
     validate_role_brief(root, data, errors)
     validate_teaching(root, data, errors)
     return errors
