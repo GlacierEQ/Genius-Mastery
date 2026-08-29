@@ -91,6 +91,12 @@ Preferred high-level operation:
 genius synthesize Researcher \
   --outcome "Indiana Jones" \
   --dest /tmp
+
+# When the real Mega Skills checkout is available, match against it:
+genius synthesize Researcher \
+  --outcome "Indiana Jones" \
+  --mega-skills-root /path/to/mega-skills \
+  --dest /tmp
 ```
 
 Multiple outcomes and constraints can be supplied:
@@ -155,6 +161,8 @@ Implemented:
 - kernel-up entity anatomy;
 - vertical capability stack;
 - role-to-entity synthesis engine;
+- universal kernel-up inspection brain across every vertical layer;
+- optional real Mega Skills registry matching without implementation duplication;
 - `genius synthesize` CLI;
 - scaffold generator;
 - structural validators;
