@@ -4,6 +4,8 @@ import json
 import subprocess
 import sys
 
+from genius.scaffold import create_domain
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -23,6 +25,17 @@ def test_capability_schema_is_valid_json():
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data["$schema"].endswith("2020-12/schema")
     assert data["properties"]["layers"]["type"] == "object"
+
+
+def test_new_domain_inherits_vertical_capability_stack(tmp_path):
+    root = create_domain("Smoke Anatomy", tmp_path)
+    stack = root / "capabilities" / "STACK.yaml"
+    assert stack.exists()
+    text = stack.read_text(encoding="utf-8")
+    assert "vertical-excellence" in text
+    assert "capability_composition:" in text
+    assert "mission_impact:" in text
+    assert "alternate_routes:" in text
 
 
 def test_validator_passes():
