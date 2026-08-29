@@ -7,6 +7,7 @@ import sys
 import yaml
 
 from genius.anatomy import ANATOMY_PROMPTS
+from genius.doctor import doctor_report
 from genius.scaffold import create_domain
 from genius.synthesize import infer_families, synthesize_role
 from genius.sources import match_mega_skills
@@ -184,6 +185,16 @@ def test_generated_repo_standalone_validator_passes(tmp_path):
         text=True,
     )
     assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_doctor_describes_synthesized_entity(tmp_path):
+    root = synthesize_role("Researcher", ["Indiana Jones"], tmp_path)
+    report = doctor_report(root)
+    assert "role: Researcher" in report
+    assert "Indiana Jones" in report
+    assert f"interrogated_layers: {len(ANATOMY_PROMPTS)}/{len(ANATOMY_PROMPTS)}" in report
+    assert "Teaching:" in report
+    assert "current_bottleneck:" in report
 
 
 def test_cli_synthesize_role(tmp_path):
