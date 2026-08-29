@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Genius-Mastery local contract validator (seed)."""
+"""Genius-Mastery local contract validator."""
 from __future__ import annotations
 
-import json
 import re
 import sys
 from pathlib import Path
@@ -15,6 +14,7 @@ except ImportError:
 
 REPO_NAME_RE = re.compile(r"^Genius-[A-Za-z0-9._-]+$")
 SUPPORTED_SCHEMA = 2
+SUPPORTED_CAPABILITY_SCHEMA = 1
 
 
 def load_yaml(path: Path):
@@ -43,13 +43,6 @@ def validate_identity(root: Path, errors: list[str]) -> dict | None:
     repo = data.get("repository")
     if not isinstance(repo, str) or not REPO_NAME_RE.match(repo):
         fail(f"repository must match ^Genius-[A-Za-z0-9._-]+$, got {repo!r}", errors)
-    if root.name != repo and root.name != ".":
-        # When validating from inside the repo root, names should match.
-        if Path.cwd().name == repo or root.resolve().name == repo:
-            pass
-        else:
-            # Soft warning for checked-out path mismatch in some environments
-            pass
     if data.get("family") != "Genius":
         fail("family must be 'Genius'", errors)
     if data.get("doctrine") != "mastery-not-skills":
@@ -99,6 +92,43 @@ def validate_composition(root: Path, errors: list[str]) -> None:
         ids.add(pid)
 
 
+def validate_capability_stack(root: Path, errors: list[str]) -> None:
+    path = root / "capabilities" / "STACK.yaml"
+    if not path.exists():
+        return
+    data = load_yaml(path)
+    if not isinstance(data, dict):
+        fail("capabilities/STACK.yaml is not a mapping", errors)
+        return
+    if data.get("schema_version") != SUPPORTED_CAPABILITY_SCHEMA:
+        fail(
+            f"capabilities/STACK.yaml schema_version must be {SUPPORTED_CAPABILITY_SCHEMA}",
+            errors,
+        )
+    if not data.get("id"):
+        fail("capabilities/STACK.yaml id missing", errors)
+    if not data.get("purpose"):
+        fail("capabilities/STACK.yaml purpose missing", errors)
+    objective = data.get("objective")
+    if not isinstance(objective, dict) or not objective.get("desired_reality"):
+        fail("capabilities/STACK.yaml objective.desired_reality missing", errors)
+    layers = data.get("layers")
+    if not isinstance(layers, dict) or not layers:
+        fail("capabilities/STACK.yaml layers must be a non-empty mapping", errors)
+    verification = data.get("verification")
+    if not isinstance(verification, dict):
+        fail("capabilities/STACK.yaml verification missing", errors)
+    else:
+        acceptance = verification.get("acceptance")
+        if not isinstance(acceptance, list) or not acceptance:
+            fail(
+                "capabilities/STACK.yaml verification.acceptance must be non-empty",
+                errors,
+            )
+    if not isinstance(data.get("mission_impact"), dict):
+        fail("capabilities/STACK.yaml mission_impact missing", errors)
+
+
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     errors: list[str] = []
@@ -106,12 +136,13 @@ def main() -> int:
     validate_identity(root, errors)
     validate_claims(root, errors)
     validate_composition(root, errors)
+    validate_capability_stack(root, errors)
     if errors:
         print("FAIL")
         for e in errors:
             print(f"  - {e}")
         return 1
-    print("PASS — contract surfaces OK (seed validator)")
+    print("PASS: contract surfaces OK")
     return 0
 
 
