@@ -58,6 +58,7 @@ layers:
   domain_expertise: {inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}
   real_world_effect: {inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}
   learning_evolution: {inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}
+  verification: {inspection_prompts: [], required: [], available: [], missing: [], alternate_routes: [], failure_modes: [], improvement_targets: []}
 
 dependencies: []
 

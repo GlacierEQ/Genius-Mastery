@@ -195,6 +195,10 @@ ANATOMY_PROMPTS: dict[str, list[str]] = {
         "Which small improvement has the largest mission sensitivity and downstream capability leverage?",
         "What newly verified capability can now become an input to the next composition?",
     ],
+    "verification": [
+        "How is correctness, performance, safety, and evidence verified for this capability?",
+        "What tests, benchmarks, property checks, formal proofs, or audits establish reality?",
+    ],
 }
 
 
