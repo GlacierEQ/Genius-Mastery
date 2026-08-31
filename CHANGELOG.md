@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0] — 2026-08-30
+
+### Cross-Genius family composition
+- Added `genius.family` for local `Genius-*` repository discovery from each repository's own `GENIUS.yaml` and composition contract.
+- Added provider/consumer binding resolution, unresolved dependency reporting, provider fan-out, and transparent cross-repository composition candidates.
+- Added `genius family [path] [--top N] [--output YAML]` for human-readable and machine-readable family analysis.
+- Registered mission intelligence and family composition as first-class Mastery capabilities.
+- Added regression coverage for family discovery, dependency resolution, missing dependencies, property-testing synergy discovery, and reporting.
+- Synchronized runtime, package metadata, and `GENIUS.yaml` at version 0.6.0.
+
+### Verification lane repair
+- Restored the last independently proven Buildkite topology as the compatibility baseline after tracing the persistent red sequence back to the fail-closed preflight introduced after build #3.
+- Added 0.6.0 CLI smoke coverage for synthesis, graph intelligence, family analysis, validation, and Python compilation.
+- External terminal PASS remains a runtime fact to be established by Buildkite; this changelog does not promote a dispatched build to verified.
+
 ## [0.5.0] — 2026-08-30
 
 ### Mission-sensitive capability intelligence
