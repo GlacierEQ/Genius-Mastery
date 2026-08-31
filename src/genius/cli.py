@@ -5,12 +5,17 @@ import argparse
 import sys
 from pathlib import Path
 
+import yaml
+
 from genius import __version__
 from genius.doctor import doctor_report
+from genius.family import analyze_family, family_report
+from genius.intelligence import analyze_capability_graph, capability_intelligence_report
 from genius.naming import genius_name
 from genius.scaffold import create_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
+from genius.vector import compute_vector, vector_report, write_vector
 
 
 def cmd_name(args: argparse.Namespace) -> int:
@@ -87,6 +92,25 @@ def cmd_family(args: argparse.Namespace) -> int:
         print(f"Wrote {output}")
 
     print(family_report(analysis, top=args.top))
+    return 0
+
+
+def cmd_vector(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    if not root.exists():
+        print(f"ERROR: Genius root not found: {root}", file=sys.stderr)
+        return 1
+    try:
+        vector = compute_vector(root)
+    except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
+        print(f"ERROR: cannot compute mastery vector at {root}: {exc}", file=sys.stderr)
+        return 1
+
+    if args.write:
+        target = write_vector(root)
+        print(f"Updated {target}")
+
+    print(vector_report(vector))
     return 0
 
 def cmd_new(args: argparse.Namespace) -> int:
@@ -194,6 +218,24 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional YAML path for the full family analysis",
     )
     p_family.set_defaults(func=cmd_family)
+
+
+    p_vector = sub.add_parser(
+        "vector",
+        help="Compute evidence-derived multidimensional mastery state",
+    )
+    p_vector.add_argument(
+        "path",
+        nargs="?",
+        default=".",
+        help="Genius repository root (default: cwd)",
+    )
+    p_vector.add_argument(
+        "--write",
+        action="store_true",
+        help="Persist computed state to mastery/VECTOR.yaml",
+    )
+    p_vector.set_defaults(func=cmd_vector)
 
     p_new = sub.add_parser(
         "new",
