@@ -52,6 +52,8 @@ steps:
       genius validate /tmp/Genius-Researcher
       genius analyze /tmp/Genius-Researcher --top 5 --write
       genius family . --top 3
+      genius vector . --write
+      cp mastery/VECTOR.yaml .verification-artifacts/mastery-vector.yaml
 
       python - <<'PY'
       from pathlib import Path
@@ -70,6 +72,23 @@ steps:
           "verified mission intelligence:",
           analysis["top_next_actions"][0]["id"],
       )
+
+      vector = yaml.safe_load(
+          Path(".verification-artifacts/mastery-vector.yaml").read_text(
+              encoding="utf-8"
+          )
+      )
+      assert vector["integrity"]["clean"] is True, vector["integrity"]
+      assert vector["totals"]["claims"] >= 10, vector["totals"]
+      print("verified mastery vector:", vector["totals"])
       PY
+
+      python tools/buildkite_receipt.py \
+        --repository genius-mastery \
+        --artifact .verification-artifacts/junit.xml \
+        --proof .verification-artifacts/mastery-vector.yaml
     artifact_paths:
       - ".verification-artifacts/junit.xml"
+      - ".verification-artifacts/mastery-vector.yaml"
+      - ".verification-artifacts/buildkite-verified-receipt.json"
+      - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
