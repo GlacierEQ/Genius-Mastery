@@ -36,6 +36,35 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def cmd_analyze(args: argparse.Namespace) -> int:
+    target = Path(args.path).resolve()
+    graph_path = (
+        target / "capabilities" / "GRAPH.yaml"
+        if target.is_dir()
+        else target
+    )
+    if not graph_path.exists():
+        print(f"ERROR: capability graph not found: {graph_path}", file=sys.stderr)
+        return 1
+
+    try:
+        graph = yaml.safe_load(graph_path.read_text(encoding="utf-8")) or {}
+        analyzed = analyze_capability_graph(graph)
+    except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
+        print(f"ERROR: cannot analyze {graph_path}: {exc}", file=sys.stderr)
+        return 1
+
+    if args.write:
+        graph_path.write_text(
+            yaml.safe_dump(analyzed, sort_keys=False, allow_unicode=True),
+            encoding="utf-8",
+        )
+        print(f"Updated {graph_path}")
+
+    print(capability_intelligence_report(analyzed, top=args.top))
+    return 0
+
 def cmd_new(args: argparse.Namespace) -> int:
     dest = Path(args.dest).resolve()
     try:
@@ -95,6 +124,29 @@ def main(argv: list[str] | None = None) -> int:
     p_doc = sub.add_parser("doctor", help="Diagnostic strength/weakness surface")
     p_doc.add_argument("path", nargs="?", default=".")
     p_doc.set_defaults(func=cmd_doctor)
+
+    p_analyze = sub.add_parser(
+        "analyze",
+        help="Rank capability bottlenecks and leverage for the current mission",
+    )
+    p_analyze.add_argument(
+        "path",
+        nargs="?",
+        default=".",
+        help="Genius repo directory or capabilities/GRAPH.yaml path",
+    )
+    p_analyze.add_argument(
+        "--top",
+        type=int,
+        default=10,
+        help="Number of ranked priorities to print (default: 10)",
+    )
+    p_analyze.add_argument(
+        "--write",
+        action="store_true",
+        help="Persist enriched analysis back to GRAPH.yaml",
+    )
+    p_analyze.set_defaults(func=cmd_analyze)
 
     p_new = sub.add_parser(
         "new",
