@@ -1,76 +1,75 @@
 env:
-  PYTHON_VERSION: "3.13"
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
   PYTHONDONTWRITEBYTECODE: "1"
 
-steps:
-  - label: ":python: Contract + doctor"
-    key: validate
-    timeout_in_minutes: 10
-    command:
-      - python --version
-      - pip install -e ".[dev]"
-      - python -m compileall -q src tools
-      - genius validate .
-      - genius doctor .
-      - python tools/validate.py .
-    plugins:
-      - docker#v5.14.0:
-          image: "python:3.13-slim"
-          always-pull: true
-          propagate-environment: true
+agents:
+  queue: macos-self
 
-  - label: ":pytest: Unit tests"
-    key: unit
-    depends_on: validate
-    timeout_in_minutes: 10
-    command:
-      - pip install -e ".[dev]"
-      - mkdir -p .verification-artifacts
-      - pytest -q --junitxml=.verification-artifacts/junit.xml
+steps:
+  - label: ":microscope: Mastery 0.6.0 native verification"
+    key: verify
+    timeout_in_minutes: 15
+    cancel_on_build_failing: true
+    retry:
+      automatic:
+        - exit_status: -1
+          limit: 1
+        - exit_status: 255
+          limit: 1
+    command: |
+      set -euo pipefail
+
+      VENV=".buildkite-venv"
+      cleanup() {
+        rm -rf "$VENV" /tmp/Genius-SmokeTest /tmp/Genius-Researcher
+      }
+      trap cleanup EXIT
+      cleanup
+
+      python3 --version
+      python3 -m venv "$VENV"
+      . "$VENV/bin/activate"
+
+      python -m pip install -e ".[dev]"
+      python -m compileall -q src tools
+
+      genius --version
+      genius validate .
+      genius doctor .
+      python tools/validate.py .
+      python tools/doctor.py .
+
+      mkdir -p .verification-artifacts
+      pytest -q --junitxml=.verification-artifacts/junit.xml
+
+      genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
+      genius new SmokeTest --dest /tmp
+      genius validate /tmp/Genius-SmokeTest
+
+      genius synthesize Researcher \
+        --outcome "Indiana Jones" \
+        --dest /tmp
+      genius validate /tmp/Genius-Researcher
+      genius analyze /tmp/Genius-Researcher --top 5 --write
+      genius family . --top 3
+
+      python - <<'PY'
+      from pathlib import Path
+      import yaml
+
+      graph = yaml.safe_load(
+          Path("/tmp/Genius-Researcher/capabilities/GRAPH.yaml").read_text(
+              encoding="utf-8"
+          )
+      )
+      analysis = graph.get("analysis") or {}
+      assert analysis.get("engine") == "mission-intelligence-v1", analysis
+      assert analysis.get("ranked_priorities"), analysis
+      assert analysis.get("top_next_actions"), analysis
+      print(
+          "verified mission intelligence:",
+          analysis["top_next_actions"][0]["id"],
+      )
+      PY
     artifact_paths:
       - ".verification-artifacts/junit.xml"
-    plugins:
-      - docker#v5.14.0:
-          image: "python:3.13-slim"
-          always-pull: true
-          propagate-environment: true
-
-  - label: ":hammer: CLI + synthesis + intelligence smoke"
-    key: cli-smoke
-    depends_on: validate
-    timeout_in_minutes: 10
-    command:
-      - pip install -e .
-      - genius --version
-      - genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
-      - rm -rf /tmp/Genius-SmokeTest /tmp/Genius-Researcher
-      - genius new SmokeTest --dest /tmp
-      - genius validate /tmp/Genius-SmokeTest
-      - genius synthesize Researcher --outcome "Indiana Jones" --dest /tmp
-      - genius validate /tmp/Genius-Researcher
-      - genius analyze /tmp/Genius-Researcher --top 5 --write
-      - genius family . --top 3
-      - rm -rf /tmp/Genius-SmokeTest /tmp/Genius-Researcher
-    plugins:
-      - docker#v5.14.0:
-          image: "python:3.13-slim"
-          always-pull: true
-          propagate-environment: true
-
-  - label: ":receipt: Buildkite receipt"
-    key: receipt
-    depends_on:
-      - unit
-      - cli-smoke
-    timeout_in_minutes: 5
-    command:
-      - mkdir -p .verification-artifacts
-      - python -c "import datetime,json,os,pathlib; p=pathlib.Path('.verification-artifacts/buildkite-verified-receipt.json'); rec={'schema':'glaciereq.genius-mastery.buildkite.v1','status':'PASS','commit':os.environ.get('BUILDKITE_COMMIT'),'branch':os.environ.get('BUILDKITE_BRANCH'),'build_id':os.environ.get('BUILDKITE_BUILD_ID'),'build_number':os.environ.get('BUILDKITE_BUILD_NUMBER'),'pipeline':os.environ.get('BUILDKITE_PIPELINE_SLUG'),'generated_at':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat()}; p.write_text(json.dumps(rec,indent=2,sort_keys=True)+'\\n')"
-    artifact_paths:
-      - ".verification-artifacts/buildkite-verified-receipt.json"
-    plugins:
-      - docker#v5.14.0:
-          image: "python:3.13-slim"
-          always-pull: true
-          propagate-environment: true
