@@ -17,10 +17,14 @@
         "mastery.kernel.family-composition"
       ],
       "consumes": [],
-      "verified_at": "2026-08-29T21:45:23Z",
+      "verified_at": "2026-08-31T08:15:25Z",
       "revision": "0.6.0",
       "url": "https://github.com/GlacierEQ/Genius-Mastery",
-      "notes": "Current revision 0.6.0 adds mission-sensitive graph intelligence and local cross-Genius family composition. Last externally verified snapshot remains Buildkite builds 1-2 (ev-bk-mastery-001/002); do not treat 0.6.0 as externally verified until a current-head PASS is observed. Counterevidence ev-receipt-env-gap-001 retained."
+      "notes": "Revision 0.6.0 mission intelligence and local family composition were exercised by Buildkite #129 PASS at exact commit 815a2a65cd47534f461a8ec705826b4155649d6c on macos-self. Verification remains commit-bound; later metadata/docs/evidence commits are not silently promoted. Historical evidence ev-bk-mastery-001/002 and counterevidence ev-receipt-env-gap-001 are retained.",
+      "verified_commit": "815a2a65cd47534f461a8ec705826b4155649d6c",
+      "verification_evidence": [
+        "ev-bk-mastery-129"
+      ]
     },
     {
       "repository": "Genius-Code",
