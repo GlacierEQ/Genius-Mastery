@@ -92,3 +92,11 @@ claims:
     challenge_refs: []
     counterevidence_refs:
       - ev-bk-mastery-129-projection-gap
+  - id: mastery-vector-001
+    statement: Genius-Mastery derives its multidimensional mastery vector from recorded claim statuses and evidence-ledger references, detects dangling evidence and ledger-to-claim mismatches, and never emits a global mastery percentage.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
