@@ -81,21 +81,26 @@ def main() -> int:
     parser.add_argument("--proof", action="append", default=[])
     args = parser.parse_args()
 
-    commit = require_env("BUILDKITE_COMMIT")
+    requested_commit = require_env("BUILDKITE_COMMIT")
     branch = require_env("BUILDKITE_BRANCH")
     build_id = require_env("BUILDKITE_BUILD_ID")
     build_number = require_env("BUILDKITE_BUILD_NUMBER")
     pipeline = require_env("BUILDKITE_PIPELINE_SLUG")
     organization = require_env("BUILDKITE_ORGANIZATION_SLUG")
 
-    if not SHA_RE.fullmatch(commit):
+    actual = resolve_checkout_head()
+    requested_is_exact = bool(SHA_RE.fullmatch(requested_commit))
+    if requested_is_exact and actual != requested_commit:
         raise RuntimeError(
-            f"BUILDKITE_COMMIT is not an exact 40-character SHA: {commit!r}"
+            f"checkout mismatch: actual={actual} expected={requested_commit}"
         )
 
-    actual = resolve_checkout_head()
-    if actual != commit:
-        raise RuntimeError(f"checkout mismatch: actual={actual} expected={commit}")
+    commit_resolved = os.environ.get("BUILDKITE_COMMIT_RESOLVED", "").strip().lower()
+    if not requested_is_exact and requested_commit not in {"HEAD"}:
+        raise RuntimeError(
+            "BUILDKITE_COMMIT must be an exact SHA or the supported symbolic "
+            f"HEAD value, got {requested_commit!r}"
+        )
 
     expected_pipeline = args.repository.casefold()
     if pipeline != expected_pipeline:
@@ -126,7 +131,10 @@ def main() -> int:
         "organization": organization,
         "pipeline": pipeline,
         "branch": branch,
-        "commit": commit,
+        "requested_commit": requested_commit,
+        "requested_commit_is_exact": requested_is_exact,
+        "commit_resolved_flag": commit_resolved or None,
+        "commit": actual,
         "checkout_head": actual,
         "build_id": build_id,
         "build_number": build_number,
@@ -144,7 +152,9 @@ def main() -> int:
             "platform": platform.platform(),
         },
         "verification": {
-            "exact_source_checkout": True,
+            "source_checkout_sha_recorded": True,
+            "requested_exact_sha_matched": requested_is_exact,
+            "symbolic_request_recorded": not requested_is_exact,
             "pipeline_identity_match": True,
             "artifact_count": len(artifacts),
             "proof_count": len(proofs),
