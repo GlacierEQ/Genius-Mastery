@@ -65,6 +65,30 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     print(capability_intelligence_report(analyzed, top=args.top))
     return 0
 
+
+def cmd_family(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    if not root.exists():
+        print(f"ERROR: family root not found: {root}", file=sys.stderr)
+        return 1
+    try:
+        analysis = analyze_family(root)
+    except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
+        print(f"ERROR: cannot analyze Genius family at {root}: {exc}", file=sys.stderr)
+        return 1
+
+    if args.output:
+        output = Path(args.output).resolve()
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            yaml.safe_dump(analysis, sort_keys=False, allow_unicode=True),
+            encoding="utf-8",
+        )
+        print(f"Wrote {output}")
+
+    print(family_report(analysis, top=args.top))
+    return 0
+
 def cmd_new(args: argparse.Namespace) -> int:
     dest = Path(args.dest).resolve()
     try:
@@ -147,6 +171,29 @@ def main(argv: list[str] | None = None) -> int:
         help="Persist enriched analysis back to GRAPH.yaml",
     )
     p_analyze.set_defaults(func=cmd_analyze)
+
+    p_family = sub.add_parser(
+        "family",
+        help="Discover Genius repositories and rank cross-family composition opportunities",
+    )
+    p_family.add_argument(
+        "path",
+        nargs="?",
+        default=".",
+        help="Directory containing Genius-* repositories, or one Genius repo",
+    )
+    p_family.add_argument(
+        "--top",
+        type=int,
+        default=10,
+        help="Number of composition candidates to print (default: 10)",
+    )
+    p_family.add_argument(
+        "--output",
+        default=None,
+        help="Optional YAML path for the full family analysis",
+    )
+    p_family.set_defaults(func=cmd_family)
 
     p_new = sub.add_parser(
         "new",
