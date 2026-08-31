@@ -17,6 +17,19 @@ mastery_loop:
   - prove
   - expand
   - teach
+operating_loop:
+  contract: schemas/operating-loop.schema.json
+  phases:
+    - mission
+    - context
+    - options
+    - impact
+    - action
+    - outcome
+  continuation:
+    - verify
+    - learn
+    - strengthen
 evidence_required: true
 growth_model: open-ended-cumulative
 mastery_representation: claim-evidence-graph+vector
@@ -24,7 +37,7 @@ composition_contract: interfaces/COMPOSITION.yaml
 capability_anatomy_contract: capabilities/STACK.yaml
 teaching_contract: teaching/TEACHING.yaml
 kernel: true
-package_version: "0.7.0"
+package_version: "0.8.0"
 role_brief: ROLE.yaml
 persona: persona/PERSONA.md
 synthesis_plan: synthesis/PLAN.yaml
