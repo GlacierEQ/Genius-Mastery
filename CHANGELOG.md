@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.0] — 2026-08-30
+
+### Mission-sensitive capability intelligence
+- Added `genius.intelligence` with explainable mission-impact, readiness, evidence-strength, dependency-centrality, substitutability, priority, and leverage scoring.
+- Replaced the previous structural-only graph analysis with ranked bottleneck and next-action intelligence.
+- Added `genius analyze [repo|GRAPH.yaml] [--top N] [--write]` for human-readable analysis and persistent enriched graphs.
+- Preserved truth-state discipline: scoring never promotes mapped/discovered capability to verified or mastered.
+- Added regression coverage for bottleneck ranking, evidence/readiness behavior, dependency centrality, reporting, and CLI persistence.
+
 ## [0.4.0] — 2026-08-29
 
 ### Teacher-forge / entity compiler
