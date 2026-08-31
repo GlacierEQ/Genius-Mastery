@@ -1,5 +1,7 @@
 """Tests for evidence-derived mastery vectors."""
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import yaml
@@ -137,3 +139,26 @@ def test_live_repository_vector_has_no_dangling_evidence_references():
     assert vector["integrity"]["unresolved_evidence_refs"] == []
     assert vector["integrity"]["ledger_claim_mismatches"] == []
     assert vector["dimensions"]["mechanisms"]["verified_claims"] >= 2
+
+
+def test_cli_vector_writes_fixture(tmp_path):
+    root = _fixture(tmp_path)
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "genius.cli",
+            "vector",
+            str(root),
+            "--write",
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "integrity_clean: True" in result.stdout
+    stored = yaml.safe_load(
+        (root / "mastery" / "VECTOR.yaml").read_text(encoding="utf-8")
+    )
+    assert stored["representation"] == "evidence-derived-multidimensional-vector"
