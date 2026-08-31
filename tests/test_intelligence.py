@@ -118,3 +118,34 @@ def test_report_is_explainable():
     assert "mission-intelligence-v1" in report
     assert "target:incident-recovery" in report
     assert "required by current mission path" in report
+
+
+def test_cli_analyze_can_persist_ranked_intelligence(tmp_path):
+    root = tmp_path / "Genius-Engineering"
+    graph_path = root / "capabilities" / "GRAPH.yaml"
+    graph_path.parent.mkdir(parents=True)
+    graph_path.write_text(
+        yaml.safe_dump(_graph(), sort_keys=False),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "genius.cli",
+            "analyze",
+            str(root),
+            "--top",
+            "2",
+            "--write",
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "mission-intelligence-v1" in result.stdout
+    persisted = yaml.safe_load(graph_path.read_text(encoding="utf-8"))
+    assert persisted["analysis"]["engine"] == "mission-intelligence-v1"
+    assert persisted["analysis"]["top_next_actions"][0]["id"] == "target:incident-recovery"
