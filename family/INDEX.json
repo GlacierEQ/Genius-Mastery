@@ -11,20 +11,27 @@
         "mastery.kernel.schemas",
         "mastery.kernel.validate",
         "mastery.kernel.doctor",
-        "mastery.kernel.cli"
+        "mastery.kernel.cli",
+        "mastery.kernel.synthesize",
+        "mastery.kernel.mission-intelligence",
+        "mastery.kernel.family-composition"
       ],
       "consumes": [],
       "verified_at": "2026-08-29T21:45:23Z",
-      "revision": "0.2.1",
+      "revision": "0.6.0",
       "url": "https://github.com/GlacierEQ/Genius-Mastery",
-      "notes": "Buildkite casey-1/genius-mastery builds 1-2 PASS. Evidence ev-bk-mastery-001/002. Counterevidence ev-receipt-env-gap-001 retained."
+      "notes": "Current revision 0.6.0 adds mission-sensitive graph intelligence and local cross-Genius family composition. Last externally verified snapshot remains Buildkite builds 1-2 (ev-bk-mastery-001/002); do not treat 0.6.0 as externally verified until a current-head PASS is observed. Counterevidence ev-receipt-env-gap-001 retained."
     },
     {
       "repository": "Genius-Code",
       "purpose": "Code",
       "spec_version": 2,
-      "capabilities": ["code.testing.property"],
-      "consumes": ["Genius-Mastery"],
+      "capabilities": [
+        "code.testing.property"
+      ],
+      "consumes": [
+        "Genius-Mastery"
+      ],
       "verified_at": "2026-08-29T21:45:38Z",
       "revision": "0.1.2",
       "url": "https://github.com/GlacierEQ/Genius-Code",
@@ -38,7 +45,9 @@
         "verification.property.method",
         "verification.model-checking.tla"
       ],
-      "consumes": ["Genius-Mastery"],
+      "consumes": [
+        "Genius-Mastery"
+      ],
       "verified_at": "2026-08-29T21:45:49Z",
       "revision": "0.1.1",
       "url": "https://github.com/GlacierEQ/Genius-Verification",
