@@ -123,6 +123,7 @@ genius validate .
 genius doctor .
 genius analyze . --top 10
 genius analyze . --write
+genius family /path/to/genius-estate --top 10
 genius new Performance --dest /tmp
 ```
 
@@ -141,6 +142,21 @@ genius analyze /path/to/Genius-Engineering --write
 ```
 
 The analysis emits ranked priorities, candidate bottlenecks, high-leverage nodes, and reasons for each score. It is an action-prioritization model, not a certification shortcut: unverified state remains unverified until evidence and challenge results justify promotion.
+
+
+### Analyze the Genius family
+
+Point Mastery at a directory containing sibling `Genius-*` repositories:
+
+```bash
+genius family /path/to/genius-estate --top 12
+
+# Persist the complete family analysis
+genius family /path/to/genius-estate \
+  --output /tmp/genius-family-analysis.yaml
+```
+
+The family engine reads each repository's own `GENIUS.yaml` and composition contract, resolves declared provider/consumer bindings, exposes unresolved dependencies and provider fan-out, and proposes cross-repository capability combinations. Composition candidates remain hypotheses until their combined behavior is executed, challenged, and verified.
 
 ## Capability sources
 
@@ -188,6 +204,10 @@ Implemented:
 - mission-sensitive capability intelligence with bottleneck/leverage ranking;
 - evidence/readiness/substitutability-aware prioritization;
 - `genius analyze` CLI with optional persistent graph enrichment;
+- local Genius-family discovery and composition-contract resolution;
+- unresolved dependency and provider-fanout analysis;
+- cross-Genius composition candidate discovery;
+- `genius family` CLI with optional YAML analysis output;
 - Buildkite/GitHub CI surfaces.
 
 Still frontier work:
@@ -195,7 +215,8 @@ Still frontier work:
 - automatic live Mega Skills registry ingestion;
 - automatic tool / model / connector inventory ingestion;
 - deeper evidence-quality calibration and learned scoring weights;
-- automatic cross-Genius composition discovery;
+- live/remote Genius-estate ingestion beyond local checkouts;
+- semantic and execution-backed composition ranking beyond lexical discovery;
 - generated challenge implementation rather than mapped challenge prompts;
 - full migration engine;
 - continuous outcome-to-generator learning.
