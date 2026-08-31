@@ -124,6 +124,8 @@ genius doctor .
 genius analyze . --top 10
 genius analyze . --write
 genius family /path/to/genius-estate --top 10
+genius vector .
+genius vector . --write
 genius new Performance --dest /tmp
 ```
 
@@ -157,6 +159,18 @@ genius family /path/to/genius-estate \
 ```
 
 The family engine reads each repository's own `GENIUS.yaml` and composition contract, resolves declared provider/consumer bindings, exposes unresolved dependencies and provider fan-out, and proposes cross-repository capability combinations. Composition candidates remain hypotheses until their combined behavior is executed, challenged, and verified.
+
+
+### Compute the mastery vector
+
+```bash
+genius vector .
+genius vector . --write
+```
+
+The vector is computed from `claims/CLAIMS.yaml` and `evidence/ledger.jsonl`. It reports per-dimension claim counts, evidence coverage, demonstrated tier, counterevidence presence, dangling evidence references, and ledger-to-claim mismatches. It deliberately does **not** emit a single mastery percentage.
+
+`--write` regenerates `mastery/VECTOR.yaml` from those source records so the diagnostic state cannot drift into hand-maintained vanity scoring.
 
 ## Capability sources
 
@@ -208,6 +222,9 @@ Implemented:
 - unresolved dependency and provider-fanout analysis;
 - cross-Genius composition candidate discovery;
 - `genius family` CLI with optional YAML analysis output;
+- evidence-derived multidimensional mastery vectors;
+- claim/evidence referential-integrity diagnostics;
+- `genius vector` CLI with deterministic vector regeneration;
 - Buildkite/GitHub CI surfaces.
 
 Still frontier work:
