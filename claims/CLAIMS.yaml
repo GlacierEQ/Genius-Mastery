@@ -56,3 +56,27 @@ claims:
     challenge_refs: []
     counterevidence_refs: []
 
+  - id: mission-intelligence-001
+    statement: Genius-Mastery computes deterministic, explainable mission-priority and leverage rankings from capability-graph state, dependency structure, evidence references, readiness, and recorded substitutes without changing any capability truth state.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
+  - id: family-composition-001
+    statement: Genius-Mastery discovers local Genius repositories from their own contracts, resolves declared provider-consumer capability bindings, reports unresolved dependencies, and computes provider fan-out without inventing missing providers.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
+  - id: family-synergy-001
+    statement: Genius-Mastery emits deterministic cross-Genius composition candidates as explicit hypotheses with contributing repositories, capability IDs, shared terms, and scores while withholding verified status until execution evidence exists.
+    dimension: synthesis_transfer
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
