@@ -1,4 +1,9 @@
 """Tests for mission-sensitive capability intelligence."""
+import subprocess
+import sys
+
+import yaml
+
 from genius.intelligence import analyze_capability_graph, capability_intelligence_report
 
 

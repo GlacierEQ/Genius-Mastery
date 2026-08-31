@@ -61,6 +61,11 @@ provides:
     stage: implemented
     interface: src/genius/vector.py
     evidence_refs: []
+  - id: mastery.kernel.operating-loop
+    description: Mission-aware decision-and-learning record carrying a Genius entity from mission through context, options, impact, action, outcome, verification, learning, and strengthening without treating retrieval failure as factual disproof
+    stage: implemented
+    interface: src/genius/operating_loop.py
+    evidence_refs: []
   - id: mastery.kernel.validate
     description: Local contract + referential integrity validator
     stage: mapped

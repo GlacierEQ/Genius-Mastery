@@ -7,6 +7,8 @@ from typing import Any
 
 import yaml
 
+from .intelligence import analyze_capability_graph
+
 
 def _slug(value: str) -> str:
     value = re.sub(r"[^a-z0-9]+", "-", value.casefold()).strip("-")
