@@ -121,10 +121,26 @@ genius --version
 genius name "Distributed Systems"
 genius validate .
 genius doctor .
+genius analyze . --top 10
+genius analyze . --write
 genius new Performance --dest /tmp
 ```
 
 `genius new` creates a bare domain substrate. `genius synthesize` creates and teaches a role-shaped starting entity.
+
+
+### Analyze a Genius entity
+
+Every synthesized entity carries a capability graph. The kernel can now rank that graph by mission impact, readiness, evidence strength, dependency centrality, and recorded substitutes:
+
+```bash
+genius analyze /path/to/Genius-Engineering --top 12
+
+# Persist the enriched analysis into capabilities/GRAPH.yaml
+genius analyze /path/to/Genius-Engineering --write
+```
+
+The analysis emits ranked priorities, candidate bottlenecks, high-leverage nodes, and reasons for each score. It is an action-prioritization model, not a certification shortcut: unverified state remains unverified until evidence and challenge results justify promotion.
 
 ## Capability sources
 
@@ -168,14 +184,17 @@ Implemented:
 - structural validators;
 - regression tests including `Researcher -> Indiana Jones`;
 - capability source registry;
+- recursive capability-graph compiler;
+- mission-sensitive capability intelligence with bottleneck/leverage ranking;
+- evidence/readiness/substitutability-aware prioritization;
+- `genius analyze` CLI with optional persistent graph enrichment;
 - Buildkite/GitHub CI surfaces.
 
 Still frontier work:
 
 - automatic live Mega Skills registry ingestion;
 - automatic tool / model / connector inventory ingestion;
-- capability-graph compiler;
-- mission-sensitive importance and leverage computation;
+- deeper evidence-quality calibration and learned scoring weights;
 - automatic cross-Genius composition discovery;
 - generated challenge implementation rather than mapped challenge prompts;
 - full migration engine;
