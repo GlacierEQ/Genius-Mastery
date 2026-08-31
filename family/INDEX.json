@@ -20,10 +20,11 @@
       "verified_at": "2026-08-31T08:15:25Z",
       "revision": "0.6.0",
       "url": "https://github.com/GlacierEQ/Genius-Mastery",
-      "notes": "Revision 0.6.0 mission intelligence and local family composition were exercised by Buildkite #129 PASS at exact commit 815a2a65cd47534f461a8ec705826b4155649d6c on macos-self. Verification remains commit-bound; later metadata/docs/evidence commits are not silently promoted. Historical evidence ev-bk-mastery-001/002 and counterevidence ev-receipt-env-gap-001 are retained.",
-      "verified_commit": "815a2a65cd47534f461a8ec705826b4155649d6c",
+      "notes": "Revision 0.6.0 is implemented, but Buildkite #129 is retained only as a green projection because exact source readback exposed missing CLI imports at that commit. Counterevidence ev-bk-mastery-129-projection-gap invalidates its use as capability proof. Historical Buildkite 1-2 and GitHub Actions teacher-forge evidence remain valid only for their recorded commits; current intelligence/family claims await a new exact-head receipt.",
       "verification_evidence": [
-        "ev-bk-mastery-129"
+        "ev-bk-mastery-001",
+        "ev-bk-mastery-002",
+        "ev-gha-teacher-forge-001"
       ]
     },
     {
