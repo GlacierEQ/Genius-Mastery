@@ -7,7 +7,7 @@ agents:
   os: macos
 
 steps:
-  - label: ":microscope: Mastery verified evidence"
+  - label: ":microscope: Mastery kernel verification"
     key: verify
     timeout_in_minutes: 15
     cancel_on_build_failing: true
@@ -19,40 +19,52 @@ steps:
           limit: 1
     command: |
       set -euo pipefail
-      apt-get update
-      apt-get install -y --no-install-recommends git
-      rm -rf /var/lib/apt/lists/*
+
       python --version
       python - <<'PY'
       import os
       commit = os.environ.get("BUILDKITE_COMMIT", "")
       pipeline = os.environ.get("BUILDKITE_PIPELINE_SLUG", "")
-      assert len(commit) == 40, commit
+      assert len(commit) == 40, f"expected exact commit SHA, got {commit!r}"
       assert pipeline == "genius-mastery", pipeline
       PY
+
       pip install -e ".[dev]"
+      python -m compileall -q src tools
+
       genius validate .
       genius doctor .
       python tools/validate.py .
-      python -m py_compile tools/buildkite_receipt.py
+
       mkdir -p .verification-artifacts
       pytest -q --junitxml=.verification-artifacts/junit.xml
+
       genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
+
+      rm -rf /tmp/Genius-SmokeTest /tmp/Genius-Researcher
       genius new SmokeTest --dest /tmp
       genius validate /tmp/Genius-SmokeTest
-      rm -rf /tmp/Genius-SmokeTest
-      sha256sum .verification-artifacts/junit.xml > .verification-artifacts/junit.xml.sha256
-      python tools/buildkite_receipt.py \
-        --repository Genius-Mastery \
-        --output .verification-artifacts/buildkite-verified-receipt.json \
-        --artifact .verification-artifacts/junit.xml \
-        --artifact .verification-artifacts/junit.xml.sha256 \
-        --proof .buildkite/pipeline.yml
+
+      genius synthesize Researcher \
+        --outcome "Indiana Jones" \
+        --dest /tmp
+      genius validate /tmp/Genius-Researcher
+      genius analyze /tmp/Genius-Researcher --top 5 --write
+      python - <<'PY'
+      from pathlib import Path
+      import yaml
+
+      graph_path = Path("/tmp/Genius-Researcher/capabilities/GRAPH.yaml")
+      graph = yaml.safe_load(graph_path.read_text(encoding="utf-8"))
+      analysis = graph.get("analysis") or {}
+      assert analysis.get("engine") == "mission-intelligence-v1", analysis
+      assert analysis.get("ranked_priorities"), analysis
+      assert analysis.get("top_next_actions"), analysis
+      PY
+
+      rm -rf /tmp/Genius-SmokeTest /tmp/Genius-Researcher
     artifact_paths:
       - ".verification-artifacts/junit.xml"
-      - ".verification-artifacts/junit.xml.sha256"
-      - ".verification-artifacts/buildkite-verified-receipt.json"
-      - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
     plugins:
       - docker#v5.14.0:
           image: "python:3.13-slim"
@@ -60,8 +72,4 @@ steps:
           pull-retries: 2
           environment:
             - "BUILDKITE_COMMIT"
-            - "BUILDKITE_BRANCH"
-            - "BUILDKITE_BUILD_ID"
-            - "BUILDKITE_BUILD_NUMBER"
             - "BUILDKITE_PIPELINE_SLUG"
-            - "BUILDKITE_ORGANIZATION_SLUG"
