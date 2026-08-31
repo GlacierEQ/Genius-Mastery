@@ -56,6 +56,11 @@ provides:
     stage: implemented
     interface: src/genius/family.py
     evidence_refs: []
+  - id: mastery.kernel.evidence-vector
+    description: Evidence-derived multidimensional mastery vector with claim/evidence integrity diagnostics and no scalar mastery score
+    stage: implemented
+    interface: src/genius/vector.py
+    evidence_refs: []
   - id: mastery.kernel.validate
     description: Local contract + referential integrity validator
     stage: mapped
