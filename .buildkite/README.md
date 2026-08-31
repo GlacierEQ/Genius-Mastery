@@ -23,9 +23,9 @@ Each Genius repository owns only its domain execution in `.buildkite/pipeline.ym
 
 The Buildkite-side upload step performs source identity checks plus supported parse-warning/secret rejection before loading that file. Repository pipelines should not recreate that dynamic-upload gate.
 
-Container steps receive only explicitly required nonsecret Buildkite identity variables. Broad environment propagation is prohibited.
+The current Mastery repository pipeline executes natively on the `macos-self` queue in an ephemeral Python virtual environment. It deliberately does not require a Docker engine on the macOS runner.
 
-Terminal receipts are generated outside the verification container on the trusted host and bind required proof artifacts by SHA-256.
+Repository CI proves package installation, compilation, contract validation, regression tests, synthesis, mission intelligence, and family-analysis smoke paths. Terminal family reconciliation remains the responsibility of the APEX control plane and must be bound to the exact GitHub head before it is treated as external verification.
 
 ## Current routing
 
