@@ -138,7 +138,10 @@ def test_live_repository_vector_has_no_dangling_evidence_references():
     assert vector["totals"]["claims"] >= 10
     assert vector["integrity"]["unresolved_evidence_refs"] == []
     assert vector["integrity"]["ledger_claim_mismatches"] == []
-    assert vector["dimensions"]["mechanisms"]["verified_claims"] >= 2
+    mechanisms = vector["dimensions"]["mechanisms"]
+    assert mechanisms["claims_mapped"] >= 3
+    assert mechanisms["verified_claims"] == 0
+    assert mechanisms["status_counts"].get("implemented", 0) >= 3
 
 
 def test_cli_vector_writes_fixture(tmp_path):
