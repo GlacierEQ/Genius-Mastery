@@ -68,6 +68,7 @@ See:
 
 - `docs/GENIUS_ENTITY_ANATOMY.md`
 - `docs/MASTER_TEACHER_FORGE.md`
+- `docs/DYNAMIC_ADJUSTMENT_AND_FOUR_PILLARS.md`
 - `schemas/capability.schema.json`
 - `schemas/role-brief.schema.json`
 - `templates/CAPABILITY.yaml`
