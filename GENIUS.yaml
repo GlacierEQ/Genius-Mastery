@@ -4,19 +4,19 @@ purpose: Mastery
 family: Genius
 doctrine: mastery-not-skills
 mastery_loop:
-  - map
-  - research
-  - model
-  - build
-  - break
-  - measure
-  - verify
-  - operate
-  - explain
-  - synthesize
-  - prove
-  - expand
-  - teach
+- map
+- research
+- model
+- build
+- break
+- measure
+- verify
+- operate
+- explain
+- synthesize
+- prove
+- expand
+- teach
 evidence_required: true
 growth_model: open-ended-cumulative
 mastery_representation: claim-evidence-graph+vector
@@ -24,8 +24,9 @@ composition_contract: interfaces/COMPOSITION.yaml
 capability_anatomy_contract: capabilities/STACK.yaml
 teaching_contract: teaching/TEACHING.yaml
 kernel: true
-package_version: "0.4.0"
+package_version: 0.4.0
 role_brief: ROLE.yaml
 persona: persona/PERSONA.md
 synthesis_plan: synthesis/PLAN.yaml
 teaching_plan: teaching/TEACHING_PLAN.md
+capability_graph: capabilities/GRAPH.yaml

@@ -8,24 +8,24 @@ dimensions:
     notes: "Identity + schema rules encoded; evidence receipts not yet executed against live claims."
   mechanisms:
     claims_mapped: 4
-    claims_with_evidence: 0
-    deepest_tier: mapped
+    claims_with_evidence: 4
+    deepest_tier: implemented
   implementation:
     claims_mapped: 3
-    claims_with_evidence: 0
-    deepest_tier: mapped
+    claims_with_evidence: 4
+    deepest_tier: implemented
   verification:
     claims_mapped: 2
-    claims_with_evidence: 0
-    deepest_tier: mapped
+    claims_with_evidence: 4
+    deepest_tier: implemented
   performance:
-    claims_mapped: 0
+    claims_mapped: 4
   reliability:
     claims_mapped: 0
   security:
     claims_mapped: 1
   observability:
-    claims_mapped: 0
+    claims_mapped: 4
   operations:
     claims_mapped: 1
   synthesis_transfer:

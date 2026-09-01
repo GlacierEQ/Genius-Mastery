@@ -1,0 +1,429 @@
+schema_version: 1
+repository: Genius-Mastery
+nodes:
+- id: role:master-teacher-and-genius-entity-forge
+  kind: role
+  label: Master Teacher and Genius Entity Forge
+  state: mapped
+  mission_impact: 1.0
+  metadata:
+    repository: Genius-Mastery
+- id: outcome:synthesize-stronger-genius-entities-from-thin-role-briefs
+  kind: outcome
+  label: synthesize stronger Genius entities from thin role briefs
+  state: desired
+  mission_impact: 1.0
+  metadata: {}
+- id: outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them
+  kind: outcome
+  label: teach methods so descendants can reconstruct and transfer them
+  state: desired
+  mission_impact: 1.0
+  metadata: {}
+- id: outcome:improve-the-forge-from-descendant-evidence-and-failures
+  kind: outcome
+  label: improve the forge from descendant evidence and failures
+  state: desired
+  mission_impact: 1.0
+  metadata: {}
+- id: family:entity-synthesis
+  kind: capability-family
+  label: entity-synthesis
+  state: implemented-seed
+  mission_impact: 0.8
+  metadata:
+    layers: []
+- id: target:role-interpretation
+  kind: capability-target
+  label: role interpretation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: entity-synthesis
+- id: target:capability-family-inference
+  kind: capability-target
+  label: capability-family inference
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: entity-synthesis
+- id: target:vertical-anatomy-instantiation
+  kind: capability-target
+  label: vertical anatomy instantiation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: entity-synthesis
+- id: target:persona-generation
+  kind: capability-target
+  label: persona generation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: entity-synthesis
+- id: target:mastery-map-generation
+  kind: capability-target
+  label: mastery-map generation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: entity-synthesis
+- id: target:frontier-generation
+  kind: capability-target
+  label: frontier generation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: entity-synthesis
+- id: family:teaching
+  kind: capability-family
+  label: teaching
+  state: implemented-seed
+  mission_impact: 0.8
+  metadata:
+    layers: []
+- id: target:explanation
+  kind: capability-target
+  label: explanation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: teaching
+- id: target:demonstration
+  kind: capability-target
+  label: demonstration
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: teaching
+- id: target:blank-state-reconstruction
+  kind: capability-target
+  label: blank-state reconstruction
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: teaching
+- id: target:transfer
+  kind: capability-target
+  label: transfer
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: teaching
+- id: target:learner-verification
+  kind: capability-target
+  label: learner verification
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: teaching
+- id: family:capability-discovery
+  kind: capability-family
+  label: capability-discovery
+  state: mapped
+  mission_impact: 0.8
+  metadata:
+    layers: []
+- id: target:mega-skills-ingestion
+  kind: capability-target
+  label: Mega Skills ingestion
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-discovery
+- id: target:sibling-genius-discovery
+  kind: capability-target
+  label: sibling Genius discovery
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-discovery
+- id: target:model-and-tool-discovery
+  kind: capability-target
+  label: model and tool discovery
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-discovery
+- id: target:connector-and-mcp-discovery
+  kind: capability-target
+  label: connector and MCP discovery
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-discovery
+- id: target:runtime-and-device-discovery
+  kind: capability-target
+  label: runtime and device discovery
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-discovery
+- id: family:capability-graph
+  kind: capability-family
+  label: capability-graph
+  state: frontier
+  mission_impact: 0.8
+  metadata:
+    layers: []
+- id: target:dependency-graph-compilation
+  kind: capability-target
+  label: dependency graph compilation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-graph
+- id: target:capability-algebra
+  kind: capability-target
+  label: capability algebra
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-graph
+- id: target:alternate-route-discovery
+  kind: capability-target
+  label: alternate-route discovery
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-graph
+- id: target:mission-sensitive-importance
+  kind: capability-target
+  label: mission-sensitive importance
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-graph
+- id: target:downstream-leverage
+  kind: capability-target
+  label: downstream leverage
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: capability-graph
+- id: family:forge-learning
+  kind: capability-family
+  label: forge-learning
+  state: frontier
+  mission_impact: 0.8
+  metadata:
+    layers: []
+- id: target:descendant-outcome-telemetry
+  kind: capability-target
+  label: descendant outcome telemetry
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: forge-learning
+- id: target:synthesis-quality-evaluation
+  kind: capability-target
+  label: synthesis quality evaluation
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: forge-learning
+- id: target:generator-improvement-from-evidence
+  kind: capability-target
+  label: generator improvement from evidence
+  state: research-and-verify
+  mission_impact: 0.6
+  metadata:
+    family: forge-learning
+edges:
+- from: role:master-teacher-and-genius-entity-forge
+  to: outcome:synthesize-stronger-genius-entities-from-thin-role-briefs
+  relation: targets
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them
+  relation: targets
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: outcome:improve-the-forge-from-descendant-evidence-and-failures
+  relation: targets
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: family:entity-synthesis
+  relation: requires-capability-family
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:entity-synthesis
+  to: target:role-interpretation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:entity-synthesis
+  to: target:capability-family-inference
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:entity-synthesis
+  to: target:vertical-anatomy-instantiation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:entity-synthesis
+  to: target:persona-generation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:entity-synthesis
+  to: target:mastery-map-generation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:entity-synthesis
+  to: target:frontier-generation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: family:teaching
+  relation: requires-capability-family
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:teaching
+  to: target:explanation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:teaching
+  to: target:demonstration
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:teaching
+  to: target:blank-state-reconstruction
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:teaching
+  to: target:transfer
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:teaching
+  to: target:learner-verification
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: family:capability-discovery
+  relation: requires-capability-family
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-discovery
+  to: target:mega-skills-ingestion
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-discovery
+  to: target:sibling-genius-discovery
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-discovery
+  to: target:model-and-tool-discovery
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-discovery
+  to: target:connector-and-mcp-discovery
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-discovery
+  to: target:runtime-and-device-discovery
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: family:capability-graph
+  relation: requires-capability-family
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-graph
+  to: target:dependency-graph-compilation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-graph
+  to: target:capability-algebra
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-graph
+  to: target:alternate-route-discovery
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-graph
+  to: target:mission-sensitive-importance
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:capability-graph
+  to: target:downstream-leverage
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: role:master-teacher-and-genius-entity-forge
+  to: family:forge-learning
+  relation: requires-capability-family
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:forge-learning
+  to: target:descendant-outcome-telemetry
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:forge-learning
+  to: target:synthesis-quality-evaluation
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+- from: family:forge-learning
+  to: target:generator-improvement-from-evidence
+  relation: develops
+  required_for_current_mission: true
+  evidence_refs: []
+analysis:
+  node_count: 33
+  edge_count: 32
+  candidate_bottlenecks:
+  - target:role-interpretation
+  - target:capability-family-inference
+  - target:vertical-anatomy-instantiation
+  - target:persona-generation
+  - target:mastery-map-generation
+  - target:frontier-generation
+  - target:explanation
+  - target:demonstration
+  - target:blank-state-reconstruction
+  - target:transfer
+  - target:learner-verification
+  - target:mega-skills-ingestion
+  - target:sibling-genius-discovery
+  - target:model-and-tool-discovery
+  - target:connector-and-mcp-discovery
+  - target:runtime-and-device-discovery
+  - target:dependency-graph-compilation
+  - target:capability-algebra
+  - target:alternate-route-discovery
+  - target:mission-sensitive-importance
+  - target:downstream-leverage
+  - target:descendant-outcome-telemetry
+  - target:synthesis-quality-evaluation
+  - target:generator-improvement-from-evidence
+  high_leverage_nodes:
+  - role:master-teacher-and-genius-entity-forge
+  - family:entity-synthesis
+  - family:capability-discovery
+  - family:capability-graph
+  - family:teaching
+  - family:forge-learning
+  note: Structural seed only. Mission sensitivity, substitution, and evidence-backed
+    centrality remain future analysis.

@@ -8,7 +8,7 @@ items:
     evidence_to_resolve:
       - generated descendant standalone validator PASS
       - generated descendant clean-checkout CI PASS
-    status: open
+    status: in-progress
 
   - id: frontier-synthesis-001
     question: How should semantic role synthesis expand beyond deterministic keyword inference while remaining inspectable, evidence-bound, and provider-independent?
@@ -21,7 +21,7 @@ items:
       - provider interface
       - comparative role-synthesis benchmark
       - transparent rationale for inferred capabilities
-    status: open
+    status: in-progress
 
   - id: frontier-discovery-001
     question: How can the forge automatically discover live models, tools, APIs, MCP servers, connectors, runtimes, devices, and artifact systems available to the executing agent?
@@ -33,7 +33,7 @@ items:
       - normalized runtime capability inventory
       - source/provider provenance
       - live readback tests
-    status: open
+    status: in-progress
 
   - id: frontier-graph-001
     question: How should recursive capability graphs represent substitutions, composition recipes, evidence, and multi-level emergent capability without flattening the lower layers?
@@ -46,7 +46,7 @@ items:
       - multi-level composition fixture
       - graph referential-integrity tests
       - composition trace from primitive to higher capability
-    status: open
+    status: in-progress
 
   - id: frontier-impact-001
     question: How should mission sensitivity, criticality, substitutability, downstream centrality, and improvement leverage be measured from observed evidence?
@@ -59,7 +59,7 @@ items:
       - scoring model
       - counterexample suite
       - mission-specific ranking benchmark
-    status: open
+    status: in-progress
 
   - id: frontier-teaching-001
     question: How should descendant reconstruction, transfer, explanation quality, and independence be measured and fed back into the forge?
@@ -72,7 +72,7 @@ items:
       - learner challenge harness
       - descendant outcome receipts
       - generator improvement trace
-    status: open
+    status: in-progress
 
   - id: frontier-family-001
     question: How should multiple complete Genius entities compose into cross-domain capability and ultimately a Colossal Agent without creating a rigid hierarchy?
@@ -85,7 +85,7 @@ items:
       - cross-Genius composition contract
       - at least one verified multi-Genius mission
       - preserved provenance for each contributing capability
-    status: open
+    status: in-progress
 
   - id: frontier-migration-001
     question: What migration functions upgrade older Genius-family metadata and scaffolds while preserving all evidence IDs and domain-authored work?
@@ -96,4 +96,4 @@ items:
       - lossless migration receipt
       - round-trip validation
       - preserved custom-domain content
-    status: open
+    status: in-progress
