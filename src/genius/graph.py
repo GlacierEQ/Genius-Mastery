@@ -7,6 +7,8 @@ from typing import Any
 
 import yaml
 
+from .intelligence import analyze_capability_graph
+
 
 def _slug(value: str) -> str:
     value = re.sub(r"[^a-z0-9]+", "-", value.casefold()).strip("-")
@@ -141,25 +143,7 @@ def build_synthesis_graph(
             }
         )
 
-    out_degree: dict[str, int] = {}
-    for edge in edges:
-        out_degree[edge["from"]] = out_degree.get(edge["from"], 0) + 1
-    high_leverage = [
-        node_id
-        for node_id, degree in sorted(
-            out_degree.items(), key=lambda item: (-item[1], item[0])
-        )
-        if degree > 1
-    ]
-
-    candidate_bottlenecks = [
-        node["id"]
-        for node in nodes
-        if node["kind"] == "capability-target"
-        and node["state"] not in {"verified", "operationally_verified"}
-    ]
-
-    return {
+    graph = {
         "schema_version": 1,
         "repository": repository,
         "nodes": nodes,
@@ -167,14 +151,9 @@ def build_synthesis_graph(
         "analysis": {
             "node_count": len(nodes),
             "edge_count": len(edges),
-            "candidate_bottlenecks": candidate_bottlenecks,
-            "high_leverage_nodes": high_leverage,
-            "note": (
-                "Structural seed only. Mission sensitivity, substitution, and "
-                "evidence-backed centrality remain future analysis."
-            ),
         },
     }
+    return analyze_capability_graph(graph)
 
 
 def _families_from_plan(plan: dict[str, Any]) -> dict[str, dict[str, Any]]:

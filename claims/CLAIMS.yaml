@@ -56,3 +56,47 @@ claims:
     challenge_refs: []
     counterevidence_refs: []
 
+  - id: mission-intelligence-001
+    statement: Genius-Mastery computes deterministic, explainable mission-priority and leverage rankings from capability-graph state, dependency structure, evidence references, readiness, and recorded substitutes without changing any capability truth state.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs:
+      - ev-bk-mastery-129-projection-gap
+  - id: family-composition-001
+    statement: Genius-Mastery discovers local Genius repositories from their own contracts, resolves declared provider-consumer capability bindings, reports unresolved dependencies, and computes provider fan-out without inventing missing providers.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs:
+      - ev-bk-mastery-129-projection-gap
+  - id: family-synergy-001
+    statement: Genius-Mastery emits deterministic cross-Genius composition candidates as explicit hypotheses with contributing repositories, capability IDs, shared terms, and scores while withholding verified status until execution evidence exists.
+    dimension: synthesis_transfer
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs:
+      - ev-bk-mastery-129-projection-gap
+  - id: kernel-ci-native-macos-001
+    statement: Genius-Mastery executes package installation, compilation, validation, regression tests, synthesis, mission-intelligence smoke, and family-analysis smoke natively on the macos-self Buildkite queue without requiring a Docker engine.
+    dimension: operations
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs:
+      - ev-bk-mastery-129-projection-gap
+  - id: mastery-vector-001
+    statement: Genius-Mastery derives its multidimensional mastery vector from recorded claim statuses and evidence-ledger references, detects dangling evidence and ledger-to-claim mismatches, and never emits a global mastery percentage.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []

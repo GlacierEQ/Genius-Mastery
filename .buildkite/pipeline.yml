@@ -4,10 +4,9 @@ env:
 
 agents:
   queue: macos-self
-  os: macos
 
 steps:
-  - label: ":microscope: Mastery verified evidence"
+  - label: ":microscope: Mastery 0.6.0 native verification"
     key: verify
     timeout_in_minutes: 15
     cancel_on_build_failing: true
@@ -19,49 +18,77 @@ steps:
           limit: 1
     command: |
       set -euo pipefail
-      apt-get update
-      apt-get install -y --no-install-recommends git
-      rm -rf /var/lib/apt/lists/*
-      python --version
-      python - <<'PY'
-      import os
-      commit = os.environ.get("BUILDKITE_COMMIT", "")
-      pipeline = os.environ.get("BUILDKITE_PIPELINE_SLUG", "")
-      assert len(commit) == 40, commit
-      assert pipeline == "genius-mastery", pipeline
-      PY
-      pip install -e ".[dev]"
+
+      VENV=".buildkite-venv"
+      cleanup() {
+        rm -rf "$VENV" /tmp/Genius-SmokeTest /tmp/Genius-Researcher
+      }
+      trap cleanup EXIT
+      cleanup
+
+      python3 --version
+      python3 -m venv "$VENV"
+      . "$VENV/bin/activate"
+
+      python -m pip install -e ".[dev]"
+      python -m compileall -q src tools
+
+      genius --version
       genius validate .
       genius doctor .
       python tools/validate.py .
-      python -m py_compile tools/buildkite_receipt.py
+      python tools/doctor.py .
+
       mkdir -p .verification-artifacts
       pytest -q --junitxml=.verification-artifacts/junit.xml
+
       genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
       genius new SmokeTest --dest /tmp
       genius validate /tmp/Genius-SmokeTest
-      rm -rf /tmp/Genius-SmokeTest
-      sha256sum .verification-artifacts/junit.xml > .verification-artifacts/junit.xml.sha256
+
+      genius synthesize Researcher \
+        --outcome "Indiana Jones" \
+        --dest /tmp
+      genius validate /tmp/Genius-Researcher
+      genius analyze /tmp/Genius-Researcher --top 5 --write
+      genius family . --top 3
+      genius vector . --write
+      cp mastery/VECTOR.yaml .verification-artifacts/mastery-vector.yaml
+
+      python - <<'PY'
+      from pathlib import Path
+      import yaml
+
+      graph = yaml.safe_load(
+          Path("/tmp/Genius-Researcher/capabilities/GRAPH.yaml").read_text(
+              encoding="utf-8"
+          )
+      )
+      analysis = graph.get("analysis") or {}
+      assert analysis.get("engine") == "mission-intelligence-v1", analysis
+      assert analysis.get("ranked_priorities"), analysis
+      assert analysis.get("top_next_actions"), analysis
+      print(
+          "verified mission intelligence:",
+          analysis["top_next_actions"][0]["id"],
+      )
+
+      vector = yaml.safe_load(
+          Path(".verification-artifacts/mastery-vector.yaml").read_text(
+              encoding="utf-8"
+          )
+      )
+      assert vector["integrity"]["clean"] is True, vector["integrity"]
+      assert vector["totals"]["claims"] >= 10, vector["totals"]
+      print("verified mastery vector:", vector["totals"])
+      PY
+
       python tools/buildkite_receipt.py \
-        --repository Genius-Mastery \
-        --output .verification-artifacts/buildkite-verified-receipt.json \
+        --repository genius-mastery \
         --artifact .verification-artifacts/junit.xml \
-        --artifact .verification-artifacts/junit.xml.sha256 \
-        --proof .buildkite/pipeline.yml
+        --proof .verification-artifacts/mastery-vector.yaml
     artifact_paths:
       - ".verification-artifacts/junit.xml"
-      - ".verification-artifacts/junit.xml.sha256"
+      - ".verification-artifacts/mastery-vector.yaml"
       - ".verification-artifacts/buildkite-verified-receipt.json"
       - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
-    plugins:
-      - docker#v5.14.0:
-          image: "python:3.13-slim"
-          always-pull: true
-          pull-retries: 2
-          environment:
-            - "BUILDKITE_COMMIT"
-            - "BUILDKITE_BRANCH"
-            - "BUILDKITE_BUILD_ID"
-            - "BUILDKITE_BUILD_NUMBER"
-            - "BUILDKITE_PIPELINE_SLUG"
-            - "BUILDKITE_ORGANIZATION_SLUG"

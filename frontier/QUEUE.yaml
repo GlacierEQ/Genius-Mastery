@@ -49,15 +49,14 @@ items:
     status: in-progress
 
   - id: frontier-impact-001
-    question: How should mission sensitivity, criticality, substitutability, downstream centrality, and improvement leverage be measured from observed evidence?
-    why_it_matters: The system must know which tiny dependency is mission-critical and which improvements barely matter.
-    related_claims: []
+    question: How should mission-intelligence weights and evidence-strength calibration learn from observed mission outcomes without turning heuristic priority into fake certainty?
+    why_it_matters: The 0.6.0 engine can rank work now; the next step is proving that its rankings remain useful across missions, counterexamples, and changing evidence quality.
+    related_claims: [mission-intelligence-001]
     dependencies:
-      - mastery.kernel.capability-anatomy
+      - mastery.kernel.mission-intelligence
       - capability graph
     evidence_to_resolve:
-      - scoring model
-      - counterexample suite
+      - counterexample and perturbation suite
       - mission-specific ranking benchmark
     status: in-progress
 
@@ -75,15 +74,16 @@ items:
     status: in-progress
 
   - id: frontier-family-001
-    question: How should multiple complete Genius entities compose into cross-domain capability and ultimately a Colossal Agent without creating a rigid hierarchy?
-    why_it_matters: Genius entities are intended to become composable vertical intelligences, not isolated repositories.
-    related_claims: []
+    question: How should discovered cross-Genius candidates become execution-backed multi-Genius compositions and higher-order capabilities without losing provenance or creating a rigid hierarchy?
+    why_it_matters: Local contract discovery now exists; mastery requires proving that composed entities create useful behavior greater than isolated capability descriptions.
+    related_claims: [family-composition-001, family-synergy-001]
     dependencies:
+      - mastery.kernel.family-composition
       - sibling Genius composition contracts
       - capability graph
     evidence_to_resolve:
-      - cross-Genius composition contract
-      - at least one verified multi-Genius mission
+      - at least one executed multi-Genius mission
+      - comparative isolated-versus-composed benchmark
       - preserved provenance for each contributing capability
     status: in-progress
 

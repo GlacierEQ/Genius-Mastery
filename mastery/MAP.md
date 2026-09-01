@@ -27,7 +27,9 @@ This repository is the **control kernel**, not a domain. Its mastery surface is 
 | synthesis_transfer | Kernel can generate self-validating domain repos |
 | original_work | New schema versions + migration functions |
 
-## Current verified vs aspirational
+## Current implemented vs externally verified
 
-- **Verified (local seed):** identity contract, core schemas, basic validator, doctor scaffold, composition file, family index stub.
-- **Aspirational:** full migration engine, packaging/wheel, live GitHub Actions runs, cross-repo composition resolution at scale, automated freshness watchers.
+- **Externally verified historical foundation:** identity/contract checks and the teacher-forge have preserved Buildkite/GitHub Actions receipts in `evidence/ledger.jsonl`. Those receipts apply only to their recorded commits.
+- **Implemented in current 0.6.0:** role-to-entity synthesis, recursive capability graphs, mission-sensitive priority/leverage analysis, local Genius-family contract discovery, dependency resolution, cross-Genius composition hypotheses, validator/doctor surfaces, and standalone descendant validation.
+- **Not yet externally verified at current head:** the 0.6.0 mission-intelligence and family-composition claims. They remain `implemented` until a current-head CI receipt is observed and linked.
+- **Frontier:** calibrated evidence-aware ranking, live capability/runtime inventory, execution-backed multi-Genius composition, lossless migrations, generated executable challenges, teaching-outcome feedback, and higher-order capability promotion.

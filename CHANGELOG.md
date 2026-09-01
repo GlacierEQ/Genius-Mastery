@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.7.0] — 2026-08-30
+
+### Evidence-derived self-observation
+- Added `genius.vector` to compute Mastery’s multidimensional state directly from `claims/CLAIMS.yaml` and `evidence/ledger.jsonl`.
+- Added per-dimension status/evidence counts, deepest demonstrated tier, counterevidence counts, orphan evidence reporting, dangling evidence detection, and ledger-to-claim integrity checks.
+- Added `genius vector [path] [--write]` to inspect or regenerate `mastery/VECTOR.yaml`.
+- Added regression coverage for vector derivation, dangling references, ledger mismatches, round-trip persistence, live-repository integrity, and CLI writes.
+- Restored missing imports for the 0.6.0 `analyze` and `family` CLI paths after exact-source readback exposed the defect.
+- Preserved Buildkite #129 as counterevidence rather than allowing a green projection to override contradictory source.
+- Strengthened Buildkite verification to require a post-execution exact-source receipt binding JUnit and computed-vector artifacts.
+
+## [0.6.0] — 2026-08-30
+
+### Cross-Genius family composition
+- Added `genius.family` for local `Genius-*` repository discovery from each repository's own `GENIUS.yaml` and composition contract.
+- Added provider/consumer binding resolution, unresolved dependency reporting, provider fan-out, and transparent cross-repository composition candidates.
+- Added `genius family [path] [--top N] [--output YAML]` for human-readable and machine-readable family analysis.
+- Registered mission intelligence and family composition as first-class Mastery capabilities.
+- Added regression coverage for family discovery, dependency resolution, missing dependencies, property-testing synergy discovery, and reporting.
+- Synchronized runtime, package metadata, and `GENIUS.yaml` at version 0.6.0.
+
+### Verification lane repair
+- Restored the last independently proven Buildkite topology as the compatibility baseline after tracing the persistent red sequence back to the fail-closed preflight introduced after build #3.
+- Added 0.6.0 CLI smoke coverage for synthesis, graph intelligence, family analysis, validation, and Python compilation.
+- External terminal PASS remains a runtime fact to be established by Buildkite; this changelog does not promote a dispatched build to verified.
+
+## [0.5.0] — 2026-08-30
+
+### Mission-sensitive capability intelligence
+- Added `genius.intelligence` with explainable mission-impact, readiness, evidence-strength, dependency-centrality, substitutability, priority, and leverage scoring.
+- Replaced the previous structural-only graph analysis with ranked bottleneck and next-action intelligence.
+- Added `genius analyze [repo|GRAPH.yaml] [--top N] [--write]` for human-readable analysis and persistent enriched graphs.
+- Preserved truth-state discipline: scoring never promotes mapped/discovered capability to verified or mastered.
+- Added regression coverage for bottleneck ranking, evidence/readiness behavior, dependency centrality, reporting, and CLI persistence.
+
 ## [0.4.0] — 2026-08-29
 
 ### Teacher-forge / entity compiler

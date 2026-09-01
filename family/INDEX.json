@@ -11,20 +11,32 @@
         "mastery.kernel.schemas",
         "mastery.kernel.validate",
         "mastery.kernel.doctor",
-        "mastery.kernel.cli"
+        "mastery.kernel.cli",
+        "mastery.kernel.synthesize",
+        "mastery.kernel.mission-intelligence",
+        "mastery.kernel.family-composition"
       ],
       "consumes": [],
-      "verified_at": "2026-08-29T21:45:23Z",
-      "revision": "0.2.1",
+      "verified_at": "2026-08-31T08:15:25Z",
+      "revision": "0.6.0",
       "url": "https://github.com/GlacierEQ/Genius-Mastery",
-      "notes": "Buildkite casey-1/genius-mastery builds 1-2 PASS. Evidence ev-bk-mastery-001/002. Counterevidence ev-receipt-env-gap-001 retained."
+      "notes": "Revision 0.6.0 is implemented, but Buildkite #129 is retained only as a green projection because exact source readback exposed missing CLI imports at that commit. Counterevidence ev-bk-mastery-129-projection-gap invalidates its use as capability proof. Historical Buildkite 1-2 and GitHub Actions teacher-forge evidence remain valid only for their recorded commits; current intelligence/family claims await a new exact-head receipt.",
+      "verification_evidence": [
+        "ev-bk-mastery-001",
+        "ev-bk-mastery-002",
+        "ev-gha-teacher-forge-001"
+      ]
     },
     {
       "repository": "Genius-Code",
       "purpose": "Code",
       "spec_version": 2,
-      "capabilities": ["code.testing.property"],
-      "consumes": ["Genius-Mastery"],
+      "capabilities": [
+        "code.testing.property"
+      ],
+      "consumes": [
+        "Genius-Mastery"
+      ],
       "verified_at": "2026-08-29T21:45:38Z",
       "revision": "0.1.2",
       "url": "https://github.com/GlacierEQ/Genius-Code",
@@ -38,7 +50,9 @@
         "verification.property.method",
         "verification.model-checking.tla"
       ],
-      "consumes": ["Genius-Mastery"],
+      "consumes": [
+        "Genius-Mastery"
+      ],
       "verified_at": "2026-08-29T21:45:49Z",
       "revision": "0.1.1",
       "url": "https://github.com/GlacierEQ/Genius-Verification",

@@ -68,6 +68,7 @@ See:
 
 - `docs/GENIUS_ENTITY_ANATOMY.md`
 - `docs/MASTER_TEACHER_FORGE.md`
+- `docs/DYNAMIC_ADJUSTMENT_AND_FOUR_PILLARS.md`
 - `schemas/capability.schema.json`
 - `schemas/role-brief.schema.json`
 - `templates/CAPABILITY.yaml`
@@ -121,10 +122,56 @@ genius --version
 genius name "Distributed Systems"
 genius validate .
 genius doctor .
+genius analyze . --top 10
+genius analyze . --write
+genius family /path/to/genius-estate --top 10
+genius vector .
+genius vector . --write
 genius new Performance --dest /tmp
 ```
 
 `genius new` creates a bare domain substrate. `genius synthesize` creates and teaches a role-shaped starting entity.
+
+
+### Analyze a Genius entity
+
+Every synthesized entity carries a capability graph. The kernel can now rank that graph by mission impact, readiness, evidence strength, dependency centrality, and recorded substitutes:
+
+```bash
+genius analyze /path/to/Genius-Engineering --top 12
+
+# Persist the enriched analysis into capabilities/GRAPH.yaml
+genius analyze /path/to/Genius-Engineering --write
+```
+
+The analysis emits ranked priorities, candidate bottlenecks, high-leverage nodes, and reasons for each score. It is an action-prioritization model, not a certification shortcut: unverified state remains unverified until evidence and challenge results justify promotion.
+
+
+### Analyze the Genius family
+
+Point Mastery at a directory containing sibling `Genius-*` repositories:
+
+```bash
+genius family /path/to/genius-estate --top 12
+
+# Persist the complete family analysis
+genius family /path/to/genius-estate \
+  --output /tmp/genius-family-analysis.yaml
+```
+
+The family engine reads each repository's own `GENIUS.yaml` and composition contract, resolves declared provider/consumer bindings, exposes unresolved dependencies and provider fan-out, and proposes cross-repository capability combinations. Composition candidates remain hypotheses until their combined behavior is executed, challenged, and verified.
+
+
+### Compute the mastery vector
+
+```bash
+genius vector .
+genius vector . --write
+```
+
+The vector is computed from `claims/CLAIMS.yaml` and `evidence/ledger.jsonl`. It reports per-dimension claim counts, evidence coverage, demonstrated tier, counterevidence presence, dangling evidence references, and ledger-to-claim mismatches. It deliberately does **not** emit a single mastery percentage.
+
+`--write` regenerates `mastery/VECTOR.yaml` from those source records so the diagnostic state cannot drift into hand-maintained vanity scoring.
 
 ## Capability sources
 
@@ -168,15 +215,26 @@ Implemented:
 - structural validators;
 - regression tests including `Researcher -> Indiana Jones`;
 - capability source registry;
+- recursive capability-graph compiler;
+- mission-sensitive capability intelligence with bottleneck/leverage ranking;
+- evidence/readiness/substitutability-aware prioritization;
+- `genius analyze` CLI with optional persistent graph enrichment;
+- local Genius-family discovery and composition-contract resolution;
+- unresolved dependency and provider-fanout analysis;
+- cross-Genius composition candidate discovery;
+- `genius family` CLI with optional YAML analysis output;
+- evidence-derived multidimensional mastery vectors;
+- claim/evidence referential-integrity diagnostics;
+- `genius vector` CLI with deterministic vector regeneration;
 - Buildkite/GitHub CI surfaces.
 
 Still frontier work:
 
 - automatic live Mega Skills registry ingestion;
 - automatic tool / model / connector inventory ingestion;
-- capability-graph compiler;
-- mission-sensitive importance and leverage computation;
-- automatic cross-Genius composition discovery;
+- deeper evidence-quality calibration and learned scoring weights;
+- live/remote Genius-estate ingestion beyond local checkouts;
+- semantic and execution-backed composition ranking beyond lexical discovery;
 - generated challenge implementation rather than mapped challenge prompts;
 - full migration engine;
 - continuous outcome-to-generator learning.

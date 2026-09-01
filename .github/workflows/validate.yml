@@ -6,19 +6,61 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+          cache: pip
+
       - name: Install package and test dependencies
         run: pip install -e ".[dev]"
-      - name: Run validator
-        run: python tools/validate.py .
-      - name: Run doctor
-        run: python tools/doctor.py .
+
+      - name: Compile Python surfaces
+        run: python -m compileall -q src tools
+
+      - name: Validate Mastery contracts
+        run: |
+          genius validate .
+          genius doctor .
+          python tools/validate.py .
+          python tools/doctor.py .
+
       - name: Run regression suite
         run: pytest -q
+
+      - name: Exercise forge and mission intelligence
+        run: |
+          rm -rf /tmp/Genius-SmokeTest /tmp/Genius-Researcher
+          genius --version
+          genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
+          genius new SmokeTest --dest /tmp
+          genius validate /tmp/Genius-SmokeTest
+          genius synthesize Researcher --outcome "Indiana Jones" --dest /tmp
+          genius validate /tmp/Genius-Researcher
+          genius analyze /tmp/Genius-Researcher --top 5 --write
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          graph = yaml.safe_load(
+              Path("/tmp/Genius-Researcher/capabilities/GRAPH.yaml").read_text(
+                  encoding="utf-8"
+              )
+          )
+          analysis = graph.get("analysis") or {}
+          assert analysis.get("engine") == "mission-intelligence-v1", analysis
+          assert analysis.get("ranked_priorities"), analysis
+          assert analysis.get("top_next_actions"), analysis
+          PY
+
+      - name: Exercise family analyzer
+        run: genius family . --top 3
