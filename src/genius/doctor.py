@@ -177,8 +177,12 @@ def doctor_report(root: Path) -> str:
     lines.append("")
 
     items = frontier.get("items") or []
-    open_items = [item for item in items if item.get("status") == "open"]
-    lines.append(f"Frontier open: {len(open_items)}")
+    terminal = {"resolved", "closed", "complete"}
+    open_items = [
+        item for item in items
+        if str(item.get("status") or "open").casefold() not in terminal
+    ]
+    lines.append(f"Frontier unresolved: {len(open_items)}")
     for item in open_items[:8]:
         question = (item.get("question") or "")[:100]
         lines.append(f"  - {item.get('id')}: {question}")
