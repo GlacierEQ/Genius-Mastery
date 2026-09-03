@@ -25,7 +25,7 @@ The Buildkite-side upload step performs source identity checks plus supported pa
 
 The current Mastery repository pipeline executes natively on the `macos-self` queue in an ephemeral Python virtual environment. It deliberately does not require a Docker engine on the macOS runner.
 
-Repository CI proves package installation, compilation, contract validation, regression tests, synthesis, mission intelligence, and family-analysis smoke paths. Terminal family reconciliation remains the responsibility of the APEX control plane and must be bound to the exact GitHub head before it is treated as external verification.
+Repository CI proves package installation, compilation, contract validation, regression tests, synthesis, mission intelligence, family analysis, runtime discovery, calibration, graph rebuild, evidence-vector integrity, and executable 1.0 closure. Terminal family reconciliation remains the responsibility of the APEX control plane and must be bound to the exact GitHub head before it is treated as external verification.
 
 ## Current routing
 

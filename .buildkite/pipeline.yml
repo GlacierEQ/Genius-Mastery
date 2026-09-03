@@ -6,7 +6,7 @@ agents:
   queue: macos-self
 
 steps:
-  - label: ":microscope: Mastery 0.6.0 native verification"
+  - label: ":microscope: Mastery 1.0 native verification"
     key: verify
     timeout_in_minutes: 15
     cancel_on_build_failing: true
@@ -57,6 +57,7 @@ steps:
       genius rebuild-graph .
       genius validate .
       genius vector . --write
+      genius closure .
       cp mastery/VECTOR.yaml .verification-artifacts/mastery-vector.yaml
 
       python - <<'PY'
