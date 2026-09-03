@@ -18,13 +18,17 @@ from genius.scaffold import create_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
 from genius.impact import impact_report
-from genius.discovery import full_discovery_report
+from genius.discovery import full_discovery_report, write_discovery_inventory
 from genius.migration import migrate_genius_repo
 from genius.performance import benchmark_synthesis, benchmark_validate, performance_report
 from genius.challenge import generate_challenges, challenge_report
 from genius.vector import compute_vector, vector_report, write_vector
 from genius.progress import build_progress_contract, progress_report, validate_progress_contract
 from genius.prompt_codes import code_catalog_report
+from genius.calibration import calibrate_graph, calibration_report
+from genius.composition import execute_family_composition, composition_report, write_composition_receipt
+from genius.closure import closure_status, closure_report
+from genius.graph import rebuild_graph
 
 
 def cmd_name(args: argparse.Namespace) -> int:
@@ -213,11 +217,55 @@ def cmd_impact(args: argparse.Namespace) -> int:
 def cmd_discover(args: argparse.Namespace) -> int:
     root = Path(args.path).resolve()
     report = full_discovery_report(root)
+    if args.write:
+        target = write_discovery_inventory(root)
+        print(f"Updated {target}")
     for category, items in report.items():
         print(f"=== {category.upper()} ===")
         for item in items:
             print(f"  {item['name']} ({item['version']}) - {item['notes']}")
     return 0
+
+
+def cmd_calibrate(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    graph_path = root / "capabilities" / "GRAPH.yaml"
+    if not graph_path.exists():
+        print(f"ERROR: capability graph not found: {graph_path}", file=sys.stderr)
+        return 1
+    graph = yaml.safe_load(graph_path.read_text(encoding="utf-8")) or {}
+    result = calibrate_graph(graph)
+    print(json.dumps(result, indent=2, ensure_ascii=False) if args.json else calibration_report(result))
+    return 0 if result.get("clean") else 1
+
+
+def cmd_compose(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    receipt = execute_family_composition(root)
+    if args.output:
+        output = Path(args.output).resolve()
+        write_composition_receipt(root, output)
+        print(f"Wrote {output}")
+    print(json.dumps(receipt, indent=2, ensure_ascii=False) if args.json else composition_report(receipt))
+    return 0 if not receipt.get("unresolved_binding_count") else 2
+
+
+def cmd_rebuild_graph(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    try:
+        target = rebuild_graph(root)
+    except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
+        print(f"ERROR: cannot rebuild graph: {exc}", file=sys.stderr)
+        return 1
+    print(f"Updated {target}")
+    return 0
+
+
+def cmd_closure(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    status = closure_status(root)
+    print(json.dumps(status, indent=2, ensure_ascii=False) if args.json else closure_report(status))
+    return 0 if status.get("core_complete") else 3
 
 
 def cmd_migrate(args: argparse.Namespace) -> int:
@@ -339,7 +387,28 @@ def main(argv: list[str] | None = None) -> int:
 
     p_disc = sub.add_parser("discover", help="Discover live capabilities")
     p_disc.add_argument("path", nargs="?", default=".")
+    p_disc.add_argument("--write", action="store_true", help="Persist normalized runtime inventory")
     p_disc.set_defaults(func=cmd_discover)
+
+    p_cal = sub.add_parser("calibrate", help="Run perturbation calibration against mission-intelligence ranking")
+    p_cal.add_argument("path", nargs="?", default=".")
+    p_cal.add_argument("--json", action="store_true")
+    p_cal.set_defaults(func=cmd_calibrate)
+
+    p_comp = sub.add_parser("compose", help="Execute local Genius-family contract composition and emit a receipt")
+    p_comp.add_argument("path", nargs="?", default=".")
+    p_comp.add_argument("--output", default=None)
+    p_comp.add_argument("--json", action="store_true")
+    p_comp.set_defaults(func=cmd_compose)
+
+    p_graph = sub.add_parser("rebuild-graph", help="Rebuild a Genius capability graph from its own contracts")
+    p_graph.add_argument("path", nargs="?", default=".")
+    p_graph.set_defaults(func=cmd_rebuild_graph)
+
+    p_close = sub.add_parser("closure", help="Evaluate release closure without hiding open-ended frontier research")
+    p_close.add_argument("path", nargs="?", default=".")
+    p_close.add_argument("--json", action="store_true")
+    p_close.set_defaults(func=cmd_closure)
 
     p_mig = sub.add_parser("migrate", help="Migrate repo to current version")
     p_mig.add_argument("path", nargs="?", default=".")
