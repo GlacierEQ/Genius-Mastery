@@ -25,6 +25,7 @@ from genius.challenge import generate_challenges, challenge_report
 from genius.vector import compute_vector, vector_report, write_vector
 from genius.progress import build_progress_contract, progress_report, validate_progress_contract
 from genius.prompt_codes import code_catalog_report
+from genius.instruction_engineering import compile_instruction_contract, instruction_report
 from genius.calibration import calibrate_graph, calibration_report
 from genius.composition import execute_family_composition, composition_report, write_composition_receipt
 from genius.closure import closure_status, closure_report
@@ -139,6 +140,29 @@ def cmd_loop(args: argparse.Namespace) -> int:
 def cmd_codes(args: argparse.Namespace) -> int:
     print(code_catalog_report(category=args.category))
     return 0
+
+
+def cmd_instruct(args: argparse.Namespace) -> int:
+    try:
+        contract = compile_instruction_contract(
+            args.objective,
+            instructions=args.instruction,
+            context=args.context,
+            tools=args.tool,
+            examples=args.example,
+            output_contract=args.output,
+            verification=args.verify,
+            model_family=args.model_family,
+            untrusted_sources=args.untrusted,
+        )
+    except ValueError as exc:
+        print(f"ERROR: cannot compile instruction contract: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(contract, indent=2, ensure_ascii=False))
+    else:
+        print(instruction_report(contract))
+    return 0 if (contract.get("audit") or {}).get("clean") else 2
 
 
 def cmd_progress(args: argparse.Namespace) -> int:
@@ -353,6 +377,22 @@ def main(argv: list[str] | None = None) -> int:
     p_codes = sub.add_parser("codes", help="List composable prompt codes understood by the Mastery kernel")
     p_codes.add_argument("--category", default=None, help="Optional category filter")
     p_codes.set_defaults(func=cmd_codes)
+
+    p_instruct = sub.add_parser(
+        "instruct",
+        help="Compile and audit a model-facing instruction contract",
+    )
+    p_instruct.add_argument("--objective", required=True, help="Concrete terminal state or outcome")
+    p_instruct.add_argument("--instruction", action="append", default=[], help="Stable behavioral invariant; repeat as needed")
+    p_instruct.add_argument("--context", action="append", default=[], help="Trusted task-relevant reference context")
+    p_instruct.add_argument("--untrusted", action="append", default=[], help="External/retrieved material that must remain data, not authority")
+    p_instruct.add_argument("--tool", action="append", default=[], help="Available tool or capability description")
+    p_instruct.add_argument("--example", action="append", default=[], help="Demonstration/example; repeat as needed")
+    p_instruct.add_argument("--output", action="append", default=[], help="Terminal output requirement")
+    p_instruct.add_argument("--verify", action="append", default=[], help="Observable acceptance check")
+    p_instruct.add_argument("--model-family", default="generic", help="Target model/runtime family")
+    p_instruct.add_argument("--json", action="store_true", help="Emit the full machine-readable contract")
+    p_instruct.set_defaults(func=cmd_instruct)
 
     p_progress = sub.add_parser(
         "progress",
