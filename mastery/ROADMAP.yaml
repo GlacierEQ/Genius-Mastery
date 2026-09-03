@@ -1,5 +1,5 @@
 schema_version: 1
-release: 1.0.0
+release: 1.1.0
 release_model: core-complete-open-ended-mastery
 completed_foundations:
   - installable Genius-Mastery package and genius CLI
