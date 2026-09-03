@@ -109,6 +109,7 @@ claims:
       - src-openai-model-guidance
       - src-anthropic-context-engineering
       - src-google-gemini-prompting
-    evidence_refs: []
+    evidence_refs:
+      - ev-gha-instruction-engineering-001
     challenge_refs: []
     counterevidence_refs: []

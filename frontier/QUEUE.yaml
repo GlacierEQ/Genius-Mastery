@@ -74,3 +74,17 @@ items:
     status: resolved
     release_blocker: false
     resolution: Lossless v1-to-v2 migration preserves custom content and IDs, backfills missing surfaces, emits hashes, and is idempotent.
+
+  - id: frontier-instruction-001
+    question: How should Genius learn model-specific instruction projections from representative execution trajectories without confusing prompt optimization with capability proof?
+    why_it_matters: The 1.1 compiler makes instruction contracts explicit and auditable; empirical trajectory feedback is required to optimize projections across model families without prompt folklore or vanity scoring.
+    related_claims: [instruction-contract-001]
+    dependencies: [mastery.kernel.instruction-engineering]
+    evidence_to_resolve:
+      - representative multi-model task suites with versioned baselines
+      - trajectory failure clustering tied to owning runtime layers
+      - regression proof that optimized projections preserve required quality and safety
+    status: research
+    release_blocker: false
+    core_resolution: Typed contract compilation, trust boundaries, structural diagnostics, and model-family labeling are implemented and regression-tested.
+

@@ -1,429 +1,1845 @@
-schema_version: 1
-repository: Genius-Mastery
-nodes:
-- id: role:master-teacher-and-genius-entity-forge
-  kind: role
-  label: Master Teacher and Genius Entity Forge
-  state: mapped
-  mission_impact: 1.0
-  metadata:
-    repository: Genius-Mastery
-- id: outcome:synthesize-stronger-genius-entities-from-thin-role-briefs
-  kind: outcome
-  label: synthesize stronger Genius entities from thin role briefs
-  state: desired
-  mission_impact: 1.0
-  metadata: {}
-- id: outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them
-  kind: outcome
-  label: teach methods so descendants can reconstruct and transfer them
-  state: desired
-  mission_impact: 1.0
-  metadata: {}
-- id: outcome:improve-the-forge-from-descendant-evidence-and-failures
-  kind: outcome
-  label: improve the forge from descendant evidence and failures
-  state: desired
-  mission_impact: 1.0
-  metadata: {}
-- id: family:entity-synthesis
-  kind: capability-family
-  label: entity-synthesis
-  state: implemented-seed
-  mission_impact: 0.8
-  metadata:
-    layers: []
-- id: target:role-interpretation
-  kind: capability-target
-  label: role interpretation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: entity-synthesis
-- id: target:capability-family-inference
-  kind: capability-target
-  label: capability-family inference
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: entity-synthesis
-- id: target:vertical-anatomy-instantiation
-  kind: capability-target
-  label: vertical anatomy instantiation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: entity-synthesis
-- id: target:persona-generation
-  kind: capability-target
-  label: persona generation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: entity-synthesis
-- id: target:mastery-map-generation
-  kind: capability-target
-  label: mastery-map generation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: entity-synthesis
-- id: target:frontier-generation
-  kind: capability-target
-  label: frontier generation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: entity-synthesis
-- id: family:teaching
-  kind: capability-family
-  label: teaching
-  state: implemented-seed
-  mission_impact: 0.8
-  metadata:
-    layers: []
-- id: target:explanation
-  kind: capability-target
-  label: explanation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: teaching
-- id: target:demonstration
-  kind: capability-target
-  label: demonstration
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: teaching
-- id: target:blank-state-reconstruction
-  kind: capability-target
-  label: blank-state reconstruction
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: teaching
-- id: target:transfer
-  kind: capability-target
-  label: transfer
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: teaching
-- id: target:learner-verification
-  kind: capability-target
-  label: learner verification
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: teaching
-- id: family:capability-discovery
-  kind: capability-family
-  label: capability-discovery
-  state: mapped
-  mission_impact: 0.8
-  metadata:
-    layers: []
-- id: target:mega-skills-ingestion
-  kind: capability-target
-  label: Mega Skills ingestion
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-discovery
-- id: target:sibling-genius-discovery
-  kind: capability-target
-  label: sibling Genius discovery
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-discovery
-- id: target:model-and-tool-discovery
-  kind: capability-target
-  label: model and tool discovery
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-discovery
-- id: target:connector-and-mcp-discovery
-  kind: capability-target
-  label: connector and MCP discovery
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-discovery
-- id: target:runtime-and-device-discovery
-  kind: capability-target
-  label: runtime and device discovery
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-discovery
-- id: family:capability-graph
-  kind: capability-family
-  label: capability-graph
-  state: frontier
-  mission_impact: 0.8
-  metadata:
-    layers: []
-- id: target:dependency-graph-compilation
-  kind: capability-target
-  label: dependency graph compilation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-graph
-- id: target:capability-algebra
-  kind: capability-target
-  label: capability algebra
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-graph
-- id: target:alternate-route-discovery
-  kind: capability-target
-  label: alternate-route discovery
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-graph
-- id: target:mission-sensitive-importance
-  kind: capability-target
-  label: mission-sensitive importance
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-graph
-- id: target:downstream-leverage
-  kind: capability-target
-  label: downstream leverage
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: capability-graph
-- id: family:forge-learning
-  kind: capability-family
-  label: forge-learning
-  state: frontier
-  mission_impact: 0.8
-  metadata:
-    layers: []
-- id: target:descendant-outcome-telemetry
-  kind: capability-target
-  label: descendant outcome telemetry
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: forge-learning
-- id: target:synthesis-quality-evaluation
-  kind: capability-target
-  label: synthesis quality evaluation
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: forge-learning
-- id: target:generator-improvement-from-evidence
-  kind: capability-target
-  label: generator improvement from evidence
-  state: research-and-verify
-  mission_impact: 0.6
-  metadata:
-    family: forge-learning
-edges:
-- from: role:master-teacher-and-genius-entity-forge
-  to: outcome:synthesize-stronger-genius-entities-from-thin-role-briefs
-  relation: targets
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them
-  relation: targets
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: outcome:improve-the-forge-from-descendant-evidence-and-failures
-  relation: targets
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: family:entity-synthesis
-  relation: requires-capability-family
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:entity-synthesis
-  to: target:role-interpretation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:entity-synthesis
-  to: target:capability-family-inference
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:entity-synthesis
-  to: target:vertical-anatomy-instantiation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:entity-synthesis
-  to: target:persona-generation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:entity-synthesis
-  to: target:mastery-map-generation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:entity-synthesis
-  to: target:frontier-generation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: family:teaching
-  relation: requires-capability-family
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:teaching
-  to: target:explanation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:teaching
-  to: target:demonstration
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:teaching
-  to: target:blank-state-reconstruction
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:teaching
-  to: target:transfer
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:teaching
-  to: target:learner-verification
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: family:capability-discovery
-  relation: requires-capability-family
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-discovery
-  to: target:mega-skills-ingestion
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-discovery
-  to: target:sibling-genius-discovery
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-discovery
-  to: target:model-and-tool-discovery
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-discovery
-  to: target:connector-and-mcp-discovery
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-discovery
-  to: target:runtime-and-device-discovery
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: family:capability-graph
-  relation: requires-capability-family
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-graph
-  to: target:dependency-graph-compilation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-graph
-  to: target:capability-algebra
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-graph
-  to: target:alternate-route-discovery
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-graph
-  to: target:mission-sensitive-importance
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:capability-graph
-  to: target:downstream-leverage
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: role:master-teacher-and-genius-entity-forge
-  to: family:forge-learning
-  relation: requires-capability-family
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:forge-learning
-  to: target:descendant-outcome-telemetry
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:forge-learning
-  to: target:synthesis-quality-evaluation
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-- from: family:forge-learning
-  to: target:generator-improvement-from-evidence
-  relation: develops
-  required_for_current_mission: true
-  evidence_refs: []
-analysis:
-  node_count: 33
-  edge_count: 32
-  candidate_bottlenecks:
-  - target:role-interpretation
-  - target:capability-family-inference
-  - target:vertical-anatomy-instantiation
-  - target:persona-generation
-  - target:mastery-map-generation
-  - target:frontier-generation
-  - target:explanation
-  - target:demonstration
-  - target:blank-state-reconstruction
-  - target:transfer
-  - target:learner-verification
-  - target:mega-skills-ingestion
-  - target:sibling-genius-discovery
-  - target:model-and-tool-discovery
-  - target:connector-and-mcp-discovery
-  - target:runtime-and-device-discovery
-  - target:dependency-graph-compilation
-  - target:capability-algebra
-  - target:alternate-route-discovery
-  - target:mission-sensitive-importance
-  - target:downstream-leverage
-  - target:descendant-outcome-telemetry
-  - target:synthesis-quality-evaluation
-  - target:generator-improvement-from-evidence
-  high_leverage_nodes:
-  - role:master-teacher-and-genius-entity-forge
-  - family:entity-synthesis
-  - family:capability-discovery
-  - family:capability-graph
-  - family:teaching
-  - family:forge-learning
-  note: Structural seed only. Mission sensitivity, substitution, and evidence-backed
-    centrality remain future analysis.
+{
+  "schema_version": 1,
+  "repository": "Genius-Mastery",
+  "nodes": [
+    {
+      "id": "role:master-teacher-and-genius-entity-forge",
+      "kind": "role",
+      "label": "Master Teacher and Genius Entity Forge",
+      "state": "mapped",
+      "mission_impact": 1,
+      "metadata": {
+        "repository": "Genius-Mastery"
+      }
+    },
+    {
+      "id": "outcome:synthesize-stronger-genius-entities-from-thin-role-briefs",
+      "kind": "outcome",
+      "label": "synthesize stronger Genius entities from thin role briefs",
+      "state": "desired",
+      "mission_impact": 1,
+      "metadata": {}
+    },
+    {
+      "id": "outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them",
+      "kind": "outcome",
+      "label": "teach methods so descendants can reconstruct and transfer them",
+      "state": "desired",
+      "mission_impact": 1,
+      "metadata": {}
+    },
+    {
+      "id": "outcome:improve-the-forge-from-descendant-evidence-and-failures",
+      "kind": "outcome",
+      "label": "improve the forge from descendant evidence and failures",
+      "state": "desired",
+      "mission_impact": 1,
+      "metadata": {}
+    },
+    {
+      "id": "family:entity-synthesis",
+      "kind": "capability-family",
+      "label": "entity-synthesis",
+      "state": "implemented",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:role-interpretation",
+      "kind": "capability-target",
+      "label": "role interpretation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "entity-synthesis"
+      }
+    },
+    {
+      "id": "target:capability-family-inference",
+      "kind": "capability-target",
+      "label": "capability-family inference",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "entity-synthesis"
+      }
+    },
+    {
+      "id": "target:vertical-anatomy-instantiation",
+      "kind": "capability-target",
+      "label": "vertical anatomy instantiation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "entity-synthesis"
+      }
+    },
+    {
+      "id": "target:persona-generation",
+      "kind": "capability-target",
+      "label": "persona generation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "entity-synthesis"
+      }
+    },
+    {
+      "id": "target:mastery-map-generation",
+      "kind": "capability-target",
+      "label": "mastery-map generation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "entity-synthesis"
+      }
+    },
+    {
+      "id": "target:frontier-generation",
+      "kind": "capability-target",
+      "label": "frontier generation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "entity-synthesis"
+      }
+    },
+    {
+      "id": "family:teaching",
+      "kind": "capability-family",
+      "label": "teaching",
+      "state": "implemented",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:explanation",
+      "kind": "capability-target",
+      "label": "explanation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "teaching"
+      }
+    },
+    {
+      "id": "target:demonstration",
+      "kind": "capability-target",
+      "label": "demonstration",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "teaching"
+      }
+    },
+    {
+      "id": "target:blank-state-reconstruction",
+      "kind": "capability-target",
+      "label": "blank-state reconstruction",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "teaching"
+      }
+    },
+    {
+      "id": "target:transfer",
+      "kind": "capability-target",
+      "label": "transfer",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "teaching"
+      }
+    },
+    {
+      "id": "target:learner-verification",
+      "kind": "capability-target",
+      "label": "learner verification",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "teaching"
+      }
+    },
+    {
+      "id": "family:capability-discovery",
+      "kind": "capability-family",
+      "label": "capability-discovery",
+      "state": "implemented-local-frontier-remote",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:mega-skills-ingestion",
+      "kind": "capability-target",
+      "label": "Mega Skills ingestion",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-discovery"
+      }
+    },
+    {
+      "id": "target:sibling-genius-discovery",
+      "kind": "capability-target",
+      "label": "sibling Genius discovery",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-discovery"
+      }
+    },
+    {
+      "id": "target:model-and-tool-discovery",
+      "kind": "capability-target",
+      "label": "model and tool discovery",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-discovery"
+      }
+    },
+    {
+      "id": "target:connector-and-mcp-discovery",
+      "kind": "capability-target",
+      "label": "connector and MCP discovery",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-discovery"
+      }
+    },
+    {
+      "id": "target:runtime-inventory",
+      "kind": "capability-target",
+      "label": "runtime inventory",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-discovery"
+      }
+    },
+    {
+      "id": "family:capability-graph",
+      "kind": "capability-family",
+      "label": "capability-graph",
+      "state": "implemented-core-frontier-emergent",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:dependency-graph-compilation",
+      "kind": "capability-target",
+      "label": "dependency graph compilation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-graph"
+      }
+    },
+    {
+      "id": "target:alternate-route-discovery",
+      "kind": "capability-target",
+      "label": "alternate-route discovery",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-graph"
+      }
+    },
+    {
+      "id": "target:mission-sensitive-importance",
+      "kind": "capability-target",
+      "label": "mission-sensitive importance",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-graph"
+      }
+    },
+    {
+      "id": "target:downstream-leverage",
+      "kind": "capability-target",
+      "label": "downstream leverage",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-graph"
+      }
+    },
+    {
+      "id": "target:higher-order-capability-promotion",
+      "kind": "capability-target",
+      "label": "higher-order capability promotion",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "capability-graph"
+      }
+    },
+    {
+      "id": "family:instruction-engineering",
+      "kind": "capability-family",
+      "label": "instruction-engineering",
+      "state": "implemented",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:instruction-contract-compilation",
+      "kind": "capability-target",
+      "label": "instruction contract compilation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "target:authority-and-trust-separation",
+      "kind": "capability-target",
+      "label": "authority and trust separation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "target:context-selection-and-compression",
+      "kind": "capability-target",
+      "label": "context selection and compression",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "target:tool-execution-truth-boundaries",
+      "kind": "capability-target",
+      "label": "tool execution truth boundaries",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "target:model-specific-projection",
+      "kind": "capability-target",
+      "label": "model-specific projection",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "target:trajectory-evaluation",
+      "kind": "capability-target",
+      "label": "trajectory evaluation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "target:smallest-layer-repair",
+      "kind": "capability-target",
+      "label": "smallest-layer repair",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "instruction-engineering"
+      }
+    },
+    {
+      "id": "family:forge-learning",
+      "kind": "capability-family",
+      "label": "forge-learning",
+      "state": "research",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:descendant-outcome-telemetry",
+      "kind": "capability-target",
+      "label": "descendant outcome telemetry",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "forge-learning"
+      }
+    },
+    {
+      "id": "target:synthesis-quality-evaluation",
+      "kind": "capability-target",
+      "label": "synthesis quality evaluation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "forge-learning"
+      }
+    },
+    {
+      "id": "target:generator-improvement-from-evidence",
+      "kind": "capability-target",
+      "label": "generator improvement from evidence",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "forge-learning"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "outcome:synthesize-stronger-genius-entities-from-thin-role-briefs",
+      "relation": "targets",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them",
+      "relation": "targets",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "outcome:improve-the-forge-from-descendant-evidence-and-failures",
+      "relation": "targets",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:entity-synthesis",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:entity-synthesis",
+      "to": "target:role-interpretation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:entity-synthesis",
+      "to": "target:capability-family-inference",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:entity-synthesis",
+      "to": "target:vertical-anatomy-instantiation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:entity-synthesis",
+      "to": "target:persona-generation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:entity-synthesis",
+      "to": "target:mastery-map-generation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:entity-synthesis",
+      "to": "target:frontier-generation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:teaching",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:teaching",
+      "to": "target:explanation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:teaching",
+      "to": "target:demonstration",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:teaching",
+      "to": "target:blank-state-reconstruction",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:teaching",
+      "to": "target:transfer",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:teaching",
+      "to": "target:learner-verification",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:capability-discovery",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-discovery",
+      "to": "target:mega-skills-ingestion",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-discovery",
+      "to": "target:sibling-genius-discovery",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-discovery",
+      "to": "target:model-and-tool-discovery",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-discovery",
+      "to": "target:connector-and-mcp-discovery",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-discovery",
+      "to": "target:runtime-inventory",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:capability-graph",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-graph",
+      "to": "target:dependency-graph-compilation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-graph",
+      "to": "target:alternate-route-discovery",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-graph",
+      "to": "target:mission-sensitive-importance",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-graph",
+      "to": "target:downstream-leverage",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:capability-graph",
+      "to": "target:higher-order-capability-promotion",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:instruction-engineering",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:instruction-contract-compilation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:authority-and-trust-separation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:context-selection-and-compression",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:tool-execution-truth-boundaries",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:model-specific-projection",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:trajectory-evaluation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:instruction-engineering",
+      "to": "target:smallest-layer-repair",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:forge-learning",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:forge-learning",
+      "to": "target:descendant-outcome-telemetry",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:forge-learning",
+      "to": "target:synthesis-quality-evaluation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:forge-learning",
+      "to": "target:generator-improvement-from-evidence",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    }
+  ],
+  "analysis": {
+    "node_count": 41,
+    "edge_count": 40,
+    "engine": "mission-intelligence-v1",
+    "mission_roots": [
+      "role:master-teacher-and-genius-entity-forge"
+    ],
+    "candidate_bottlenecks": [
+      "target:alternate-route-discovery",
+      "target:authority-and-trust-separation",
+      "target:blank-state-reconstruction",
+      "target:capability-family-inference",
+      "target:connector-and-mcp-discovery",
+      "target:context-selection-and-compression",
+      "target:demonstration",
+      "target:dependency-graph-compilation",
+      "target:descendant-outcome-telemetry",
+      "target:downstream-leverage",
+      "target:explanation",
+      "target:frontier-generation",
+      "target:generator-improvement-from-evidence",
+      "target:higher-order-capability-promotion",
+      "target:instruction-contract-compilation",
+      "target:learner-verification",
+      "target:mastery-map-generation",
+      "target:mega-skills-ingestion",
+      "target:mission-sensitive-importance",
+      "target:model-and-tool-discovery",
+      "target:model-specific-projection",
+      "target:persona-generation",
+      "target:role-interpretation",
+      "target:runtime-inventory",
+      "target:sibling-genius-discovery",
+      "target:smallest-layer-repair",
+      "target:synthesis-quality-evaluation",
+      "target:tool-execution-truth-boundaries",
+      "target:trajectory-evaluation",
+      "target:transfer",
+      "target:vertical-anatomy-instantiation",
+      "family:capability-discovery",
+      "family:capability-graph",
+      "family:forge-learning",
+      "family:instruction-engineering",
+      "family:entity-synthesis",
+      "family:teaching"
+    ],
+    "high_leverage_nodes": [
+      "role:master-teacher-and-genius-entity-forge",
+      "target:alternate-route-discovery",
+      "target:authority-and-trust-separation",
+      "target:blank-state-reconstruction",
+      "target:capability-family-inference",
+      "target:connector-and-mcp-discovery",
+      "target:context-selection-and-compression",
+      "target:demonstration",
+      "target:dependency-graph-compilation",
+      "target:descendant-outcome-telemetry"
+    ],
+    "ranked_priorities": [
+      {
+        "id": "outcome:improve-the-forge-from-descendant-evidence-and-failures",
+        "kind": "outcome",
+        "label": "improve the forge from descendant evidence and failures",
+        "state": "desired",
+        "priority": 0.845,
+        "leverage": 0.65,
+        "mission_impact": 1,
+        "mission_proximity": 0.5,
+        "readiness": 0.1,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": false,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "low readiness state: desired",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "outcome:synthesize-stronger-genius-entities-from-thin-role-briefs",
+        "kind": "outcome",
+        "label": "synthesize stronger Genius entities from thin role briefs",
+        "state": "desired",
+        "priority": 0.845,
+        "leverage": 0.65,
+        "mission_impact": 1,
+        "mission_proximity": 0.5,
+        "readiness": 0.1,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": false,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "low readiness state: desired",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "outcome:teach-methods-so-descendants-can-reconstruct-and-transfer-them",
+        "kind": "outcome",
+        "label": "teach methods so descendants can reconstruct and transfer them",
+        "state": "desired",
+        "priority": 0.845,
+        "leverage": 0.65,
+        "mission_impact": 1,
+        "mission_proximity": 0.5,
+        "readiness": 0.1,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": false,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "low readiness state: desired",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:alternate-route-discovery",
+        "kind": "capability-target",
+        "label": "alternate-route discovery",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:authority-and-trust-separation",
+        "kind": "capability-target",
+        "label": "authority and trust separation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:blank-state-reconstruction",
+        "kind": "capability-target",
+        "label": "blank-state reconstruction",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:capability-family-inference",
+        "kind": "capability-target",
+        "label": "capability-family inference",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:connector-and-mcp-discovery",
+        "kind": "capability-target",
+        "label": "connector and MCP discovery",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:context-selection-and-compression",
+        "kind": "capability-target",
+        "label": "context selection and compression",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:demonstration",
+        "kind": "capability-target",
+        "label": "demonstration",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:dependency-graph-compilation",
+        "kind": "capability-target",
+        "label": "dependency graph compilation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:descendant-outcome-telemetry",
+        "kind": "capability-target",
+        "label": "descendant outcome telemetry",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:downstream-leverage",
+        "kind": "capability-target",
+        "label": "downstream leverage",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:explanation",
+        "kind": "capability-target",
+        "label": "explanation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:frontier-generation",
+        "kind": "capability-target",
+        "label": "frontier generation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:generator-improvement-from-evidence",
+        "kind": "capability-target",
+        "label": "generator improvement from evidence",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:higher-order-capability-promotion",
+        "kind": "capability-target",
+        "label": "higher-order capability promotion",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:instruction-contract-compilation",
+        "kind": "capability-target",
+        "label": "instruction contract compilation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:learner-verification",
+        "kind": "capability-target",
+        "label": "learner verification",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:mastery-map-generation",
+        "kind": "capability-target",
+        "label": "mastery-map generation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:mega-skills-ingestion",
+        "kind": "capability-target",
+        "label": "Mega Skills ingestion",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:mission-sensitive-importance",
+        "kind": "capability-target",
+        "label": "mission-sensitive importance",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:model-and-tool-discovery",
+        "kind": "capability-target",
+        "label": "model and tool discovery",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:model-specific-projection",
+        "kind": "capability-target",
+        "label": "model-specific projection",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:persona-generation",
+        "kind": "capability-target",
+        "label": "persona generation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:role-interpretation",
+        "kind": "capability-target",
+        "label": "role interpretation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:runtime-inventory",
+        "kind": "capability-target",
+        "label": "runtime inventory",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:sibling-genius-discovery",
+        "kind": "capability-target",
+        "label": "sibling Genius discovery",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:smallest-layer-repair",
+        "kind": "capability-target",
+        "label": "smallest-layer repair",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:synthesis-quality-evaluation",
+        "kind": "capability-target",
+        "label": "synthesis quality evaluation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:tool-execution-truth-boundaries",
+        "kind": "capability-target",
+        "label": "tool execution truth boundaries",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:trajectory-evaluation",
+        "kind": "capability-target",
+        "label": "trajectory evaluation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:transfer",
+        "kind": "capability-target",
+        "label": "transfer",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:vertical-anatomy-instantiation",
+        "kind": "capability-target",
+        "label": "vertical anatomy instantiation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:capability-discovery",
+        "kind": "capability-family",
+        "label": "capability-discovery",
+        "state": "implemented-local-frontier-remote",
+        "priority": 0.739,
+        "leverage": 0.605,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.35,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 5,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "low readiness state: implemented-local-frontier-remote",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:capability-graph",
+        "kind": "capability-family",
+        "label": "capability-graph",
+        "state": "implemented-core-frontier-emergent",
+        "priority": 0.739,
+        "leverage": 0.605,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.35,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 5,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "low readiness state: implemented-core-frontier-emergent",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:forge-learning",
+        "kind": "capability-family",
+        "label": "forge-learning",
+        "state": "research",
+        "priority": 0.739,
+        "leverage": 0.595,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.35,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 3,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "low readiness state: research",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "role:master-teacher-and-genius-entity-forge",
+        "kind": "role",
+        "label": "Master Teacher and Genius Entity Forge",
+        "state": "mapped",
+        "priority": 0.72,
+        "leverage": 0.7,
+        "mission_impact": 1,
+        "mission_proximity": 1,
+        "readiness": 0.4,
+        "evidence_strength": 0,
+        "dependent_count": 0,
+        "dependency_count": 40,
+        "substitute_count": 0,
+        "required_for_current_mission": false,
+        "candidate_bottleneck": false,
+        "reasons": [
+          "high mission impact",
+          "low readiness state: mapped",
+          "weak or absent evidence references",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:instruction-engineering",
+        "kind": "capability-family",
+        "label": "instruction-engineering",
+        "state": "implemented",
+        "priority": 0.665,
+        "leverage": 0.615,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.72,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 7,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:entity-synthesis",
+        "kind": "capability-family",
+        "label": "entity-synthesis",
+        "state": "implemented",
+        "priority": 0.665,
+        "leverage": 0.61,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.72,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 6,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:teaching",
+        "kind": "capability-family",
+        "label": "teaching",
+        "state": "implemented",
+        "priority": 0.665,
+        "leverage": 0.605,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.72,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 5,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      }
+    ],
+    "top_next_actions": [
+      {
+        "id": "target:alternate-route-discovery",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:authority-and-trust-separation",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:blank-state-reconstruction",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:capability-family-inference",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:connector-and-mcp-discovery",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:context-selection-and-compression",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:demonstration",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:dependency-graph-compilation",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:descendant-outcome-telemetry",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
+        "id": "target:downstream-leverage",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      }
+    ],
+    "truth_note": "Scores prioritize investigation and capability work; they do not promote mapped/discovered capability to verified or mastered."
+  }
+}

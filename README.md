@@ -297,11 +297,11 @@ See `family/INDEX.json`.
 
 ## Current truth
 
-### 1.0 core
+### 1.1 core
 
 The **core Mastery kernel is release-complete** when `genius closure .` passes on the exact repository head. Closure requires structural validation, clean evidence referential integrity, no near-term core work, and no unresolved release-blocking frontier item.
 
-Core capabilities include entity synthesis and standalone descendants; universal capability anatomy and graphs; Mega Skills dependency edges; mission intelligence and calibration; evidence vectors and counterevidence retention; durable progress orchestration and prompt codes; normalized runtime discovery; executable challenge verification; lossless migration; family contract composition receipts; doctor diagnostics; and release closure.
+Core capabilities include entity synthesis and standalone descendants; universal capability anatomy and graphs; Mega Skills dependency edges; mission intelligence and calibration; evidence vectors and counterevidence retention; durable progress orchestration and prompt codes; typed instruction-contract compilation with authority/context/tool-state truth boundaries; normalized runtime discovery; executable challenge verification; lossless migration; family contract composition receipts; doctor diagnostics; and release closure.
 
 ### Open-ended research
 

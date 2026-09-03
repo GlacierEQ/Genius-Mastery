@@ -1,43 +1,141 @@
-schema_version: 1
-repository: Genius-Mastery
-dimensions:
-  foundations:
-    claims_mapped: 8
-    claims_with_evidence: 0
-    deepest_tier: foundation
-    notes: "Identity + schema rules encoded; evidence receipts not yet executed against live claims."
-  mechanisms:
-    claims_mapped: 4
-    claims_with_evidence: 4
-    deepest_tier: implemented
-  implementation:
-    claims_mapped: 3
-    claims_with_evidence: 4
-    deepest_tier: implemented
-  verification:
-    claims_mapped: 2
-    claims_with_evidence: 4
-    deepest_tier: implemented
-  performance:
-    claims_mapped: 4
-  reliability:
-    claims_mapped: 0
-  security:
-    claims_mapped: 1
-  observability:
-    claims_mapped: 4
-  operations:
-    claims_mapped: 1
-  synthesis_transfer:
-    claims_mapped: 3
-    claims_with_evidence: 1
-    deepest_tier: implemented
-    notes: "Role-to-entity synthesis has exact-head CI evidence; semantic synthesis and clean descendant CI remain frontier."
-  teaching:
-    claims_mapped: 1
-    claims_with_evidence: 1
-    deepest_tier: implemented
-    notes: "Teaching/reconstruction contracts and generated standalone validation are implemented; real learner outcome metrics remain zero."
-  original_work:
-    claims_mapped: 0
-notes: "Vector is diagnostic. Recompute from claims/evidence; never hand-write vanity scores."
+{
+  "schema_version": 2,
+  "repository": "Genius-Mastery",
+  "representation": "evidence-derived-multidimensional-vector",
+  "dimensions": {
+    "foundations": {
+      "claims_mapped": 3,
+      "claims_with_evidence": 2,
+      "verified_claims": 1,
+      "counterevidence_claims": 0,
+      "deepest_tier": "operationally_verified",
+      "status_counts": {
+        "mapped": 2,
+        "operationally_verified": 1
+      }
+    },
+    "mechanisms": {
+      "claims_mapped": 4,
+      "claims_with_evidence": 1,
+      "verified_claims": 0,
+      "counterevidence_claims": 2,
+      "deepest_tier": "implemented",
+      "status_counts": {
+        "implemented": 4
+      }
+    },
+    "implementation": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    },
+    "debugging": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    },
+    "verification": {
+      "claims_mapped": 1,
+      "claims_with_evidence": 1,
+      "verified_claims": 1,
+      "counterevidence_claims": 1,
+      "deepest_tier": "operationally_verified",
+      "status_counts": {
+        "operationally_verified": 1
+      }
+    },
+    "performance": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    },
+    "reliability": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    },
+    "security": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    },
+    "observability": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    },
+    "operations": {
+      "claims_mapped": 1,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 1,
+      "deepest_tier": "implemented",
+      "status_counts": {
+        "implemented": 1
+      }
+    },
+    "synthesis_transfer": {
+      "claims_mapped": 2,
+      "claims_with_evidence": 1,
+      "verified_claims": 0,
+      "counterevidence_claims": 1,
+      "deepest_tier": "implemented",
+      "status_counts": {
+        "implemented": 2
+      }
+    },
+    "teaching": {
+      "claims_mapped": 1,
+      "claims_with_evidence": 1,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": "implemented",
+      "status_counts": {
+        "implemented": 1
+      }
+    },
+    "original_work": {
+      "claims_mapped": 0,
+      "claims_with_evidence": 0,
+      "verified_claims": 0,
+      "counterevidence_claims": 0,
+      "deepest_tier": null,
+      "status_counts": {}
+    }
+  },
+  "totals": {
+    "claims": 12,
+    "claims_with_evidence": 6,
+    "verified_claims": 2,
+    "evidence_entries": 7,
+    "dimensions_with_claims": 6
+  },
+  "integrity": {
+    "unresolved_evidence_refs": [],
+    "ledger_claim_mismatches": [],
+    "orphan_evidence": [
+      "ev-bk-mastery-129",
+      "ev-bk-mastery-129-projection-gap"
+    ],
+    "clean": true
+  },
+  "truth_note": "This vector is a projection of recorded claims and evidence. It is not a scalar mastery score and does not infer capability beyond claim status plus linked receipts."
+}

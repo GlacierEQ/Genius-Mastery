@@ -20,6 +20,9 @@ capability_families:
   - id: capability-graph
     status: implemented-core-frontier-emergent
     targets: [dependency graph compilation, alternate-route discovery, mission-sensitive importance, downstream leverage, higher-order capability promotion]
+  - id: instruction-engineering
+    status: implemented
+    targets: [instruction contract compilation, authority and trust separation, context selection and compression, tool execution truth boundaries, model-specific projection, trajectory evaluation, smallest-layer repair]
   - id: forge-learning
     status: research
     targets: [descendant outcome telemetry, synthesis quality evaluation, generator improvement from evidence]
@@ -39,3 +42,4 @@ next_compiler_stages:
   - measure real descendant teaching outcomes
   - promote execution-backed emergent compositions only after evidence
   - learn ranking calibration from observed mission outcomes
+  - optimize model-specific instruction projections from representative execution trajectories

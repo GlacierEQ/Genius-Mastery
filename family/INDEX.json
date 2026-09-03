@@ -17,6 +17,7 @@
         "mastery.kernel.evidence-vector",
         "mastery.kernel.progress",
         "mastery.kernel.prompt-codes",
+        "mastery.kernel.instruction-engineering",
         "mastery.kernel.runtime-inventory",
         "mastery.kernel.challenge-harness",
         "mastery.kernel.migration",
@@ -26,17 +27,26 @@
       ],
       "consumes": [],
       "verified_at": null,
-      "revision": "1.0.0",
+      "revision": "1.1.0",
       "url": "https://github.com/GlacierEQ/Genius-Mastery",
-      "notes": "1.0.0 declares the kernel core complete while preserving open-ended research as non-blocking frontier. Exact-head CI is external evidence and must be read from GitHub Actions/Buildkite rather than asserted by this self-referential index.",
-      "verification_evidence": ["ev-bk-mastery-001", "ev-bk-mastery-002", "ev-gha-teacher-forge-001"]
+      "notes": "1.1.0 preserves the core-complete/open-ended-mastery boundary and adds typed instruction engineering as a first-class kernel capability. Exact-head CI remains external evidence and must be read from GitHub Actions/Buildkite rather than asserted by this self-referential index.",
+      "verification_evidence": [
+        "ev-bk-mastery-001",
+        "ev-bk-mastery-002",
+        "ev-gha-teacher-forge-001",
+        "ev-gha-instruction-engineering-001"
+      ]
     },
     {
       "repository": "Genius-Code",
       "purpose": "Code",
       "spec_version": 2,
-      "capabilities": ["code.testing.property"],
-      "consumes": ["Genius-Mastery"],
+      "capabilities": [
+        "code.testing.property"
+      ],
+      "consumes": [
+        "Genius-Mastery"
+      ],
       "verified_at": "2026-08-29T21:45:38Z",
       "revision": "0.1.2",
       "url": "https://github.com/GlacierEQ/Genius-Code",
@@ -46,8 +56,13 @@
       "repository": "Genius-Verification",
       "purpose": "Verification",
       "spec_version": 2,
-      "capabilities": ["verification.property.method", "verification.model-checking.tla"],
-      "consumes": ["Genius-Mastery"],
+      "capabilities": [
+        "verification.property.method",
+        "verification.model-checking.tla"
+      ],
+      "consumes": [
+        "Genius-Mastery"
+      ],
       "verified_at": "2026-08-29T21:45:49Z",
       "revision": "0.1.1",
       "url": "https://github.com/GlacierEQ/Genius-Verification",

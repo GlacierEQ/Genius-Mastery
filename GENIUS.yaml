@@ -33,5 +33,7 @@ capability_graph: capabilities/GRAPH.yaml
 progress_orchestration: recover-prioritize-execute-persist-verify-compound
 progress_contract: docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md
 prompt_code_registry: src/genius/prompt_codes.py
+instruction_contract: docs/INSTRUCTION_ENGINEERING.md
+instruction_compiler: src/genius/instruction_engineering.py
 closure_contract: src/genius/closure.py
 release_model: core-complete-open-ended-mastery
