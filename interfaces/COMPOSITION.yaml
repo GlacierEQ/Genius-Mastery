@@ -68,13 +68,53 @@ provides:
     evidence_refs: []
   - id: mastery.kernel.validate
     description: Local contract + referential integrity validator
-    stage: mapped
+    stage: implemented
     interface: tools/validate.py
     evidence_refs: []
   - id: mastery.kernel.doctor
     description: Diagnostic surface for vector, claims, evidence, frontier
-    stage: mapped
+    stage: implemented
     interface: tools/doctor.py
+    evidence_refs: []
+  - id: mastery.kernel.progress
+    description: Evidence-bounded recover-prioritize-execute-persist-verify-compound progress orchestration
+    stage: implemented
+    interface: src/genius/progress.py
+    evidence_refs: []
+  - id: mastery.kernel.prompt-codes
+    description: Composable command vocabulary for explanation, reasoning, quality, execution, strategy, engineering, output, and orchestration
+    stage: implemented
+    interface: src/genius/prompt_codes.py
+    evidence_refs: []
+  - id: mastery.kernel.runtime-inventory
+    description: Normalized local runtime capability discovery with provenance and secret-value boundaries
+    stage: implemented
+    interface: src/genius/discovery.py
+    evidence_refs: []
+  - id: mastery.kernel.challenge-harness
+    description: Transparent executable challenge verification using explicit deterministic verifier modes
+    stage: implemented
+    interface: src/genius/challenge.py
+    evidence_refs: []
+  - id: mastery.kernel.migration
+    description: Lossless Genius-family scaffold migration preserving custom content, IDs, and before/after hashes
+    stage: implemented
+    interface: src/genius/migration.py
+    evidence_refs: []
+  - id: mastery.kernel.calibration
+    description: Perturbation-based sanity calibration for mission-intelligence priority and readiness response
+    stage: implemented
+    interface: src/genius/calibration.py
+    evidence_refs: []
+  - id: mastery.kernel.composition-execution
+    description: Deterministic family contract-composition execution receipts with provenance-preserving truth boundaries
+    stage: implemented
+    interface: src/genius/composition.py
+    evidence_refs: []
+  - id: mastery.kernel.closure
+    description: Release closure diagnostic separating core completion from open-ended research frontier
+    stage: implemented
+    interface: src/genius/closure.py
     evidence_refs: []
   - id: mastery.ci.buildkite.contract
     description: Fail-closed Genius-family Buildkite execution contract with exact-source terminal receipts and proof-artifact digests

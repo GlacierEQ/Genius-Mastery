@@ -1,99 +1,76 @@
 schema_version: 1
+release_model: core-complete-open-ended-mastery
 items:
   - id: frontier-kernel-001
-    question: Can a packaged Genius-Mastery generate a fully self-validating descendant that passes its own validator without the Mastery source checkout?
-    why_it_matters: Proves the teacher-forge creates independently operable descendants rather than hidden dependents.
+    question: Can a packaged Genius-Mastery generate a fully self-validating descendant without the Mastery source checkout?
+    why_it_matters: Proves descendants do not secretly depend on the teacher source tree.
     related_claims: [kernel-identity-001]
     dependencies: [Genius-Mastery]
     evidence_to_resolve:
       - generated descendant standalone validator PASS
-      - generated descendant clean-checkout CI PASS
-    status: in-progress
+      - generated descendant clean isolated-environment CI PASS
+    status: resolved
+    release_blocker: false
+    resolution: GitHub validation synthesizes a descendant and validates it in a fresh venv containing only PyYAML.
 
   - id: frontier-synthesis-001
     question: How should semantic role synthesis expand beyond deterministic keyword inference while remaining inspectable, evidence-bound, and provider-independent?
-    why_it_matters: A job title and desired outcomes should generate deep domain anatomy even when vocabulary does not match a hand-authored keyword.
+    why_it_matters: Deeper semantic synthesis can improve coverage when vocabulary does not match deterministic inference.
     related_claims: []
-    dependencies:
-      - mastery.kernel.synthesize
-      - mastery.kernel.anatomy-inspection
-    evidence_to_resolve:
-      - provider interface
-      - comparative role-synthesis benchmark
-      - transparent rationale for inferred capabilities
-    status: in-progress
+    dependencies: [mastery.kernel.synthesize, mastery.kernel.anatomy-inspection]
+    status: research
+    release_blocker: false
 
   - id: frontier-discovery-001
-    question: How can the forge automatically discover live models, tools, APIs, MCP servers, connectors, runtimes, devices, and artifact systems available to the executing agent?
-    why_it_matters: Generated capability plans should reflect executable reality rather than generic assumptions.
+    question: How far should live capability discovery extend beyond the normalized local runtime, MCP-config, model, CLI, package, and integration-signal inventory?
+    why_it_matters: Remote APIs, connectors, devices, and agent-host capabilities require provider-aware adapters and independent readback.
     related_claims: []
-    dependencies:
-      - mastery.kernel.capability-sources
-    evidence_to_resolve:
-      - normalized runtime capability inventory
-      - source/provider provenance
-      - live readback tests
-    status: in-progress
+    dependencies: [mastery.kernel.capability-sources]
+    status: research
+    release_blocker: false
+    core_resolution: Normalized local runtime inventory with provenance and secret-value non-disclosure is implemented.
 
   - id: frontier-graph-001
-    question: How should recursive capability graphs represent substitutions, composition recipes, evidence, and multi-level emergent capability without flattening the lower layers?
-    why_it_matters: The Genius ladder depends on higher capabilities becoming reusable objects for the next spiral.
+    question: How should recursive capability graphs promote verified compositions into multi-level emergent capabilities without flattening their dependencies?
+    why_it_matters: Higher capabilities should become reusable graph objects while preserving lineage.
     related_claims: []
-    dependencies:
-      - schemas/capability-graph.schema.json
-      - src/genius/graph.py
-    evidence_to_resolve:
-      - multi-level composition fixture
-      - graph referential-integrity tests
-      - composition trace from primitive to higher capability
-    status: in-progress
+    dependencies: [schemas/capability-graph.schema.json, src/genius/graph.py]
+    status: research
+    release_blocker: false
+    core_resolution: Dependency metadata, reference nodes, mission intelligence, graph rebuild, and referential validation are implemented.
 
   - id: frontier-impact-001
-    question: How should mission-intelligence weights and evidence-strength calibration learn from observed mission outcomes without turning heuristic priority into fake certainty?
-    why_it_matters: The 0.6.0 engine can rank work now; the next step is proving that its rankings remain useful across missions, counterexamples, and changing evidence quality.
+    question: How should ranking weights learn from observed mission outcomes without turning heuristic priority into fake certainty?
+    why_it_matters: Synthetic perturbation calibration establishes monotonic sanity; real outcome learning is separate research.
     related_claims: [mission-intelligence-001]
-    dependencies:
-      - mastery.kernel.mission-intelligence
-      - capability graph
-    evidence_to_resolve:
-      - counterexample and perturbation suite
-      - mission-specific ranking benchmark
-    status: in-progress
+    dependencies: [mastery.kernel.mission-intelligence]
+    status: research
+    release_blocker: false
+    core_resolution: Deterministic counterexample and perturbation calibration is implemented and tested.
 
   - id: frontier-teaching-001
     question: How should descendant reconstruction, transfer, explanation quality, and independence be measured and fed back into the forge?
-    why_it_matters: Mastery is demonstrated by producing stronger practitioners, not static output.
+    why_it_matters: Real learner outcomes are required for empirical teaching-quality improvement.
     related_claims: []
-    dependencies:
-      - schemas/teaching.schema.json
-      - mastery.kernel.synthesize
-    evidence_to_resolve:
-      - learner challenge harness
-      - descendant outcome receipts
-      - generator improvement trace
-    status: in-progress
+    dependencies: [schemas/teaching.schema.json, mastery.kernel.synthesize]
+    status: research
+    release_blocker: false
+    core_resolution: Teaching contracts, transfer challenges, standalone descendants, and executable challenge primitives are implemented.
 
   - id: frontier-family-001
-    question: How should discovered cross-Genius candidates become execution-backed multi-Genius compositions and higher-order capabilities without losing provenance or creating a rigid hierarchy?
-    why_it_matters: Local contract discovery now exists; mastery requires proving that composed entities create useful behavior greater than isolated capability descriptions.
+    question: How should contract-compatible Genius entities prove emergent multi-Genius mission behavior greater than isolated execution?
+    why_it_matters: Contract composition is executable and receipted; emergent domain behavior requires real mission benchmarks.
     related_claims: [family-composition-001, family-synergy-001]
-    dependencies:
-      - mastery.kernel.family-composition
-      - sibling Genius composition contracts
-      - capability graph
-    evidence_to_resolve:
-      - at least one executed multi-Genius mission
-      - comparative isolated-versus-composed benchmark
-      - preserved provenance for each contributing capability
-    status: in-progress
+    dependencies: [mastery.kernel.family-composition, sibling Genius composition contracts]
+    status: research
+    release_blocker: false
+    core_resolution: Deterministic execution-backed contract composition receipts and isolated-versus-combined capability visibility are implemented.
 
   - id: frontier-migration-001
-    question: What migration functions upgrade older Genius-family metadata and scaffolds while preserving all evidence IDs and domain-authored work?
-    why_it_matters: The forge is evolving quickly and must improve descendants without destructive template replacement.
+    question: What migration functions upgrade older Genius-family metadata and scaffolds while preserving evidence IDs and domain-authored work?
+    why_it_matters: Family evolution must not destructively replace descendant work.
     related_claims: []
     dependencies: [Genius-Mastery]
-    evidence_to_resolve:
-      - lossless migration receipt
-      - round-trip validation
-      - preserved custom-domain content
-    status: in-progress
+    status: resolved
+    release_blocker: false
+    resolution: Lossless v1-to-v2 migration preserves custom content and IDs, backfills missing surfaces, emits hashes, and is idempotent.

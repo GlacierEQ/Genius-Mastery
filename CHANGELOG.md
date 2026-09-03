@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0] — 2026-09-02
+
+### Core completion
+- Added an executable core-complete/open-ended-mastery release boundary enforced by `genius closure`.
+- Added perturbation calibration for mission-intelligence sanity.
+- Added deterministic execution-backed family contract-composition receipts.
+- Replaced the keyword-only challenge stub with explicit verifier modes.
+- Replaced single-file migration with lossless idempotent scaffold migration preserving identifiers, custom content, and hashes.
+- Added normalized local runtime inventory with provenance and secret-value boundaries.
+- Normalized Mega Skills dependency metadata into capability-reference graph nodes and edges.
+- Added CLI surfaces for runtime inventory, calibration, composition receipts, graph rebuild, and release closure.
+- Added clean isolated-environment descendant validation to GitHub Actions.
+- Hardened doctor diagnostics so unresolved frontier research remains visible.
+- Added CI supersession so obsolete intermediate heads do not block verification of current state.
+- Preserved semantic synthesis, remote inventory, learner-outcome measurement, observed-outcome learning, emergent composition, and higher-order promotion as visible non-blocking research.
+
 ## [0.8.0] — 2026-09-02
 
 ### Progress as a first-class kernel behavior

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "genius-mastery"
-version = "0.8.0"
-description = "Genius teacher-forge with synthesis, mission intelligence, family composition, evidence-derived mastery vectors, validation, and capability graphs"
+version = "1.0.0"
+description = "Genius family kernel for synthesis, durable progress, mission intelligence, evidence, composition, migration, runtime discovery, and verification"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

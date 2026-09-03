@@ -24,7 +24,7 @@ composition_contract: interfaces/COMPOSITION.yaml
 capability_anatomy_contract: capabilities/STACK.yaml
 teaching_contract: teaching/TEACHING.yaml
 kernel: true
-package_version: 0.8.0
+package_version: 1.0.0
 role_brief: ROLE.yaml
 persona: persona/PERSONA.md
 synthesis_plan: synthesis/PLAN.yaml
@@ -33,3 +33,5 @@ capability_graph: capabilities/GRAPH.yaml
 progress_orchestration: recover-prioritize-execute-persist-verify-compound
 progress_contract: docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md
 prompt_code_registry: src/genius/prompt_codes.py
+closure_contract: src/genius/closure.py
+release_model: core-complete-open-ended-mastery

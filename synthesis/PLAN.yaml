@@ -1,96 +1,41 @@
 schema_version: 1
 repository: Genius-Mastery
 generated_by: Genius-Mastery
-synthesis_state: operational-kernel-under-active-development
+synthesis_state: core-operational-open-ended-learning
 role: Master Teacher and Genius Entity Forge
 outcomes:
   - synthesize stronger Genius entities from thin role briefs
   - teach methods so descendants can reconstruct and transfer them
   - improve the forge from descendant evidence and failures
-
 capability_families:
   - id: entity-synthesis
-    status: implemented-seed
-    targets:
-      - role interpretation
-      - capability-family inference
-      - vertical anatomy instantiation
-      - persona generation
-      - mastery-map generation
-      - frontier generation
+    status: implemented
+    targets: [role interpretation, capability-family inference, vertical anatomy instantiation, persona generation, mastery-map generation, frontier generation]
   - id: teaching
-    status: implemented-seed
-    targets:
-      - explanation
-      - demonstration
-      - blank-state reconstruction
-      - transfer
-      - learner verification
+    status: implemented
+    targets: [explanation, demonstration, blank-state reconstruction, transfer, learner verification]
   - id: capability-discovery
-    status: mapped
-    targets:
-      - Mega Skills ingestion
-      - sibling Genius discovery
-      - model and tool discovery
-      - connector and MCP discovery
-      - runtime and device discovery
+    status: implemented-local-frontier-remote
+    targets: [Mega Skills ingestion, sibling Genius discovery, model and tool discovery, connector and MCP discovery, runtime inventory]
   - id: capability-graph
-    status: frontier
-    targets:
-      - dependency graph compilation
-      - capability algebra
-      - alternate-route discovery
-      - mission-sensitive importance
-      - downstream leverage
+    status: implemented-core-frontier-emergent
+    targets: [dependency graph compilation, alternate-route discovery, mission-sensitive importance, downstream leverage, higher-order capability promotion]
   - id: forge-learning
-    status: frontier
-    targets:
-      - descendant outcome telemetry
-      - synthesis quality evaluation
-      - generator improvement from evidence
-
+    status: research
+    targets: [descendant outcome telemetry, synthesis quality evaluation, generator improvement from evidence]
 capability_sources:
   - repository: GlacierEQ/mega-skills
-    registries:
-      - registry/skills.json
-      - registry/combo-skills.json
-      - registry/mega-skills.json
+    registries: [registry/skills.json, registry/combo-skills.json, registry/mega-skills.json]
   - family: Genius-*
     interface: interfaces/COMPOSITION.yaml
   - surface: live-runtime
-    targets:
-      - models
-      - tools
-      - APIs
-      - MCP servers
-      - connectors
-      - runtimes
-      - files
-      - devices
-      - artifact systems
+    targets: [models, tools, APIs, MCP servers, connectors, runtimes, files, devices, artifact systems]
   - surface: authoritative-research
-    targets:
-      - standards
-      - primary sources
-      - source repositories
-      - benchmarks
-      - production evidence
-
-teaching_loop:
-  - explain
-  - demonstrate
-  - reconstruct
-  - challenge
-  - observe
-  - verify
-  - retain
-  - transfer
-  - teach-another
-  - improve-forge
-
+    targets: [standards, primary sources, source repositories, benchmarks, production evidence]
+teaching_loop: [explain, demonstrate, reconstruct, challenge, observe, verify, retain, transfer, teach-another, improve-forge]
 next_compiler_stages:
-  - ingest live Mega Skills registries into a normalized capability graph
-  - add semantic role synthesis beyond deterministic keyword inference
-  - discover live tools/models/connectors and bind them to capability nodes
-  - calculate mission sensitivity and improvement leverage
-  - evaluate descendant quality and feed it back into synthesis
+  - add provider-independent semantic synthesis adapters
+  - expand remote capability inventory with provider-aware readback
+  - measure real descendant teaching outcomes
+  - promote execution-backed emergent compositions only after evidence
+  - learn ranking calibration from observed mission outcomes

@@ -127,6 +127,11 @@ genius analyze . --write
 genius family /path/to/genius-estate --top 10
 genius vector .
 genius vector . --write
+genius discover . --write
+genius calibrate .
+genius compose /path/to/genius-estate --output /tmp/composition-receipt.json
+genius rebuild-graph .
+genius closure .
 genius new Performance --dest /tmp
 ```
 
@@ -256,48 +261,17 @@ See `family/INDEX.json`.
 
 ## Current truth
 
-Implemented:
+### 1.0 core
 
-- Genius identity contract;
-- claim/evidence/source/challenge/composition schemas;
-- universal capability anatomy schema;
-- universal capability template;
-- role-brief schema;
-- kernel-up entity anatomy;
-- vertical capability stack;
-- role-to-entity synthesis engine;
-- universal kernel-up inspection brain across every vertical layer;
-- optional real Mega Skills registry matching without implementation duplication;
-- `genius synthesize` CLI;
-- scaffold generator;
-- structural validators;
-- regression tests including `Researcher -> Indiana Jones`;
-- capability source registry;
-- recursive capability-graph compiler;
-- mission-sensitive capability intelligence with bottleneck/leverage ranking;
-- evidence/readiness/substitutability-aware prioritization;
-- `genius analyze` CLI with optional persistent graph enrichment;
-- local Genius-family discovery and composition-contract resolution;
-- unresolved dependency and provider-fanout analysis;
-- cross-Genius composition candidate discovery;
-- `genius family` CLI with optional YAML analysis output;
-- evidence-derived multidimensional mastery vectors;
-- claim/evidence referential-integrity diagnostics;
-- `genius vector` CLI with deterministic vector regeneration;
-- Buildkite/GitHub CI surfaces.
+The **core Mastery kernel is release-complete** when `genius closure .` passes on the exact repository head. Closure requires structural validation, clean evidence referential integrity, no near-term core work, and no unresolved release-blocking frontier item.
 
-Still frontier work:
+Core capabilities include entity synthesis and standalone descendants; universal capability anatomy and graphs; Mega Skills dependency edges; mission intelligence and calibration; evidence vectors and counterevidence retention; durable progress orchestration and prompt codes; normalized runtime discovery; executable challenge verification; lossless migration; family contract composition receipts; doctor diagnostics; and release closure.
 
-- automatic live Mega Skills registry ingestion;
-- automatic tool / model / connector inventory ingestion;
-- deeper evidence-quality calibration and learned scoring weights;
-- live/remote Genius-estate ingestion beyond local checkouts;
-- semantic and execution-backed composition ranking beyond lexical discovery;
-- generated challenge implementation rather than mapped challenge prompts;
-- full migration engine;
-- continuous outcome-to-generator learning.
+### Open-ended research
 
-Never convert "generated" into "mastered" or "file exists" into "system works."
+Core completion does **not** mean mastery research stops. The non-blocking frontier remains visible in `frontier/QUEUE.yaml`: semantic role synthesis, broader remote capability inventory, real learner-outcome feedback, observed-outcome calibration, emergent cross-Genius mission behavior, provenance/attestation, and higher-order capability promotion.
+
+Never convert "generated" into "mastered", a file write into execution proof, or a release label into external verification.
 
 ## License
 

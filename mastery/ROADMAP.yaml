@@ -1,37 +1,38 @@
 schema_version: 1
+release: 1.0.0
+release_model: core-complete-open-ended-mastery
 completed_foundations:
   - installable Genius-Mastery package and genius CLI
   - self-validating bare domain generator
   - role-to-entity synthesis command
-  - universal kernel-up capability anatomy
-  - universal inspection prompts
+  - universal kernel-up capability anatomy and inspection prompts
   - role, persona, teaching, synthesis, and vertical stack contracts
-  - optional real Mega Skills registry matching
-  - recursive capability graph compiler
+  - real Mega Skills registry matching with normalized dependency metadata
+  - recursive capability graph compiler and self-hosted graph rebuild
   - mission-sensitive bottleneck and leverage intelligence
+  - perturbation-based mission-intelligence calibration checks
   - local Genius-family contract discovery and dependency resolution
-  - cross-Genius composition candidate discovery
+  - execution-backed family composition contract receipts
   - evidence-derived self-observation vector with referential-integrity diagnostics
-  - entity-aware doctor diagnostics
-
-near_term:
-  - restore current-head external CI proof on the macos-self execution fabric
-  - add clean-checkout CI fixture for a generated descendant
-  - normalize real Mega Skills dependency metadata into capability graph edges
-  - calibrate mission-intelligence rankings against counterexamples and observed outcomes
-  - execute and benchmark the first multi-Genius composition
-  - add lossless migration functions for older Genius-family scaffolds
-  - bind generated challenge prompts to executable challenge harnesses
-  - add self-hosted Genius-Mastery capability graph
-
-mid_term:
+  - progress orchestration and composable prompt-code command vocabulary
+  - normalized local runtime capability inventory with provenance boundaries
+  - executable transparent challenge harness
+  - lossless scaffold migration with preserved IDs and custom content
+  - entity-aware doctor and release-closure diagnostics
+  - generated descendant standalone validation in a clean isolated Python environment
+  - GitHub and Buildkite verification pipelines for the kernel
+near_term: []
+external_verification:
+  - GitHub Actions must pass validate-contract on the exact release head.
+  - Buildkite macos-self remains an independent execution fabric; a current-head terminal receipt is external evidence and is not fabricated by this roadmap.
+continuing_research:
   - semantic role synthesis provider interface beyond deterministic keyword inference
-  - live model/tool/API/MCP/connector/runtime/device inventory adapters
+  - broader live API, connector, remote MCP, device, and artifact-system inventory adapters
   - live/remote Genius-estate discovery beyond local checkouts
-  - descendant teaching-outcome measurement and forge feedback
-  - execution-backed higher-order composition promotion
-  - provenance/attestation hooks for generated and verified artifacts
-
+  - descendant teaching-outcome measurement and generator feedback
+  - observed-outcome calibration and learned ranking weights
+  - execution-backed emergent multi-Genius behavior beyond contract composition
+  - provenance and attestation hooks for generated and verified artifacts
 frontier:
   - automatic capability invention from graph gaps and available compositions
   - recursive higher-capability promotion after evidence

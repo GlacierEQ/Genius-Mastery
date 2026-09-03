@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -84,3 +88,4 @@ jobs:
           genius validate .
           genius progress . --mission "Advance the strongest remaining Mastery bottleneck" --json > /tmp/progress.json
           test -s /tmp/progress.json
+          genius closure .
