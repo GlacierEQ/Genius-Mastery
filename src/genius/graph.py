@@ -130,6 +130,7 @@ def build_synthesis_graph(
                     "version": match.get("version"),
                     "match_score": match.get("match_score"),
                     "matched_terms": match.get("matched_terms") or [],
+                    "dependencies": match.get("dependencies") or [],
                 },
             }
         )
@@ -142,6 +143,23 @@ def build_synthesis_graph(
                 "evidence_refs": [],
             }
         )
+        for dependency in match.get("dependencies") or []:
+            dep_id = f"capability-ref:{_slug(str(dependency))}"
+            add_node({
+                "id": dep_id,
+                "kind": "capability-reference",
+                "label": str(dependency),
+                "state": "discovered",
+                "mission_impact": 0.4,
+                "metadata": {"source": "normalized-registry-dependency"},
+            })
+            edges.append({
+                "from": mid,
+                "to": dep_id,
+                "relation": "requires",
+                "required_for_current_mission": False,
+                "evidence_refs": [],
+            })
 
     graph = {
         "schema_version": 1,
