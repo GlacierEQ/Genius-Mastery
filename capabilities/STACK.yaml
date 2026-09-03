@@ -21,6 +21,13 @@ layers:
     alternate_routes: []
     failure_modes: [schema drift, scaffold drift, capability semantics becoming documentation-only]
     improvement_targets: [cross-repository capability graph, impact propagation engine]
+  instructions:
+    required: [authority separation, outcome contract, context trust boundaries, tool truth state, output contract, verification]
+    available: [src/genius/instruction_engineering.py, schemas/instruction-contract.schema.json, docs/INSTRUCTION_ENGINEERING.md, src/genius/prompt_codes.py]
+    missing: [trajectory-backed automatic prompt optimization]
+    alternate_routes: [manual model-specific prompt tuning with representative evals]
+    failure_modes: [ornamental prompt inflation, duplicate instructions, context bloat, retrieved data treated as authority, tool availability treated as execution, model-agnostic prompt carryover]
+    improvement_targets: [eval adapters, trajectory failure clustering, model-specific projection profiles, automatic smallest-layer repair]
   capability_composition:
     required: [atomic capabilities, dependency edges, emergent higher-order capabilities]
     available: [interfaces/COMPOSITION.yaml, schemas/composition.schema.json, schemas/capability.schema.json]
