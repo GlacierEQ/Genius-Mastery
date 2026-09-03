@@ -66,3 +66,25 @@ The canonical default stack is:
 Do not convert a progress contract into a success claim. Planned, executed, observed, and verified are distinct states.
 
 The machine-readable implementation lives in `src/genius/progress.py`; the command vocabulary lives in `src/genius/prompt_codes.py`; the human contract lives in `docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md`.
+
+
+## Instruction engineering contract
+
+Prompt prose is one projection of the runtime, not the runtime itself.
+
+For instruction/prompt/agent-kernel work:
+
+1. preserve the semantic outcome and hard constraints before editing wording;
+2. separate authority, trusted context, untrusted retrieved data, tools, examples, output, and verification;
+3. state stable instructions once and remove ornamental repetition;
+4. prefer retrieval/progressive disclosure over unconditional context injection;
+5. preserve `available != called != succeeded != verified` for every tool path;
+6. request observable assumptions, evidence, checks, decision points, and conclusions rather than private reasoning traces;
+7. compile/tune for the target model family instead of blindly carrying forward legacy prompt stacks;
+8. use representative behavioral evals to decide whether a prompt change is actually better;
+9. repair retrieval, tool metadata, state, or validation defects at their owning layer instead of compensating with more system-prompt prose.
+
+Machine implementation: `src/genius/instruction_engineering.py`.
+Contract schema: `schemas/instruction-contract.schema.json`.
+Human doctrine: `docs/INSTRUCTION_ENGINEERING.md`.
+CLI: `genius instruct`.
