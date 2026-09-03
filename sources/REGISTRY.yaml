@@ -78,3 +78,62 @@ sources:
     last_verified: "2026-08-29"
     supports_claims: []
     challenges_claims: []
+
+  - id: src-openai-model-guidance
+    title: OpenAI Model Guidance
+    url: https://developers.openai.com/api/docs/guides/latest-model
+    authority: primary
+    publisher: OpenAI
+    domain_tags: [instruction-engineering, context, tools, evals]
+    version: current
+    first_seen: "2026-09-03"
+    last_verified: "2026-09-03"
+    supports_claims: [instruction-contract-001]
+    challenges_claims: []
+    trust_notes: Current model-family guidance emphasizes lean prompts, outcome-first contracts, relevant tool exposure, and representative evaluation.
+  - id: src-anthropic-context-engineering
+    title: Effective context engineering for AI agents
+    url: https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents
+    authority: primary
+    publisher: Anthropic
+    domain_tags: [instruction-engineering, context, agents]
+    version: "2025-09-29"
+    first_seen: "2026-09-03"
+    last_verified: "2026-09-03"
+    supports_claims: [instruction-contract-001]
+    challenges_claims: []
+    trust_notes: Treats context as a finite resource spanning system instructions, tools, MCP, external data, and message history.
+  - id: src-google-gemini-prompting
+    title: Gemini API Prompt design strategies
+    url: https://ai.google.dev/gemini-api/docs/prompting-strategies
+    authority: primary
+    publisher: Google
+    domain_tags: [instruction-engineering, prompting, model-specific]
+    version: current
+    first_seen: "2026-09-03"
+    last_verified: "2026-09-03"
+    supports_claims: [instruction-contract-001]
+    challenges_claims: []
+    trust_notes: Recommends precise direct instructions, consistent delimiters, decomposition, and model-specific prompt structure.
+  - id: src-dspy
+    title: DSPy
+    url: https://dspy.ai/
+    authority: primary
+    publisher: DSPy project
+    domain_tags: [instruction-optimization, programming, evals]
+    version: current
+    first_seen: "2026-09-03"
+    last_verified: "2026-09-03"
+    supports_claims: []
+    challenges_claims: []
+  - id: src-gepa
+    title: "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning"
+    url: https://arxiv.org/abs/2507.19457
+    authority: research
+    publisher: Agrawal et al.
+    domain_tags: [instruction-optimization, trajectory-learning, evals]
+    version: "arXiv:2507.19457"
+    first_seen: "2026-09-03"
+    last_verified: "2026-09-03"
+    supports_claims: []
+    challenges_claims: []
