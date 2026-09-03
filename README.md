@@ -236,6 +236,42 @@ TOOL-FIRST / CONTINUE / BUILD / TEST / READBACK: Fix it.
 
 See `docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md`.
 
+## Instruction engineering
+
+Genius-Mastery treats prompts as compiled runtime projections rather than magical prose.
+
+```text
+semantic outcome
+→ authority + constraints
+→ selected context + trust boundaries
+→ tools + execution truth state
+→ model-specific projection
+→ execution trajectory
+→ verification/eval
+→ smallest-layer repair
+↺
+```
+
+Compile and audit a contract:
+
+```bash
+genius instruct \
+  --objective "Repair the repository and prove the resulting state" \
+  --instruction "Recover current durable state before mutation." \
+  --tool "GitHub repository read/write" \
+  --output "Return changed paths and observed state." \
+  --verify "Read back every changed path." \
+  --model-family "gpt-5.6" \
+  --json
+```
+
+The compiler removes exact duplicates, isolates retrieved/external material as data,
+preserves tool-state truth boundaries, flags common instruction anti-patterns, and emits
+a lean model-facing projection. Its audit is structural: representative task evals remain
+the authority for behavioral quality.
+
+See `docs/INSTRUCTION_ENGINEERING.md`.
+
 ## Capability sources
 
 The forge is designed to **discover and compose**, not duplicate.
