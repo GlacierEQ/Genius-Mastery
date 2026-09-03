@@ -86,6 +86,11 @@ provides:
     stage: implemented
     interface: src/genius/prompt_codes.py
     evidence_refs: []
+  - id: mastery.kernel.instruction-engineering
+    description: Typed instruction-contract compiler and deterministic audit separating authority, context trust, tool truth state, output requirements, verification, and model-facing projection
+    stage: implemented
+    interface: src/genius/instruction_engineering.py
+    evidence_refs: []
   - id: mastery.kernel.runtime-inventory
     description: Normalized local runtime capability discovery with provenance and secret-value boundaries
     stage: implemented
