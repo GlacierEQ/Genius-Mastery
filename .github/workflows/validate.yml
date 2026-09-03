@@ -64,3 +64,23 @@ jobs:
 
       - name: Exercise family analyzer
         run: genius family . --top 3
+
+      - name: Prove generated descendant independence
+        run: |
+          rm -rf /tmp/Genius-Independent /tmp/genius-independent-venv
+          genius synthesize Independent --outcome "standalone validation" --dest /tmp
+          python -m venv /tmp/genius-independent-venv
+          /tmp/genius-independent-venv/bin/pip install pyyaml
+          cd /tmp/Genius-Independent
+          env -i PATH="/tmp/genius-independent-venv/bin:/usr/bin:/bin" HOME="$HOME" \
+            /tmp/genius-independent-venv/bin/python tools/validate.py .
+
+      - name: Exercise completion mechanisms
+        run: |
+          genius discover . --write
+          test -s capabilities/RUNTIME_INVENTORY.yaml
+          genius calibrate .
+          genius rebuild-graph .
+          genius validate .
+          genius progress . --mission "Advance the strongest remaining Mastery bottleneck" --json > /tmp/progress.json
+          test -s /tmp/progress.json
