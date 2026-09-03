@@ -100,3 +100,15 @@ claims:
     evidence_refs: []
     challenge_refs: []
     counterevidence_refs: []
+
+  - id: instruction-contract-001
+    statement: Genius-Mastery compiles explicit instruction contracts that separate objective, authority, trusted context, untrusted external data, tool availability, examples, output requirements, and verification while preserving the truth boundary available != called != succeeded != verified.
+    dimension: mechanisms
+    status: implemented
+    source_refs:
+      - src-openai-model-guidance
+      - src-anthropic-context-engineering
+      - src-google-gemini-prompting
+    evidence_refs: []
+    challenge_refs: []
+    counterevidence_refs: []
