@@ -1,22 +1,14 @@
 env:
   PIP_DISABLE_PIP_VERSION_CHECK: "1"
-  PYTHONDONTWRITEBYTECODE: "1"
 
 agents:
   queue: macos-self
 
 steps:
-  - label: ":test_tube: Mastery Buildkite bisect 1 — runner + checkout"
-    key: bisect-runner
+  - label: ":test_tube: Mastery Buildkite bisect 0 — pure runner"
+    key: bisect-pure-runner
     timeout_in_minutes: 5
     command: |
-      set -euo pipefail
-      python3 --version
-      actual="$(git rev-parse HEAD)"
-      case "${BUILDKITE_COMMIT:-}" in
-        HEAD|"${actual}") ;;
-        *) echo "unexpected BUILDKITE_COMMIT"; exit 42 ;;
-      esac
-      test "${BUILDKITE_PIPELINE_SLUG:-}" = "genius-mastery"
-      test "${BUILDKITE_ORGANIZATION_SLUG:-}" = "casey-1"
-      echo "RUNNER_CHECKOUT_OK"
+      set -eu
+      echo "PURE_RUNNER_OK"
+      uname -a
