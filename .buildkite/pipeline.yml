@@ -52,6 +52,10 @@ steps:
       genius validate /tmp/Genius-Researcher
       genius analyze /tmp/Genius-Researcher --top 5 --write
       genius family . --top 3
+      genius discover . --write
+      genius calibrate .
+      genius rebuild-graph .
+      genius validate .
       genius vector . --write
       cp mastery/VECTOR.yaml .verification-artifacts/mastery-vector.yaml
 
