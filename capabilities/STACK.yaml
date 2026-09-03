@@ -44,7 +44,7 @@ layers:
     improvement_targets: [teaching benchmarks, transfer challenges, descendant-quality metrics]
   learning_evolution:
     required: [bottleneck detection, improvement leverage, retained gain]
-    available: [mastery loop, frontier queue, evidence model]
+    available: [mastery loop, frontier queue, evidence model, progress protocol, prompt-code registry]
     missing: [automated downstream impact propagation]
     alternate_routes: [manual impact analysis]
     failure_modes: [improvement without propagation measurement]
@@ -64,11 +64,13 @@ action:
   preconditions:
     - Genius family identity and repository contract are present.
   steps:
+    - Recover current durable state and prior evidence before selecting work.
     - Decompose a capability with the universal anatomy.
     - Mark required, available, missing, and alternate routes by layer.
     - Score mission impact instead of treating every detail equally.
     - Compose working lower capabilities into higher capabilities.
-    - Verify the resulting effect and preserve evidence.
+    - Persist the gain in the destination of record.
+    - Verify the resulting effect through tests, readback, and receipts; preserve counterevidence.
     - Feed bottlenecks and gains into the next spiral.
   expected_effects:
     - Capability gaps become exact rather than vague.

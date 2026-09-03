@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.0] — 2026-09-02
+
+### Progress as a first-class kernel behavior
+- Added a composable prompt-code registry covering explanation, reasoning, verification, execution, strategy, engineering, output, and modifiers.
+- Added `PROGRESS` as an orchestration primitive that composes recovery, prioritization, execution, persistence, verification, and compounding.
+- Added the default progress stack: `CONTINUE + TOOL-FIRST + NEXT BEST ACTION + MAXIMUM ADVANCE + EXECUTE + DURABLE + TEST + READBACK + RECEIPTS + PRESERVE GAINS`.
+- Added `genius codes` for deterministic code discovery.
+- Added `genius progress [path] --mission ... [--code ...] [--json]` to build an evidence-bounded next-action contract from the current capability graph.
+- Reused mission-intelligence ranking and the mission-aware operating loop instead of creating a parallel planning system.
+- Added truth boundaries separating planned, executed, observed, and verified state; verification requires inspectable receipts and counterevidence is retained.
+- Added regression coverage for code aliases, stacked syntax, slash syntax, progress defaults, ranked next-action selection, recovery fallback, reporting, and CLI surfaces.
+- Repaired the live CLI vector import regression found during exact-source inspection.
+- Aligned `GENIUS.yaml` package metadata with the already-declared 0.8.0 package version.
+
 ## [0.7.0] — 2026-08-30
 
 ### Evidence-derived self-observation

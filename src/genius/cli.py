@@ -22,7 +22,9 @@ from genius.discovery import full_discovery_report
 from genius.migration import migrate_genius_repo
 from genius.performance import benchmark_synthesis, benchmark_validate, performance_report
 from genius.challenge import generate_challenges, challenge_report
-import yaml
+from genius.vector import compute_vector, vector_report, write_vector
+from genius.progress import build_progress_contract, progress_report, validate_progress_contract
+from genius.prompt_codes import code_catalog_report
 
 
 def cmd_name(args: argparse.Namespace) -> int:
@@ -127,6 +129,36 @@ def cmd_loop(args: argparse.Namespace) -> int:
         print(json.dumps(record, indent=2, ensure_ascii=False))
     else:
         print(loop_report(record))
+    return 0
+
+
+def cmd_codes(args: argparse.Namespace) -> int:
+    print(code_catalog_report(category=args.category))
+    return 0
+
+
+def cmd_progress(args: argparse.Namespace) -> int:
+    root = Path(args.path).resolve()
+    try:
+        contract = build_progress_contract(
+            root,
+            args.mission,
+            context=args.context,
+            codes=args.code,
+        )
+    except (OSError, ValueError, TypeError, yaml.YAMLError) as exc:
+        print(f"ERROR: cannot build progress contract at {root}: {exc}", file=sys.stderr)
+        return 1
+    errors = validate_progress_contract(contract)
+    if errors:
+        print("FAIL")
+        for error in errors:
+            print(f"  - {error}")
+        return 1
+    if args.json:
+        print(json.dumps(contract, indent=2, ensure_ascii=False))
+    else:
+        print(progress_report(contract))
     return 0
 
 
@@ -269,6 +301,21 @@ def main(argv: list[str] | None = None) -> int:
     p_loop.add_argument("--strengthen", action="append", default=[])
     p_loop.add_argument("--json", action="store_true", help="Emit the machine-readable record")
     p_loop.set_defaults(func=cmd_loop)
+
+    p_codes = sub.add_parser("codes", help="List composable prompt codes understood by the Mastery kernel")
+    p_codes.add_argument("--category", default=None, help="Optional category filter")
+    p_codes.set_defaults(func=cmd_codes)
+
+    p_progress = sub.add_parser(
+        "progress",
+        help="Build the next evidence-bounded progress cycle from current repository state",
+    )
+    p_progress.add_argument("path", nargs="?", default=".", help="Genius repository root (default: cwd)")
+    p_progress.add_argument("--mission", required=True, help="Concrete outcome to advance")
+    p_progress.add_argument("--context", action="append", default=[], help="Known context; repeat as needed")
+    p_progress.add_argument("--code", action="append", default=[], help="Additional prompt code or stack; repeat as needed")
+    p_progress.add_argument("--json", action="store_true", help="Emit the machine-readable progress contract")
+    p_progress.set_defaults(func=cmd_progress)
 
     p_new = sub.add_parser("new", help="Create a bare Genius-{purpose} domain scaffold")
     p_new.add_argument("purpose", help="e.g. Code | 'Distributed Systems'")

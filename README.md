@@ -173,6 +173,64 @@ The vector is computed from `claims/CLAIMS.yaml` and `evidence/ledger.jsonl`. It
 
 `--write` regenerates `mastery/VECTOR.yaml` from those source records so the diagnostic state cannot drift into hand-maintained vanity scoring.
 
+## Progress kernel
+
+Genius-Mastery now treats **progress as a first-class orchestration contract**, not as a side effect of a good answer.
+
+The default cycle is:
+
+```text
+RECOVER → PRIORITIZE → EXECUTE → PERSIST → VERIFY → COMPOUND ↺
+```
+
+Inspect the composable command vocabulary:
+
+```bash
+genius codes
+genius codes --category execution
+genius codes --category orchestration
+```
+
+Build the next progress cycle from a Genius repository's current capability graph:
+
+```bash
+genius progress . \
+  --mission "Convert the strongest bottleneck into verified capability"
+
+genius progress . \
+  --mission "Strengthen the current system" \
+  --code "RED TEAM" \
+  --code "EVAL-SELF" \
+  --json
+```
+
+`PROGRESS` automatically composes:
+
+```text
+PROGRESS
++ CONTINUE
++ TOOL-FIRST
++ NEXT BEST ACTION
++ MAXIMUM ADVANCE
++ EXECUTE
++ DURABLE
++ TEST
++ READBACK
++ RECEIPTS
++ PRESERVE GAINS
+```
+
+The generated contract deliberately distinguishes **planned**, **executed**, **observed**, and **verified** state. A plan is not execution; execution is not verification; verification requires receipts.
+
+Prompt-code syntax is also deterministic:
+
+```text
+FIRST PRINCIPLES + RED TEAM + EVAL-SELF: Analyze this architecture.
+TOOL-FIRST / CONTINUE / BUILD / TEST / READBACK: Fix it.
+```
+
+See `docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md`.
+
 ## Capability sources
 
 The forge is designed to **discover and compose**, not duplicate.

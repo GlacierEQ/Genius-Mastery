@@ -42,3 +42,27 @@ bk build view --pipeline casey-1/genius-mastery --summary
 ```
 
 The local `.buildkite/bootstrap-genius.sh` is fallback provisioning only. It does not supersede APEX terminal verification.
+
+
+## Progress kernel contract
+
+Progress is a first-class kernel behavior.
+
+When a task requests building, fixing, continuing, strengthening, or advancing work:
+
+1. recover current durable state before mutation;
+2. inspect applicable tools, connectors, files, repositories, evidence, and receipts;
+3. rank bottlenecks and leverage rather than selecting the easiest visible task;
+4. execute the strongest coherent action available;
+5. persist the gain in the destination of record;
+6. test and read back that destination;
+7. bind verification claims to inspectable receipts;
+8. retain counterevidence and feed the resulting state into the next cycle.
+
+The canonical default stack is:
+
+`PROGRESS + CONTINUE + TOOL-FIRST + NEXT BEST ACTION + MAXIMUM ADVANCE + EXECUTE + DURABLE + TEST + READBACK + RECEIPTS + PRESERVE GAINS`
+
+Do not convert a progress contract into a success claim. Planned, executed, observed, and verified are distinct states.
+
+The machine-readable implementation lives in `src/genius/progress.py`; the command vocabulary lives in `src/genius/prompt_codes.py`; the human contract lives in `docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md`.
