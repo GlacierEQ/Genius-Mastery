@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0] — 2026-09-03
+
+### Instruction engineering as a first-class kernel layer
+- Added a typed instruction-contract compiler separating objective, authority, context trust, tools, examples, output requirements, verification, and target model family.
+- Added explicit tool truth semantics: available != called != succeeded != verified.
+- Added untrusted external-data projection so retrieved content cannot silently become governing authority.
+- Added deterministic diagnostics for exact duplication, context pressure, hidden-reasoning requests, authority-override language, and ornamental power language.
+- Added `genius instruct` with human-readable and JSON contract output.
+- Added a JSON Schema contract and regression coverage for compilation, trust boundaries, diagnostics, deduplication, and CLI output.
+- Added current primary/research anchors for OpenAI model guidance, Anthropic context engineering, Google Gemini prompting, DSPy, and GEPA.
+- Preserved behavioral truth: structural prompt audit is not treated as model-quality proof; representative task evals remain required.
+
 ## [1.0.0] — 2026-09-02
 
 ### Core completion
