@@ -1,0 +1,51 @@
+schema_version: 1
+interface: apex-continuous-control-plane
+repository: Genius-Mastery
+authority: GlacierEQ/apex-control-plane
+
+identity:
+  required:
+    - mission_id
+    - correlation_id
+    - work_id
+    - repository
+    - commit_sha
+  evidence:
+    - receipt_id
+    - evidence_refs
+
+emits:
+  - event_type: genius.progress.started
+    when: bounded progress work begins
+  - event_type: genius.progress.persisted
+    when: durable repository state changed
+  - event_type: genius.verification.passed
+    when: exact-head verification succeeds
+  - event_type: genius.verification.failed
+    when: verification or adversarial readback fails
+  - event_type: genius.frontier.changed
+    when: strongest remaining bottleneck or leverage frontier changes
+  - event_type: genius.closure.complete
+    when: the repository closure contract passes
+  - event_type: genius.connector.required
+    when: progress is blocked on an unavailable or unhealthy external capability
+
+consumes:
+  - event_type: apex.mission.assigned
+    action: hydrate the repository from current durable state and compile bounded progress work
+  - event_type: apex.work.resumed
+    action: continue from the persisted frontier and prior receipts
+  - event_type: connector.health.degraded
+    action: preserve work and expose the blocked capability without resetting progress
+  - event_type: github.workflow.*
+    action: reconcile exact-head verification state
+  - event_type: buildkite.build.*
+    action: distinguish domain failure from runner, bootstrap, or infrastructure failure
+
+laws:
+  - APEX owns orchestration, correlation, leases, connector health, retries, and recovery.
+  - Genius-Mastery owns capability graphs, mastery state, progress logic, synthesis, and closure.
+  - APEX never promotes generated or attempted work into verified mastery without Genius evidence.
+  - Genius never treats provider dispatch or CI scheduling as completion.
+  - New sessions resume from the persisted APEX work/frontier correlation instead of restarting.
+  - Infrastructure CI failure must not be misclassified as domain-code failure.
