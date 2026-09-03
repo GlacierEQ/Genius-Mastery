@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://glaciereq.example/schemas/instruction-contract.schema.json",
+  "title": "Genius Instruction Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "objective",
+    "model_profile",
+    "authority",
+    "context",
+    "capabilities",
+    "output_contract",
+    "verification",
+    "compiled_prompt",
+    "metrics",
+    "audit"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "genius-instruction-contract"
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_profile": {
+      "type": "object",
+      "required": [
+        "family",
+        "portability"
+      ],
+      "properties": {
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "portability": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "invariants",
+        "rule"
+      ],
+      "properties": {
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "context": {
+      "type": "object",
+      "required": [
+        "trusted_reference",
+        "untrusted_external",
+        "selection_rule"
+      ],
+      "properties": {
+        "trusted_reference": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "untrusted_external": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selection_rule": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "tools",
+        "execution_truth_boundary"
+      ],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "execution_truth_boundary": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_contract": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compiled_prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "audit": {
+      "type": "object",
+      "required": [
+        "engine",
+        "clean",
+        "diagnostics",
+        "counts",
+        "truth_note"
+      ]
+    }
+  },
+  "additionalProperties": true
+}
