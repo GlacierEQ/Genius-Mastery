@@ -16,10 +16,32 @@ EVIDENCE_STATES = {
     "contradicted",
 }
 OUTCOME_STATUSES = {"pending", "observed", "verified", "contradicted"}
+_NON_VERIFYING_EVIDENCE_STATES = {
+    "retrieval_pending",
+    "not_searched",
+    "searched_not_found",
+    "unavailable",
+    "contradicted",
+}
 
 
 def _items(value: Iterable[str] | None) -> list[str]:
-    return [str(item).strip() for item in (value or []) if str(item).strip()]
+    """Normalize a string or iterable of strings without splitting strings into characters."""
+    if value is None:
+        return []
+    candidates = [value] if isinstance(value, str) else value
+    try:
+        items = list(candidates)
+    except TypeError as exc:
+        raise TypeError("loop collection fields must be strings or iterables of strings") from exc
+    cleaned: list[str] = []
+    for item in items:
+        if not isinstance(item, str):
+            raise TypeError("loop collection fields may contain strings only")
+        item = item.strip()
+        if item:
+            cleaned.append(item)
+    return cleaned
 
 
 def build_loop(
@@ -36,7 +58,12 @@ def build_loop(
     learnings: Iterable[str] | None = None,
     strengthened: Iterable[str] | None = None,
 ) -> dict[str, Any]:
-    """Build a serializable loop record without claiming more than it knows."""
+    """Build a serializable loop record without claiming more than it knows.
+
+    ``source_refs`` must include the verification or contradiction receipt when an
+    outcome is promoted beyond ``observed``. Construction remains permissive so
+    callers can inspect errors through :func:`validate_loop` before persistence.
+    """
     cleaned_outcome = str(outcome).strip() if outcome and str(outcome).strip() else None
     if outcome_status is None:
         outcome_status = "pending" if cleaned_outcome is None else "observed"
@@ -68,6 +95,9 @@ def build_loop(
 
 def validate_loop(record: dict[str, Any]) -> list[str]:
     """Return contract errors; an empty list means the loop is structurally valid."""
+    if not isinstance(record, dict):
+        return ["record must be a mapping"]
+
     errors: list[str] = []
     if record.get("schema_version") != 1:
         errors.append("schema_version must be 1")
@@ -103,12 +133,23 @@ def validate_loop(record: dict[str, Any]) -> list[str]:
             isinstance(item, str) and item.strip() for item in values
         ):
             errors.append(f"{name} must be a string list")
+
+    outcome_status = record.get("outcome_status")
+    source_refs = record.get("source_refs")
+    evidence_state = record.get("evidence_state")
+    if outcome_status in {"verified", "contradicted"} and not source_refs:
+        errors.append(f"{outcome_status} outcomes require at least one source_ref")
+    if outcome_status == "verified" and evidence_state in _NON_VERIFYING_EVIDENCE_STATES:
+        errors.append("verified outcomes require evidence beyond an unresolved retrieval state")
+    if outcome_status == "contradicted" and evidence_state != "contradicted":
+        errors.append("contradicted outcomes require evidence_state=contradicted")
+
     expected_status = {
         "pending": "ready_to_act",
         "observed": "awaiting_verification",
         "verified": "verified",
         "contradicted": "contradicted",
-    }.get(record.get("outcome_status"))
+    }.get(outcome_status)
     if expected_status and record.get("status") != expected_status:
         errors.append(f"status must be {expected_status!r} for current outcome state")
     return errors
@@ -117,13 +158,20 @@ def validate_loop(record: dict[str, Any]) -> list[str]:
 def loop_report(record: dict[str, Any]) -> str:
     """Render a compact human-readable report."""
     phases = record["phases"]
-    lines = [f"Status: {record['status']}", f"Mission: {phases['mission']}"]
+    lines = [
+        f"Status: {record['status']}",
+        f"Outcome state: {record['outcome_status']}",
+        f"Mission: {phases['mission']}",
+    ]
     for name in ("context", "options", "impact"):
         lines.append(f"{name.title()}:")
         lines.extend(f"  - {item}" for item in phases[name])
     lines.append(f"Action: {phases['action']}")
     lines.append(f"Outcome: {phases['outcome'] or '[pending]'}")
     lines.append(f"Evidence: {record['evidence_state']}")
+    if record.get("source_refs"):
+        lines.append("Source refs:")
+        lines.extend(f"  - {item}" for item in record["source_refs"])
     if record.get("learnings"):
         lines.append("Learnings:")
         lines.extend(f"  - {item}" for item in record["learnings"])
