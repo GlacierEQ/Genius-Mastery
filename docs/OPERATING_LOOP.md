@@ -54,6 +54,16 @@ assert validate_loop(record) == []
 
 An outcome is initially `observed` rather than silently promoted to `verified`. Verification, learning, and strengthening are later recorded explicitly. This makes the system more capable without making it more reckless.
 
+## Hardened invariants
+
+- A scalar string supplied to a collection field remains one item; it is never split into characters.
+- `verified` and `contradicted` outcomes require at least one `source_ref` so the terminal state is receiptable.
+- `verified` cannot coexist with `not_searched`, `retrieval_pending`, `searched_not_found`, `unavailable`, or `contradicted` evidence.
+- `contradicted` outcomes require `evidence_state=contradicted`, preserving the distinction between an unresolved gap and an identified conflict.
+- Human and machine validation enforce the same status transitions: `pending → ready_to_act`, `observed → awaiting_verification`, `verified → verified`, and `contradicted → contradicted`.
+
+These are integrity boundaries, not permission gates: they prevent an unverified label from outrunning its evidence while leaving ordinary mission work fully usable.
+
 ## Contract boundary
 
 This is a **decision-and-learning record**, not an autonomous authority grant. It does not execute external side effects by itself, certify evidence, or replace the claim/evidence ledger. It gives those systems a shared spine so that future execution can remain mission-aware, impact-aware, and recoverable.
