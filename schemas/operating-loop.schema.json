@@ -18,7 +18,7 @@
         "options": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
         "impact": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
         "action": {"type": "string", "minLength": 1},
-        "outcome": {"type": ["string", "null"]}
+        "outcome": {"type": ["string", "null"], "minLength": 1}
       }
     },
     "evidence_state": {
@@ -30,5 +30,35 @@
     "learnings": {"type": "array", "items": {"type": "string", "minLength": 1}},
     "strengthened": {"type": "array", "items": {"type": "string", "minLength": 1}},
     "status": {"type": "string", "enum": ["ready_to_act", "awaiting_verification", "verified", "contradicted"]}
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"outcome_status": {"enum": ["verified", "contradicted"]}}},
+      "then": {"properties": {"source_refs": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"outcome_status": {"const": "verified"}}},
+      "then": {"properties": {"evidence_state": {"enum": ["known_from_context", "operator_reported", "searched_found"]}}}
+    },
+    {
+      "if": {"properties": {"outcome_status": {"const": "contradicted"}}},
+      "then": {"properties": {"evidence_state": {"const": "contradicted"}}}
+    },
+    {
+      "if": {"properties": {"outcome_status": {"const": "pending"}}},
+      "then": {"properties": {"status": {"const": "ready_to_act"}}}
+    },
+    {
+      "if": {"properties": {"outcome_status": {"const": "observed"}}},
+      "then": {"properties": {"status": {"const": "awaiting_verification"}}}
+    },
+    {
+      "if": {"properties": {"outcome_status": {"const": "verified"}}},
+      "then": {"properties": {"status": {"const": "verified"}}}
+    },
+    {
+      "if": {"properties": {"outcome_status": {"const": "contradicted"}}},
+      "then": {"properties": {"status": {"const": "contradicted"}}}
+    }
+  ]
 }
