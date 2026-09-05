@@ -77,6 +77,23 @@ def _deepest_status(status_counts: dict[str, int]) -> str | None:
     return max(present, key=lambda status: STATUS_RANK.get(status, -1))
 
 
+def repository_identity(root: Path) -> str:
+    """Stable Genius repository id. Never the checkout directory name.
+
+    Buildkite clones into `.../casey-1/genius-mastery`; developers clone
+    `Genius-Mastery`. VECTOR.yaml must follow GENIUS.yaml, not Path.name.
+    """
+    root = root.resolve()
+    path = root / "GENIUS.yaml"
+    if path.exists():
+        payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        if isinstance(payload, dict):
+            repo = str(payload.get("repository") or "").strip()
+            if repo:
+                return repo
+    return root.name
+
+
 def compute_vector(root: Path) -> dict[str, Any]:
     """Compute an evidence-derived multidimensional mastery vector."""
     root = root.resolve()
@@ -158,7 +175,7 @@ def compute_vector(root: Path) -> dict[str, Any]:
 
     return {
         "schema_version": 2,
-        "repository": root.name,
+        "repository": repository_identity(root),
         "representation": "evidence-derived-multidimensional-vector",
         "dimensions": dimensions,
         "totals": {
