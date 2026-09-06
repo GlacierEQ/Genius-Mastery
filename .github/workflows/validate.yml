@@ -1,69 +1,91 @@
-# The Operating Loop
+name: validate-contract
 
-Genius-Mastery already knows how to map capability, gather evidence, challenge assumptions, verify behavior, and teach what survives. This contract adds the missing connective tissue: the record of **why a move is being made, what it may change, what happened, and what becomes stronger afterward**.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-```text
-MISSION → CONTEXT → OPTIONS → IMPACT → ACTION → OUTCOME
-                                      ↓
-                         VERIFY → LEARN → STRENGTHEN ↺
-```
+permissions:
+  contents: read
 
-## Why this belongs in the kernel
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-A new Genius entity needs room to aim beyond its present implementation. The horizon is not a false claim. It is a directional instrument. The operating loop therefore keeps two truths visible at once:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
 
-- **aspiration remains expansive** and can describe the intended frontier;
-- **execution remains honest** through explicit maturity, outcome, and evidence states.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
 
-The loop never treats “not in the current window” as “does not exist.” Retrieval states are explicit:
+      - name: Install package and test dependencies
+        run: pip install -e ".[dev]"
 
-- `known_from_context`
-- `operator_reported`
-- `retrieval_pending`
-- `not_searched`
-- `searched_found`
-- `searched_not_found`
-- `unavailable`
-- `contradicted`
+      - name: Compile Python surfaces
+        run: python -m compileall -q src tools
 
-`searched_not_found` means a search result, not factual disproof. `contradicted` is reserved for an actual conflict that has been identified and recorded.
+      - name: Validate Mastery contracts
+        run: |
+          genius validate .
+          genius doctor .
+          python tools/validate.py .
+          python tools/doctor.py .
 
-## Runtime use
+      - name: Run regression suite
+        run: pytest -q
 
-Create a loop record from Python:
+      - name: Exercise forge and mission intelligence
+        run: |
+          rm -rf /tmp/Genius-SmokeTest /tmp/Genius-Researcher
+          genius --version
+          genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
+          genius new SmokeTest --dest /tmp
+          genius validate /tmp/Genius-SmokeTest
+          genius synthesize Researcher --outcome "Indiana Jones" --dest /tmp
+          genius validate /tmp/Genius-Researcher
+          genius analyze /tmp/Genius-Researcher --top 5 --write
+          python - <<'PY2'
+          from pathlib import Path
+          import yaml
 
-```python
-from genius.operating_loop import build_loop, validate_loop
+          graph = yaml.safe_load(
+              Path("/tmp/Genius-Researcher/capabilities/GRAPH.yaml").read_text(
+                  encoding="utf-8"
+              )
+          )
+          analysis = graph.get("analysis") or {}
+          assert analysis.get("engine") == "mission-intelligence-v1", analysis
+          assert analysis.get("ranked_priorities"), analysis
+          assert analysis.get("top_next_actions"), analysis
+          PY2
 
-record = build_loop(
-    mission="Preserve the strongest useful direction",
-    context=["The project is new and still aspirational"],
-    options=[
-        "Clip the aspiration",
-        "Preserve the horizon and label maturity honestly",
-    ],
-    impact=[
-        "Preserving the horizon protects discovery",
-        "Explicit maturity states protect truth",
-    ],
-    action="Preserve aspirations while implementing one verifiable slice",
-    evidence_state="operator_reported",
-)
-assert validate_loop(record) == []
-```
+      - name: Exercise family analyzer
+        run: genius family . --top 3
 
-An outcome is initially `observed` rather than silently promoted to `verified`. Verification, learning, and strengthening are later recorded explicitly. This makes the system more capable without making it more reckless.
+      - name: Prove generated descendant independence
+        run: |
+          rm -rf /tmp/Genius-Independent /tmp/genius-independent-venv
+          genius synthesize Independent --outcome "standalone validation" --dest /tmp
+          python -m venv /tmp/genius-independent-venv
+          /tmp/genius-independent-venv/bin/pip install pyyaml
+          cd /tmp/Genius-Independent
+          env -i PATH="/tmp/genius-independent-venv/bin:/usr/bin:/bin" HOME="$HOME" \
+            /tmp/genius-independent-venv/bin/python tools/validate.py .
 
-## Hardened invariants
-
-- A scalar string supplied to a collection field remains one item; it is never split into characters.
-- `verified` and `contradicted` outcomes require at least one `source_ref` so the terminal state is receiptable.
-- `verified` cannot coexist with `not_searched`, `retrieval_pending`, `searched_not_found`, `unavailable`, or `contradicted` evidence.
-- `contradicted` outcomes require `evidence_state=contradicted`, preserving the distinction between an unresolved gap and an identified conflict.
-- Human and machine validation enforce the same status transitions: `pending → ready_to_act`, `observed → awaiting_verification`, `verified → verified`, and `contradicted → contradicted`.
-
-These are integrity boundaries, not permission gates: they prevent an unverified label from outrunning its evidence while leaving ordinary mission work fully usable.
-
-## Contract boundary
-
-This is a **decision-and-learning record**, not an autonomous authority grant. It does not execute external side effects by itself, certify evidence, or replace the claim/evidence ledger. It gives those systems a shared spine so that future execution can remain mission-aware, impact-aware, and recoverable.
+      - name: Exercise completion mechanisms
+        run: |
+          genius discover . --write
+          test -s capabilities/RUNTIME_INVENTORY.yaml
+          genius calibrate .
+          genius rebuild-graph .
+          genius validate .
+          genius progress . --mission "Advance the strongest remaining Mastery bottleneck" --json > /tmp/progress.json
+          test -s /tmp/progress.json
+          genius closure .
