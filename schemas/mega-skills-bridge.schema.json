@@ -19,7 +19,8 @@
   ],
   "properties": {
     "$schema": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "schema_version": {
       "const": 1
@@ -78,14 +79,10 @@
           "const": "mission-aware-operating-loop"
         },
         "mega_routes": {
-          "type": "array",
-          "minItems": 2,
-          "items": {
-            "enum": [
-              "apex-adaptive-operations",
-              "apex-genius-mastery"
-            ]
-          }
+          "const": [
+            "apex-adaptive-operations",
+            "apex-genius-mastery"
+          ]
         }
       }
     },
@@ -111,35 +108,47 @@
       }
     },
     "phase_order": {
-      "type": "array",
-      "minItems": 6,
-      "items": {
-        "type": "string"
-      }
+      "const": [
+        "mission",
+        "context",
+        "options",
+        "impact",
+        "action",
+        "outcome"
+      ]
     },
     "evidence_states": {
-      "type": "array",
-      "minItems": 8,
-      "items": {
-        "type": "string"
-      }
+      "const": [
+        "known_from_context",
+        "operator_reported",
+        "retrieval_pending",
+        "not_searched",
+        "searched_found",
+        "searched_not_found",
+        "unavailable",
+        "contradicted"
+      ]
     },
     "outcome_statuses": {
-      "type": "array",
-      "minItems": 4,
-      "items": {
-        "type": "string"
-      }
+      "const": [
+        "pending",
+        "observed",
+        "verified",
+        "contradicted"
+      ]
     },
     "status_map": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "string"
+      "const": {
+        "pending": "ready_to_act",
+        "observed": "awaiting_verification",
+        "verified": "verified",
+        "contradicted": "contradicted"
       }
     },
     "invariants": {
       "type": "array",
       "minItems": 4,
+      "uniqueItems": true,
       "items": {
         "type": "string",
         "minLength": 20
