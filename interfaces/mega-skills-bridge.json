@@ -1,5 +1,5 @@
 {
-  "$schema": "./mega-skills-bridge.schema.json",
+  "$schema": "../schemas/mega-skills-bridge.schema.json",
   "schema_version": 1,
   "contract_id": "genius-mastery.operating-loop",
   "provider": {
