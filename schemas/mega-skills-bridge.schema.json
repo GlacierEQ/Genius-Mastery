@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GlacierEQ/Genius-Mastery/schemas/mega-skills-bridge.schema.json",
+  "title": "Genius-Mastery to Mega-Skills bridge contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "contract_id",
+    "provider",
+    "consumer",
+    "compatibility",
+    "phase_order",
+    "evidence_states",
+    "outcome_statuses",
+    "status_map",
+    "invariants"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "contract_id": {
+      "const": "genius-mastery.operating-loop"
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "ref",
+        "module",
+        "schema",
+        "module_blob_sha",
+        "schema_blob_sha"
+      ],
+      "properties": {
+        "repository": {
+          "const": "GlacierEQ/Genius-Mastery"
+        },
+        "ref": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "module": {
+          "const": "src/genius/operating_loop.py"
+        },
+        "schema": {
+          "const": "schemas/operating-loop.schema.json"
+        },
+        "module_blob_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "schema_blob_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "consumer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "combo_id",
+        "mega_routes"
+      ],
+      "properties": {
+        "repository": {
+          "const": "GlacierEQ/mega-skills"
+        },
+        "combo_id": {
+          "const": "mission-aware-operating-loop"
+        },
+        "mega_routes": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "enum": [
+              "apex-adaptive-operations",
+              "apex-genius-mastery"
+            ]
+          }
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operating_loop_schema_version",
+        "combo_contract_version",
+        "artifact"
+      ],
+      "properties": {
+        "operating_loop_schema_version": {
+          "const": 1
+        },
+        "combo_contract_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "artifact": {
+          "const": "MISSION_OPERATING_LOOP_RECORD.md"
+        }
+      }
+    },
+    "phase_order": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_states": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "string"
+      }
+    },
+    "outcome_statuses": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "string"
+      }
+    },
+    "status_map": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "string",
+        "minLength": 20
+      }
+    }
+  }
+}

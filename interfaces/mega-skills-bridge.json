@@ -1,0 +1,62 @@
+{
+  "$schema": "./mega-skills-bridge.schema.json",
+  "schema_version": 1,
+  "contract_id": "genius-mastery.operating-loop",
+  "provider": {
+    "repository": "GlacierEQ/Genius-Mastery",
+    "ref": "d16b0859a5e74f0586d505c93f972109d96395d3",
+    "module": "src/genius/operating_loop.py",
+    "schema": "schemas/operating-loop.schema.json",
+    "module_blob_sha": "db36f71aed06969089a6498c3677f9004e6cc273",
+    "schema_blob_sha": "62cfa2e81315eed90c5e582b607bb718dcb11256"
+  },
+  "consumer": {
+    "repository": "GlacierEQ/mega-skills",
+    "combo_id": "mission-aware-operating-loop",
+    "mega_routes": [
+      "apex-adaptive-operations",
+      "apex-genius-mastery"
+    ]
+  },
+  "compatibility": {
+    "operating_loop_schema_version": 1,
+    "combo_contract_version": "0.1.0",
+    "artifact": "MISSION_OPERATING_LOOP_RECORD.md"
+  },
+  "phase_order": [
+    "mission",
+    "context",
+    "options",
+    "impact",
+    "action",
+    "outcome"
+  ],
+  "evidence_states": [
+    "known_from_context",
+    "operator_reported",
+    "retrieval_pending",
+    "not_searched",
+    "searched_found",
+    "searched_not_found",
+    "unavailable",
+    "contradicted"
+  ],
+  "outcome_statuses": [
+    "pending",
+    "observed",
+    "verified",
+    "contradicted"
+  ],
+  "status_map": {
+    "pending": "ready_to_act",
+    "observed": "awaiting_verification",
+    "verified": "verified",
+    "contradicted": "contradicted"
+  },
+  "invariants": [
+    "retrieval_pending, not_searched, searched_not_found, and unavailable are not proof of falsity",
+    "observed outcomes are not verified outcomes",
+    "verified and contradicted outcomes require source_refs",
+    "the Mega read_only firewall remains in force; this contract grants no external authority"
+  ]
+}
