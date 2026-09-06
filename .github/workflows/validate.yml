@@ -19,6 +19,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
@@ -76,7 +78,7 @@ jobs:
           python -m venv /tmp/genius-independent-venv
           /tmp/genius-independent-venv/bin/pip install pyyaml
           cd /tmp/Genius-Independent
-          env -i PATH="/tmp/genius-independent-venv/bin:/usr/bin:/bin" HOME="$HOME" \
+          env -i PATH="/tmp/genius-independent-venv/bin:/usr/bin:/bin" HOME="$HOME" \\
             /tmp/genius-independent-venv/bin/python tools/validate.py .
 
       - name: Exercise completion mechanisms
