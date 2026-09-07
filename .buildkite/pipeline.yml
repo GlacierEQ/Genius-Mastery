@@ -20,6 +20,12 @@ steps:
     command: |
       set -euo pipefail
 
+      # Bridge pin tests resolve a historical provider commit; make shallow
+      # agent checkouts deterministic without disturbing full clones.
+      if [[ "$(git rev-parse --is-shallow-repository 2>/dev/null || true)" == "true" ]]; then
+        git fetch --unshallow --no-tags
+      fi
+
       # Buildkite interpolates $VAR at upload. $$ becomes a literal $ for bash.
       VENV=".buildkite-venv"
       cleanup() {
