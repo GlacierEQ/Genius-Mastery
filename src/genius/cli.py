@@ -30,6 +30,14 @@ from genius.calibration import calibrate_graph, calibration_report
 from genius.composition import execute_family_composition, composition_report, write_composition_receipt
 from genius.closure import closure_status, closure_report
 from genius.graph import rebuild_graph
+from genius.archetypes import (
+    ARCHETYPES,
+    ArchetypeDefinition,
+    archetype_catalog_report,
+    archetype_report,
+    get_archetype,
+    list_archetypes,
+)
 
 
 def cmd_name(args: argparse.Namespace) -> int:
@@ -219,11 +227,64 @@ def cmd_synthesize(args: argparse.Namespace) -> int:
         return 1
     print(f"Synthesized {root}")
     print(f"Role: {args.role}")
+    if args.archetype:
+        print(f"Archetype: {args.archetype}")
     print("Outcomes:")
     for outcome in args.outcome:
         print(f"  - {outcome}")
     print("State: mapped hypotheses; research, challenge, execute, verify, teach.")
     return 0
+
+
+def cmd_archetype(args: argparse.Namespace) -> int:
+    action = getattr(args, "archetype_action", None)
+    if action == "list":
+        if args.json:
+            data = [arch.to_dict() for arch in list_archetypes(args.domain)]
+            print(json.dumps(data, indent=2))
+        else:
+            print(archetype_catalog_report(domain=args.domain))
+        return 0
+
+    if action == "info":
+        arch = get_archetype(args.name)
+        if not arch:
+            print(f"ERROR: Archetype not found: {args.name!r}", file=sys.stderr)
+            return 1
+        if args.json:
+            print(json.dumps(arch.to_dict(), indent=2))
+        else:
+            print(archetype_report(arch))
+        return 0
+
+    if action == "synthesize":
+        arch = get_archetype(args.name)
+        if not arch:
+            print(f"ERROR: Archetype not found: {args.name!r}", file=sys.stderr)
+            return 1
+        dest = Path(args.dest).resolve()
+        try:
+            root = synthesize_role(
+                role=arch.name,
+                outcomes=list(arch.targets),
+                dest_parent=dest,
+                archetype=arch.id,
+                force=args.force,
+            )
+        except (ValueError, FileExistsError) as e:
+            print(f"ERROR: {e}", file=sys.stderr)
+            return 1
+        print(f"Synthesized {root}")
+        print(f"Archetype: {arch.name} ({arch.id})")
+        print(f"Domain: {arch.domain}")
+        print("Invariants:")
+        for inv in arch.invariants:
+            print(f"  - {inv}")
+        print("State: mapped hypotheses; ready for verification & teaching.")
+        return 0
+
+    print(f"ERROR: Unknown archetype action {action!r}", file=sys.stderr)
+    return 1
 
 
 def cmd_impact(args: argparse.Namespace) -> int:
@@ -420,6 +481,25 @@ def main(argv: list[str] | None = None) -> int:
     p_syn.add_argument("--dest", default=".", help="Parent directory for the generated repo (default: cwd)")
     p_syn.add_argument("--force", action="store_true", help="Allow writing into an existing non-empty directory")
     p_syn.set_defaults(func=cmd_synthesize)
+
+    p_arch = sub.add_parser("archetype", help="Inspect and forge Genius Lineage Archetypes")
+    p_arch_sub = p_arch.add_subparsers(dest="archetype_action", required=True)
+
+    p_arch_list = p_arch_sub.add_parser("list", help="List all registered Genius Lineage Archetypes")
+    p_arch_list.add_argument("--domain", default=None, help="Filter by domain")
+    p_arch_list.add_argument("--json", action="store_true", help="Emit JSON output")
+    p_arch_list.set_defaults(func=cmd_archetype)
+
+    p_arch_info = p_arch_sub.add_parser("info", help="Display first-principles details of an archetype")
+    p_arch_info.add_argument("name", help="Archetype name or id (e.g. aerospace, microcode, law, ios, etc.)")
+    p_arch_info.add_argument("--json", action="store_true", help="Emit JSON output")
+    p_arch_info.set_defaults(func=cmd_archetype)
+
+    p_arch_syn = p_arch_sub.add_parser("synthesize", help="Synthesize a specialized Genius entity for an archetype")
+    p_arch_syn.add_argument("name", help="Archetype name or id (e.g. aerospace, microcode, law, etc.)")
+    p_arch_syn.add_argument("--dest", default=".", help="Parent directory for generated repo (default: cwd)")
+    p_arch_syn.add_argument("--force", action="store_true", help="Allow writing into an existing non-empty directory")
+    p_arch_syn.set_defaults(func=cmd_archetype)
 
     p_imp = sub.add_parser("impact", help="Rank bottlenecks")
     p_imp.add_argument("path", nargs="?", default=".")

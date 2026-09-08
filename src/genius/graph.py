@@ -70,6 +70,15 @@ def build_synthesis_graph(
     for family_name, spec in families.items():
         fid = f"family:{_slug(family_name)}"
         family_state = str(spec.get("status") or spec.get("state") or "mapped")
+        family_meta: dict[str, Any] = {"layers": list(spec.get("layers") or [])}
+        if spec.get("invariants"):
+            family_meta["invariants"] = list(spec.get("invariants") or [])
+        if spec.get("tools"):
+            family_meta["tools"] = list(spec.get("tools") or [])
+        if spec.get("verification_gates"):
+            family_meta["verification_gates"] = list(spec.get("verification_gates") or [])
+        if spec.get("teaching_transfer"):
+            family_meta["teaching_transfer"] = str(spec.get("teaching_transfer"))
         add_node(
             {
                 "id": fid,
@@ -77,7 +86,7 @@ def build_synthesis_graph(
                 "label": family_name,
                 "state": family_state,
                 "mission_impact": 0.8,
-                "metadata": {"layers": list(spec.get("layers") or [])},
+                "metadata": family_meta,
             }
         )
         edges.append(

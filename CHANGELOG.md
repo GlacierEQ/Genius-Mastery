@@ -1,5 +1,13 @@
 # Changelog
 
+### Genius Lineage Archetypes & Universal Pillar Invariant
+- Implemented the 26 canonical Genius Lineage Archetypes across Frontier Science, Systems Platforms, Legal Enterprise, Physical Systems, and Telos/Craftsmanship.
+- Enforced the Universal Pillar Invariant: each archetype is strictly decoupled and universal, functioning independently without monolithic entanglement.
+- Added first-principles invariants (equations, laws, and systemic axioms) for each archetype: Tsiolkovsky delta-v, Lennard-Jones potential, Navier-Stokes, Arrhenius kinetics, Central Dogma, FRE 902(13)/(14), POSIX atomic rename, Raft consensus, MMIO volatile semantics, ARM64e PAC, and Swift actor concurrency.
+- Enriched role synthesis so that directional or matched archetypes inject domain invariants, native tools, acceptance gates, and teaching transfer challenges into `ROLE.yaml`, `synthesis/PLAN.yaml`, `capabilities/GRAPH.yaml`, `persona/PERSONA.md`, `teaching/TEACHING_PLAN.md`, `teaching/TEACHING.yaml`, and `capabilities/STACK.yaml`.
+- Added CLI commands: `genius archetype list [--domain]`, `genius archetype info <name>`, and `genius archetype synthesize <name> --dest <path>`.
+- Added complete unit test suite in `tests/test_archetypes.py` verifying 100% green contract enforcement across all 26 archetypes.
+
 ## [1.1.0] — 2026-09-03
 
 ### Instruction engineering as a first-class kernel layer

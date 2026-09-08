@@ -12,6 +12,7 @@ from typing import Iterable
 import yaml
 
 from genius.anatomy import ANATOMY_PROMPTS
+from genius.archetypes import match_archetypes
 from genius.graph import build_synthesis_graph
 from genius.scaffold import create_domain
 from genius.sources import match_mega_skills
@@ -130,6 +131,29 @@ def infer_families(role: str, outcomes: list[str], archetype: str | None = None)
                 "layers": list(spec["layers"]),
                 "targets": list(spec["targets"]),
             }
+    matched_archetypes = match_archetypes(role, outcomes, archetype)
+    for arch in matched_archetypes:
+        existing = selected.get(arch.id)
+        if existing:
+            merged_layers = list(dict.fromkeys(existing["layers"] + list(arch.layers)))
+            merged_targets = list(dict.fromkeys(existing["targets"] + list(arch.targets)))
+            selected[arch.id] = {
+                "layers": merged_layers,
+                "targets": merged_targets,
+                "invariants": list(arch.invariants),
+                "tools": list(arch.tools),
+                "verification_gates": list(arch.verification_gates),
+                "teaching_transfer": arch.teaching_transfer,
+            }
+        else:
+            selected[arch.id] = {
+                "layers": list(arch.layers),
+                "targets": list(arch.targets),
+                "invariants": list(arch.invariants),
+                "tools": list(arch.tools),
+                "verification_gates": list(arch.verification_gates),
+                "teaching_transfer": arch.teaching_transfer,
+            }
     return selected
 
 
@@ -158,12 +182,19 @@ def synthesize_role(
     root = create_domain(role, dest_parent, force=force)
     repo_name = root.name
     families = infer_families(role, outcomes, archetype)
+    matched_archetypes = match_archetypes(role, outcomes, archetype)
+    archetype_ids = [a.id for a in matched_archetypes]
+    archetype_names = [a.name for a in matched_archetypes]
 
     role_brief = {
         "schema_version": 1,
         "role": role,
         "outcomes": outcomes,
-        "archetype": archetype or "",
+        "archetype": archetype or (archetype_ids[0] if archetype_ids else ""),
+        "archetypes": archetype_ids,
+        "domain_invariants": [inv for a in matched_archetypes for inv in a.invariants],
+        "required_tools": [tool for a in matched_archetypes for tool in a.tools],
+        "verification_gates": [gate for a in matched_archetypes for gate in a.verification_gates],
         "constraints": constraints or [],
         "notes": "Thin brief compiled by Genius-Mastery. Inferred capabilities are hypotheses until evidenced.",
     }
@@ -193,7 +224,8 @@ def synthesize_role(
         "synthesis_state": "mapped",
         "role": role,
         "outcomes": outcomes,
-        "archetype": archetype or "",
+        "archetype": archetype or (archetype_ids[0] if archetype_ids else ""),
+        "matched_archetypes": [a.to_dict() for a in matched_archetypes],
         "capability_families": [
             {
                 "id": name,
@@ -260,6 +292,20 @@ def synthesize_role(
     ]
     if archetype:
         persona_lines += ["", f"**Directional archetype:** {archetype}"]
+    if matched_archetypes:
+        persona_lines += ["", f"**Lineage Archetypes:** {', '.join(archetype_names)}"]
+        for arch in matched_archetypes:
+            persona_lines += [
+                "",
+                f"### {arch.name} Domain Doctrine",
+                f"- **Scope:** {arch.description}",
+                "- **First-Principles Invariants:**",
+                *[f"  - {inv}" for inv in arch.invariants],
+                "- **Domain-Native Tools:**",
+                *[f"  - `{tool}`" for tool in arch.tools],
+                "- **Verification Gates:**",
+                *[f"  - {gate}" for gate in arch.verification_gates],
+            ]
     persona_lines += [
         "",
         "## Behavioral stance",
@@ -302,6 +348,13 @@ def synthesize_role(
         *[f"- {target}" for target in all_targets],
         "",
     ]
+    if matched_archetypes:
+        teaching += [
+            "## Archetype Reconstruction & Transfer Challenges",
+            "",
+            *[f"- **{arch.name}:** {arch.teaching_transfer}" for arch in matched_archetypes],
+            "",
+        ]
     (root / "teaching" / "TEACHING_PLAN.md").write_text(
         "\n".join(teaching),
         encoding="utf-8",
@@ -315,10 +368,14 @@ def synthesize_role(
     teaching_contract["learner"]["target_state"] = (
         f"independently reconstructs, transfers, and teaches verified {role} methods"
     )
-    teaching_contract["verification"]["transfer_challenges"] = [
+    transfer_challenges = [
         f"Apply {target} to a novel {role} problem with evidence."
         for target in all_targets
     ]
+    for arch in matched_archetypes:
+        if arch.teaching_transfer not in transfer_challenges:
+            transfer_challenges.append(arch.teaching_transfer)
+    teaching_contract["verification"]["transfer_challenges"] = transfer_challenges
     _write_yaml(teaching_contract_path, teaching_contract)
 
     map_lines = [
@@ -419,6 +476,14 @@ def synthesize_role(
             for target in spec["targets"]:
                 if target not in layer["required"]:
                     layer["required"].append(target)
+
+    acceptance = list(stack.get("verification", {}).get("acceptance") or [])
+    for arch in matched_archetypes:
+        for gate in arch.verification_gates:
+            if gate not in acceptance:
+                acceptance.append(gate)
+    stack.setdefault("verification", {})["acceptance"] = acceptance
+
     stack["evolution"]["current_bottleneck"] = (
         "Research and verify the inferred role capabilities; current synthesis is a mapped hypothesis."
     )
@@ -433,6 +498,9 @@ def synthesize_role(
     genius["persona"] = "persona/PERSONA.md"
     genius["teaching_plan"] = "teaching/TEACHING_PLAN.md"
     genius["generated_by"] = "Genius-Mastery"
+    if matched_archetypes:
+        genius["archetypes"] = archetype_ids
+        genius["primary_archetype"] = archetype_ids[0]
     _write_yaml(genius_path, genius)
 
     return root
