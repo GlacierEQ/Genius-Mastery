@@ -4,110 +4,20 @@
   "title": "Case Position Campaign",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "campaign_id",
-    "matter_id",
-    "status",
-    "operator_position",
-    "objectives",
-    "outbound_control",
-    "escalation_ladder",
-    "stale_send_suppression",
-    "verification"
-  ],
+  "required": ["campaign_id", "matter_id", "status", "operator_position", "objectives", "outbound_control", "escalation_ladder", "stale_send_suppression", "verification"],
   "properties": {
-    "campaign_id": {"type": "string", "minLength": 1},
-    "matter_id": {"type": "string", "minLength": 1},
-    "status": {"enum": ["DRAFT", "LOCKED", "ACTIVE", "PAUSED", "SUPERSEDED", "CLOSED"]},
-    "source_authority": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "primary_system_of_record": {"type": "string"},
-        "execution_state_system": {"type": "string"},
-        "provider_receipts_required": {"type": "boolean"},
-        "truth_labels_required": {"type": "boolean"}
-      }
-    },
-    "operator_position": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["summary", "approved_posture", "non_concessions", "review_required_for"],
-      "properties": {
-        "summary": {"type": "string"},
-        "approved_posture": {"type": "string"},
-        "non_concessions": {"type": "array", "items": {"type": "string"}},
-        "permitted_assertions": {"type": "array", "items": {"type": "string"}},
-        "prohibited_language": {"type": "array", "items": {"type": "string"}},
-        "review_required_for": {"type": "array", "items": {"type": "string"}}
-      }
-    },
-    "objectives": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["objective_id", "description", "status", "completion_test"],
-        "properties": {
-          "objective_id": {"type": "string"},
-          "description": {"type": "string"},
-          "status": {"enum": ["OPEN", "READY", "WAITING", "SATISFIED", "SUPERSEDED", "RETIRED"]},
-          "completion_test": {"type": "string"},
-          "evidence_required": {"type": "array", "items": {"type": "string"}},
-          "current_owner": {"type": "string"},
-          "last_receipt_id": {"type": "string"}
-        }
-      }
-    },
-    "outbound_control": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["designated_executor", "operator_review_default", "send_preflight_required"],
-      "properties": {
-        "designated_executor": {"type": "string"},
-        "operator_review_default": {"type": "boolean"},
-        "send_preflight_required": {"type": "boolean"},
-        "allowed_channels": {"type": "array", "items": {"type": "string"}},
-        "forbidden_workers": {"type": "array", "items": {"type": "string"}}
-      }
-    },
-    "escalation_ladder": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["tier", "trigger", "recipient_class", "allowed_purpose"],
-        "properties": {
-          "tier": {"type": "integer", "minimum": 0},
-          "trigger": {"type": "string"},
-          "recipient_class": {"type": "string"},
-          "allowed_purpose": {"type": "string"},
-          "operator_review_required": {"type": "boolean"}
-        }
-      }
-    },
-    "stale_send_suppression": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["condition", "action"],
-        "properties": {
-          "condition": {"type": "string"},
-          "action": {"enum": ["DO_NOT_SEND", "RETIRE", "REVIEW", "REWRITE"]}
-        }
-      }
-    },
-    "verification": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["pre_send_checks", "post_send_receipts"],
-      "properties": {
-        "pre_send_checks": {"type": "array", "items": {"type": "string"}},
-        "post_send_receipts": {"type": "array", "items": {"type": "string"}},
-        "supabase_update_required": {"type": "boolean"}
-      }
-    }
-  }
+    "campaign_id": {"type":"string","minLength":1},
+    "matter_id": {"type":"string","minLength":1},
+    "status": {"enum":["DRAFT","LOCKED","ACTIVE","PAUSED","SUPERSEDED","CLOSED"]},
+    "source_authority": {"type":"object","additionalProperties":false,"properties":{"primary_system_of_record":{"type":"string"},"execution_state_system":{"type":"string"},"provider_receipts_required":{"type":"boolean"},"truth_labels_required":{"type":"boolean"}}},
+    "operator_position": {"type":"object","additionalProperties":false,"required":["summary","approved_posture","non_concessions","review_required_for"],"properties":{"summary":{"type":"string"},"approved_posture":{"type":"string"},"non_concessions":{"type":"array","items":{"type":"string"}},"permitted_assertions":{"type":"array","items":{"type":"string"}},"prohibited_language":{"type":"array","items":{"type":"string"}},"review_required_for":{"type":"array","items":{"type":"string"}}}},
+    "objectives": {"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["objective_id","description","status","completion_test"],"properties":{"objective_id":{"type":"string"},"description":{"type":"string"},"status":{"enum":["OPEN","READY","WAITING","SATISFIED","SUPERSEDED","RETIRED","REPLAN_REQUIRED"]},"completion_test":{"type":"string"},"evidence_required":{"type":"array","items":{"type":"string"}},"current_owner":{"type":"string"},"last_receipt_id":{"type":"string"}}}},
+    "outbound_control": {"type":"object","additionalProperties":false,"required":["designated_executor","operator_review_default","send_preflight_required","active_plan_required","unauthorized_action_state"],"properties":{"designated_executor":{"type":"string","const":"Cross-Case Mission Executor"},"operator_review_default":{"type":"boolean"},"send_preflight_required":{"type":"boolean","const":true},"active_plan_required":{"type":"boolean","const":true},"unauthorized_action_state":{"type":"string","const":"REPLAN_REQUIRED"},"plan_id":{"type":"string"},"plan_version":{"type":"string"},"plan_approved_at":{"type":"string"},"plan_authority":{"type":"string"},"allowed_channels":{"type":"array","items":{"type":"string"}},"forbidden_workers":{"type":"array","items":{"type":"string"}}}},
+    "escalation_ladder": {"type":"array","items":{"type":"object","additionalProperties":false,"required":["tier","trigger","recipient_class","allowed_purpose"],"properties":{"tier":{"type":"integer","minimum":0},"trigger":{"type":"string"},"recipient_class":{"type":"string"},"allowed_purpose":{"type":"string"},"operator_review_required":{"type":"boolean"}}}},
+    "stale_send_suppression": {"type":"array","items":{"type":"object","additionalProperties":false,"required":["condition","action"],"properties":{"condition":{"type":"string"},"action":{"enum":["DO_NOT_SEND","RETIRE","REVIEW","REWRITE","REPLAN_REQUIRED"]}}}},
+    "verification": {"type":"object","additionalProperties":false,"required":["pre_send_checks","post_send_receipts"],"properties":{"pre_send_checks":{"type":"array","items":{"type":"string"}},"post_send_receipts":{"type":"array","items":{"type":"string"}},"supabase_update_required":{"type":"boolean"}}}
+  },
+  "allOf": [
+    {"if":{"properties":{"status":{"const":"ACTIVE"}}},"then":{"properties":{"outbound_control":{"required":["plan_id","plan_version","plan_approved_at","plan_authority"]}}}}
+  ]
 }
