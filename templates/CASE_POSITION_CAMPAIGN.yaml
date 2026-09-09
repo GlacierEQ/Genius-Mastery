@@ -1,0 +1,108 @@
+campaign_id: "CASE-POSITION-EXAMPLE"
+matter_id: "MATTER-ID"
+status: "DRAFT"
+
+source_authority:
+  primary_system_of_record: "source-bearing evidence vault / provider records"
+  execution_state_system: "Supabase case execution state"
+  provider_receipts_required: true
+  truth_labels_required: true
+
+operator_position:
+  summary: "Replace with the Operator-approved strategic position. Do not infer or improvise."
+  approved_posture: "controlled escalation until the defined institutional response objective is satisfied"
+  non_concessions:
+    - "Do not treat a vague acknowledgment as substantive resolution."
+    - "Do not concede that institutional delay is harmless when adverse action occurred quickly."
+    - "Do not substitute counsel-seeking, settlement, or withdrawal posture without Operator approval."
+  permitted_assertions:
+    - "OPERATOR_ALLEGATION: serious rights-impacting misconduct occurred."
+    - "VERIFIED_RECEIPT: prior communication was sent at the captured provider timestamp."
+    - "VERIFIED_RESPONSE: only responses with source-bearing readback may be marked satisfied."
+  prohibited_language:
+    - "unsupported criminal conclusions framed as adjudicated fact"
+    - "threats, insults, or language that weakens credibility if forwarded or filed"
+    - "unapproved settlement, compromise, apology acceptance, or narrowing"
+  review_required_for:
+    - "new recipient class"
+    - "new allegation or actor"
+    - "outside-counsel/referral outreach"
+    - "litigation/prosecution/media/IG/privacy correction posture introduced for the first time"
+    - "remedy change"
+    - "closure or withdrawal"
+
+objectives:
+  - objective_id: "ACK-OWNER-001"
+    description: "Obtain identifiable acknowledgment, responsible owner/office, and tracking/reference path where available."
+    status: "OPEN"
+    completion_test: "Response identifies receipt, owner or routing office, and next-step/timeline or tracking reference."
+    evidence_required:
+      - "sent-message receipt"
+      - "recipient response readback"
+  - objective_id: "PRESERVE-001"
+    description: "Confirm preservation/routing of evidence and records request to the responsible authority."
+    status: "OPEN"
+    completion_test: "Source-bearing response confirms preservation handling or identifies the records/preservation authority."
+    evidence_required:
+      - "preservation request copy"
+      - "provider receipt"
+      - "confirmation or refusal"
+  - objective_id: "SUBSTANTIVE-REVIEW-001"
+    description: "Obtain substantive handling status, not merely a courtesy acknowledgment."
+    status: "OPEN"
+    completion_test: "Response states whether a review/investigation/process was opened, declined, transferred, or requires additional information."
+    evidence_required:
+      - "response from accountable office"
+
+outbound_control:
+  designated_executor: "Cross-Case Mission Executor"
+  operator_review_default: true
+  send_preflight_required: true
+  allowed_channels:
+    - "Gmail only after Operator-approved final text or pre-approved routine escalation tier"
+  forbidden_workers:
+    - "GlacierEQ substantive mission worker"
+    - "diagnostic/audit workers"
+    - "case-development-only workers"
+
+escalation_ladder:
+  - tier: 0
+    trigger: "initial approved campaign communication"
+    recipient_class: "front-door intake / responsible office"
+    allowed_purpose: "state allegations, preserve evidence, request owner/tracking/path/timeline"
+    operator_review_required: true
+  - tier: 1
+    trigger: "silence or non-substantive response after approved response clock"
+    recipient_class: "same office plus supervisor/escalation address if known"
+    allowed_purpose: "document unanswered issues and demand accountable routing/status"
+    operator_review_required: false
+  - tier: 2
+    trigger: "continued silence, refusal to identify owner, or unresolved preservation/database-risk objective"
+    recipient_class: "compliance, privacy, records, inspector-general, command, or legal office as appropriate"
+    allowed_purpose: "escalate the complaint-handling failure and unresolved rights-impacting objectives"
+    operator_review_required: true
+
+stale_send_suppression:
+  - condition: "objective already satisfied by another recipient or newer channel"
+    action: "RETIRE"
+  - condition: "recipient responded with new facts requiring strategy change"
+    action: "REVIEW"
+  - condition: "draft contains unapproved posture or remedy"
+    action: "DO_NOT_SEND"
+  - condition: "provider sent receipt cannot be checked in same run"
+    action: "DO_NOT_SEND"
+  - condition: "current source state contradicts a factual assertion in the draft"
+    action: "REWRITE"
+
+verification:
+  pre_send_checks:
+    - "hydrate current Supabase execution state"
+    - "read prior sent receipts and response receipts for same matter/objective"
+    - "confirm objective status is not SATISFIED, SUPERSEDED, RETIRED, or CLOSED"
+    - "confirm recipient and escalation tier are authorized by the campaign doctrine"
+    - "confirm the exact final text is approved or within pre-approved routine escalation wording"
+  post_send_receipts:
+    - "Gmail message id or provider-native sent receipt"
+    - "readback of sent subject, recipients, timestamp, and body hash when available"
+    - "Supabase action state update with receipt id"
+  supabase_update_required: true
