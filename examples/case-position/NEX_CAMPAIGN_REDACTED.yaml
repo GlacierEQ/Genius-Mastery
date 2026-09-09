@@ -1,0 +1,118 @@
+campaign_id: "NEX-RIGHTS-IMPACT-CAMPAIGN-REDACTED"
+matter_id: "CHERRY-NEX"
+status: "DRAFT"
+
+source_authority:
+  primary_system_of_record: "case evidence vault, provider receipts, law enforcement/NEX records, records requests, response readbacks"
+  execution_state_system: "Supabase case execution state"
+  provider_receipts_required: true
+  truth_labels_required: true
+
+operator_position:
+  summary: "Operator alleges serious rights-impacting misconduct arising from detention, removal/transport, exclusion, adverse labeling/database consequences, and insufficient institutional response. This file is a redacted campaign seed, not a public factual proof package."
+  approved_posture: "controlled high-pressure accountability campaign requiring identifiable intake, ownership, preservation, database/status clarification, and substantive response"
+  non_concessions:
+    - "A vague acknowledgment does not satisfy intake, tracking, ownership, preservation, database-correction/disclosure, or substantive-review objectives."
+    - "The institution's rapid adverse action may be used as pressure against delayed or vague complaint handling."
+    - "The campaign does not default to outside counsel as a substitute for Operator-directed execution."
+  permitted_assertions:
+    - "OPERATOR_ALLEGATION: affected person was detained and subjected to adverse exclusion/labeling consequences without adjudication."
+    - "OPERATOR_ALLEGATION: adverse information may have been entered into one or more institutional/national loss-prevention or access-control systems."
+    - "OPERATOR_ALLEGATION: institutional silence or vague response after receipt is independently unacceptable given the seriousness of the allegations."
+    - "VERIFIED_RECEIPT: only insert exact sent-message receipts after provider readback."
+  prohibited_language:
+    - "names, images, private identifying information, or unnecessary personal details in public repository files"
+    - "unsupported statements that database entries are confirmed unless source-bearing proof exists"
+    - "threats or uncontrolled language in outbound communications"
+    - "claims that a recipient must reach a particular investigative outcome unless law/procedure/source authority supports that duty"
+  review_required_for:
+    - "first database correction/disclosure demand"
+    - "first inspector-general/compliance/privacy escalation"
+    - "first litigation/criminal/reporting posture"
+    - "outside counsel/referral outreach"
+    - "publication or public-pressure escalation"
+
+objectives:
+  - objective_id: "NEX-ACK-OWNER-TRACKING"
+    description: "Obtain non-vague acknowledgment identifying responsible owner, routing path, case/reference/tracking number if available, and next response timeline."
+    status: "OPEN"
+    completion_test: "A source-bearing response provides owner/routing plus tracking/reference or states no tracking number exists and gives next handling step/timeline."
+    evidence_required:
+      - "initial sent receipt(s)"
+      - "response readback(s)"
+      - "current Supabase action status"
+  - objective_id: "NEX-PRESERVATION"
+    description: "Confirm preservation handling for incident evidence, reports, camera footage, databases, exclusions, station/transport/processing records, communications, and complaint-routing records."
+    status: "OPEN"
+    completion_test: "Source-bearing confirmation, refusal, or transfer identifies who controls preservation and what is being preserved or denied."
+    evidence_required:
+      - "preservation demand copy"
+      - "provider sent receipt"
+      - "preservation response or silence clock"
+  - objective_id: "NEX-DATABASE-STATUS"
+    description: "Obtain clarification, disclosure path, correction path, or denial regarding adverse loss-prevention/access-control/database labeling or dissemination."
+    status: "OPEN"
+    completion_test: "Accountable office confirms status/path/denial/correction process or identifies the office/system owner responsible."
+    evidence_required:
+      - "adverse action evidence"
+      - "database/status request receipt"
+      - "response or refusal"
+  - objective_id: "NEX-SUBSTANTIVE-REVIEW"
+    description: "Obtain substantive handling status for the underlying incident and rights-impacting allegations."
+    status: "OPEN"
+    completion_test: "Response states whether review/investigation/records process was opened, transferred, declined, or requires additional information."
+    evidence_required:
+      - "complaint receipt"
+      - "substantive response"
+
+outbound_control:
+  designated_executor: "Cross-Case Mission Executor"
+  operator_review_default: true
+  send_preflight_required: true
+  allowed_channels:
+    - "Gmail after Operator-approved final text or locked routine escalation tier"
+  forbidden_workers:
+    - "GlacierEQ substantive mission worker"
+    - "generic hourly estate worker"
+
+escalation_ladder:
+  - tier: 0
+    trigger: "campaign doctrine approved by Operator"
+    recipient_class: "current known NEX/contact recipients"
+    allowed_purpose: "demand accountable intake, preservation, ownership, tracking/status, and database/status path"
+    operator_review_required: true
+  - tier: 1
+    trigger: "six days or approved clock elapsed with silence or non-substantive reply"
+    recipient_class: "same recipients plus supervisory/escalation recipients already approved"
+    allowed_purpose: "document elapsed time and unanswered objectives; require owner/tracking/status/timeline"
+    operator_review_required: true
+  - tier: 2
+    trigger: "continued silence or no owner/tracking/status after tier 1"
+    recipient_class: "records, privacy, compliance, command, inspector-general, or legal authority as approved"
+    allowed_purpose: "escalate complaint-handling failure and unresolved preservation/database objectives"
+    operator_review_required: true
+
+stale_send_suppression:
+  - condition: "NEX provides owner/tracking/status before send"
+    action: "REWRITE"
+  - condition: "database/status objective is satisfied by records/privacy channel"
+    action: "RETIRE"
+  - condition: "new facts materially change legal posture or recipient authority"
+    action: "REVIEW"
+  - condition: "draft uses private identifying details unnecessary for the recipient/objective"
+    action: "REWRITE"
+  - condition: "draft contains uncontrolled anger or threats"
+    action: "DO_NOT_SEND"
+
+verification:
+  pre_send_checks:
+    - "read current sent receipts for NEX matter"
+    - "read current response state from Gmail and Supabase"
+    - "confirm no case/reference/owner/tracking response already arrived"
+    - "confirm escalation tier and recipient class are Operator-approved"
+    - "confirm message keeps allegations truth-labeled and avoids unsupported database certainty"
+  post_send_receipts:
+    - "Gmail message id"
+    - "sent readback with recipients and timestamp"
+    - "Supabase action update with receipt binding"
+  supabase_update_required: true
