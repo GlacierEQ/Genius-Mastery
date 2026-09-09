@@ -1,7 +1,8 @@
 """Genius Lineage domain repository synthesis forge.
 
 Forges autonomous domain repositories under /root/projects/Genius-Lineage/
-complying with the Universal Pillar Invariant and the 9+ Quality Standard.
+complying with the Universal Pillar Invariant, the 9+ Quality Standard,
+and complete cutting-edge reference libraries.
 """
 from __future__ import annotations
 
@@ -16,6 +17,7 @@ import yaml
 
 from ..archetypes import ARCHETYPES, ArchetypeDefinition
 from .registry import LINEAGE_DOMAINS, get_domain_implementation
+from .references import DOMAIN_REFERENCES, get_domain_references
 
 DEFAULT_OUTPUT_ROOT = Path("/root/projects/Genius-Lineage")
 
@@ -37,6 +39,7 @@ def forge_domain(
     repo_dir = output_root / repo_name
     module_name = impl["module_name"]
     dist_name = repo_name.lower().replace("_", "-")
+    refs = get_domain_references(arch.id)
 
     # 1. Directory Structure
     dirs = [
@@ -49,6 +52,7 @@ def forge_domain(
         repo_dir / "challenges" / "foundation",
         repo_dir / "challenges" / "transfer",
         repo_dir / "evidence",
+        repo_dir / "references",
     ]
     for d in dirs:
         d.mkdir(parents=True, exist_ok=True)
@@ -69,6 +73,10 @@ def forge_domain(
         "verification_gates": list(arch.verification_gates),
         "teaching_transfer": arch.teaching_transfer,
         "universal_pillar_invariant": "Strict modular decoupling. Zero cross-domain imports.",
+        "references": [
+            {"title": r["title"], "authority": r["authority"], "url": r["url"]}
+            for r in refs
+        ],
     }
     with open(repo_dir / "GENIUS.yaml", "w", encoding="utf-8") as f:
         yaml.safe_dump(genius_data, f, sort_keys=False)
@@ -199,7 +207,37 @@ The solution must be implemented from first principles without foreign libraries
     with open(repo_dir / "challenges" / "transfer" / "CHALLENGE.md", "w", encoding="utf-8") as f:
         f.write(transfer_challenge)
 
-    # 10. Implementation & Tests
+    # 10. references/LIBRARY.yaml and references/LIBRARY.md
+    library_yaml_data = {
+        "domain": arch.name,
+        "id": arch.id,
+        "total_references": len(refs),
+        "references": refs,
+    }
+    with open(repo_dir / "references" / "LIBRARY.yaml", "w", encoding="utf-8") as f:
+        yaml.safe_dump(library_yaml_data, f, sort_keys=False)
+
+    ref_lines = [
+        f"# {arch.name} Reference Library",
+        "",
+        f"> Authoritative scientific, statutory, and architectural specifications grounding **{arch.name}** in cutting-edge first principles.",
+        "",
+        "## Curated Specifications & Primary Sources",
+        "",
+    ]
+    for r in refs:
+        ref_lines.extend([
+            f"### [{r['title']}]({r['url']})",
+            f"- **Authority**: {r['authority']}",
+            f"- **Type**: `{r['type']}`",
+            f"- **Canonical URL**: [{r['url']}]({r['url']})",
+            f"- **Relevance & Grounding**: {r['relevance']}",
+            "",
+        ])
+    with open(repo_dir / "references" / "LIBRARY.md", "w", encoding="utf-8") as f:
+        f.write("\n".join(ref_lines))
+
+    # 11. Implementation & Tests
     tools_code = impl["tools_code"]
     test_code = impl["test_code"]
 
@@ -215,7 +253,7 @@ from .tools import *
     with open(repo_dir / "tests" / "test_invariants.py", "w", encoding="utf-8") as f:
         f.write(test_code)
 
-    # 11. pyproject.toml
+    # 12. pyproject.toml
     pyproject_content = f"""[build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
@@ -237,7 +275,7 @@ pythonpath = ["src"]
     with open(repo_dir / "pyproject.toml", "w", encoding="utf-8") as f:
         f.write(pyproject_content)
 
-    # 12. README.md
+    # 13. README.md
     readme_content = f"""# {arch.name}
 
 > {arch.description}
@@ -246,6 +284,10 @@ Part of the **Genius Lineage** under the **Universal Pillar Invariant** (zero cr
 
 ## Invariants
 {chr(10).join(f"- {inv}" for inv in arch.invariants)}
+
+## Cutting-Edge Reference Library
+Curated primary sources, international standards, and academic publications are cataloged in [`references/LIBRARY.md`](references/LIBRARY.md):
+{chr(10).join(f"- [{r['title']}]({r['url']}) ({r['authority']})" for r in refs)}
 
 ## Verification
 Run domain invariant tests:
@@ -256,7 +298,7 @@ pytest tests/ -v
     with open(repo_dir / "README.md", "w", encoding="utf-8") as f:
         f.write(readme_content)
 
-    # 13. evidence/RECEIPTS.jsonl
+    # 14. evidence/RECEIPTS.jsonl
     tools_hash = hashlib.sha256(tools_code.encode("utf-8")).hexdigest()
     test_hash = hashlib.sha256(test_code.encode("utf-8")).hexdigest()
     receipt = {
@@ -267,6 +309,7 @@ pytest tests/ -v
         "timestamp": time.time(),
         "tools_sha256": tools_hash,
         "tests_sha256": test_hash,
+        "reference_count": len(refs),
         "status": "FORGED",
     }
     with open(repo_dir / "evidence" / "RECEIPTS.jsonl", "w", encoding="utf-8") as f:
@@ -276,10 +319,56 @@ pytest tests/ -v
 
 
 def forge_all(output_root: Path = DEFAULT_OUTPUT_ROOT) -> list[Path]:
-    """Forge all 26 canonical Genius Lineage domain repositories."""
+    """Forge all 26 canonical Genius Lineage domain repositories with reference libraries."""
     output_root.mkdir(parents=True, exist_ok=True)
     results: list[Path] = []
+    estate_library: dict[str, Any] = {
+        "lineage": "Genius Lineage",
+        "total_domains": len(ARCHETYPES),
+        "total_references": sum(len(r) for r in DOMAIN_REFERENCES.values()),
+        "domains": {},
+    }
+
+    estate_lib_md_lines = [
+        "# Genius Lineage Master Reference Library",
+        "",
+        "> Master compendium of primary standards, academic research, and official documentation grounding all 26 autonomous Genius domains in cutting-edge science and systems engineering.",
+        "",
+        f"**Total Registered Domains:** {len(ARCHETYPES)} | **Total Authoritative References:** {sum(len(r) for r in DOMAIN_REFERENCES.values())}",
+        "",
+        "---",
+        "",
+    ]
+
     for arch in ARCHETYPES.values():
         path = forge_domain(arch, output_root=output_root)
         results.append(path)
+        refs = get_domain_references(arch.id)
+        estate_library["domains"][arch.name] = {
+            "id": arch.id,
+            "domain_group": arch.domain,
+            "description": arch.description,
+            "references": refs,
+        }
+
+        estate_lib_md_lines.extend([
+            f"## [{arch.name}](file://{path}) (`{arch.domain}`)",
+            f"*{arch.description}*",
+            "",
+            "| Specification / Paper | Authority | Type | Link |",
+            "|---|---|---|---|",
+        ])
+        for r in refs:
+            estate_lib_md_lines.append(
+                f"| {r['title']} | {r['authority']} | `{r['type']}` | [{r['url']}]({r['url']}) |"
+            )
+        estate_lib_md_lines.append("")
+
+    # Write estate-level reference catalog and document
+    with open(output_root / "GENIUS_LIBRARY.yaml", "w", encoding="utf-8") as f:
+        yaml.safe_dump(estate_library, f, sort_keys=False)
+
+    with open(output_root / "LIBRARY.md", "w", encoding="utf-8") as f:
+        f.write("\n".join(estate_lib_md_lines))
+
     return results
