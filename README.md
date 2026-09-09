@@ -69,10 +69,24 @@ See:
 - `docs/GENIUS_ENTITY_ANATOMY.md`
 - `docs/MASTER_TEACHER_FORGE.md`
 - `docs/DYNAMIC_ADJUSTMENT_AND_FOUR_PILLARS.md`
+- `docs/CASE_POSITION_MASTERY.md`
 - `schemas/capability.schema.json`
 - `schemas/role-brief.schema.json`
+- `schemas/case-position-campaign.schema.json`
 - `templates/CAPABILITY.yaml`
+- `templates/CASE_POSITION_CAMPAIGN.yaml`
 - `sources/CAPABILITY_SOURCES.yaml`
+
+## Case Position Mastery
+
+Genius-Mastery now includes a controlled case-outbound campaign substrate:
+
+- `docs/CASE_POSITION_MASTERY.md` defines the doctrine for Operator-approved position, single outbound authority, stale-send suppression, escalation clocks, and provider receipt/readback requirements.
+- `schemas/case-position-campaign.schema.json` defines a machine-checkable campaign contract for objectives, escalation ladders, review boundaries, and verification.
+- `templates/CASE_POSITION_CAMPAIGN.yaml` provides the reusable campaign skeleton.
+- `examples/case-position/NEX_CAMPAIGN_REDACTED.yaml` seeds the NEX campaign as a redacted doctrine object without publishing private evidence or uncontrolled allegations.
+
+The rule is simple: external case communication is strategic action. A vague acknowledgment is not automatically progress, and no worker may improvise posture, recipient class, remedy, concession, or counsel-seeking outreach outside an approved campaign mandate.
 
 ## Install
 
