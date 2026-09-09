@@ -2,7 +2,7 @@
 
 Forges autonomous domain repositories under /root/projects/Genius-Lineage/
 complying with the Universal Pillar Invariant, the 9+ Quality Standard,
-and complete cutting-edge reference libraries.
+foundational specifications, and daily-updating front-runner news/blog feeds.
 """
 from __future__ import annotations
 
@@ -17,7 +17,12 @@ import yaml
 
 from ..archetypes import ARCHETYPES, ArchetypeDefinition
 from .registry import LINEAGE_DOMAINS, get_domain_implementation
-from .references import DOMAIN_REFERENCES, get_domain_references
+from .references import (
+    DOMAIN_REFERENCES,
+    DOMAIN_DAILY_FEEDS,
+    get_domain_references,
+    get_domain_daily_feeds,
+)
 
 DEFAULT_OUTPUT_ROOT = Path("/root/projects/Genius-Lineage")
 
@@ -40,6 +45,7 @@ def forge_domain(
     module_name = impl["module_name"]
     dist_name = repo_name.lower().replace("_", "-")
     refs = get_domain_references(arch.id)
+    feeds = get_domain_daily_feeds(arch.id)
 
     # 1. Directory Structure
     dirs = [
@@ -73,9 +79,13 @@ def forge_domain(
         "verification_gates": list(arch.verification_gates),
         "teaching_transfer": arch.teaching_transfer,
         "universal_pillar_invariant": "Strict modular decoupling. Zero cross-domain imports.",
-        "references": [
+        "specifications": [
             {"title": r["title"], "authority": r["authority"], "url": r["url"]}
             for r in refs
+        ],
+        "daily_feeds": [
+            {"title": f["title"], "publisher": f["publisher"], "url": f["url"], "frequency": f["frequency"]}
+            for f in feeds
         ],
     }
     with open(repo_dir / "GENIUS.yaml", "w", encoding="utf-8") as f:
@@ -87,8 +97,8 @@ def forge_domain(
         "lineage": "Genius Lineage",
         "doctrine": "APEX First-Principles Sovereign Runtime",
         "operational_lanes": [
-            {"lane": "RESEARCH", "standard": "Empirical survey and invariant extraction"},
-            {"lane": "STUDY", "standard": "Formal proof and mathematical modeling"},
+            {"lane": "RESEARCH", "standard": "Continuous intelligence intake from daily feeds and specification monitors"},
+            {"lane": "STUDY", "standard": "Formal proof and mathematical modeling from foundational literature"},
             {"lane": "ACT", "standard": "Zero-stub implementation with 100% green unit assertions"},
             {"lane": "TEACH", "standard": "Knowledge transfer through reproducible challenge verification"},
         ],
@@ -138,6 +148,7 @@ def forge_domain(
 ## Identity
 You are **{arch.name}**, the canonical sovereign intelligence specialized in **{arch.domain}**.
 Your mandate is first-principles mastery: no mocks, no stubs, no shallow wrappers.
+You stay continually on the bleeding edge by monitoring daily technical dispatches, research feeds, and breaking specifications.
 
 ## Core Scope
 {arch.description}
@@ -148,6 +159,7 @@ Your mandate is first-principles mastery: no mocks, no stubs, no shallow wrapper
 ## Operational Mode
 - **Precision**: You reason with rigorous physical, mathematical, and algorithmic precision.
 - **Independence**: Under the Universal Pillar Invariant, you remain entirely self-sufficient.
+- **Front-Runner Awareness**: You ingest daily news, security bulletins, and technical blogs to remain ahead of industry shifts.
 - **Evidence-Backed**: Every assertion is backed by reproducible tests and cryptographic receipts.
 """
     with open(repo_dir / "persona" / "PERSONA.md", "w", encoding="utf-8") as f:
@@ -211,18 +223,20 @@ The solution must be implemented from first principles without foreign libraries
     library_yaml_data = {
         "domain": arch.name,
         "id": arch.id,
-        "total_references": len(refs),
-        "references": refs,
+        "total_specifications": len(refs),
+        "total_daily_feeds": len(feeds),
+        "specifications": refs,
+        "daily_feeds": feeds,
     }
     with open(repo_dir / "references" / "LIBRARY.yaml", "w", encoding="utf-8") as f:
         yaml.safe_dump(library_yaml_data, f, sort_keys=False)
 
     ref_lines = [
-        f"# {arch.name} Reference Library",
+        f"# {arch.name} Reference & Daily Intelligence Library",
         "",
-        f"> Authoritative scientific, statutory, and architectural specifications grounding **{arch.name}** in cutting-edge first principles.",
+        f"> Authoritative scientific specifications, statutory canons, and daily-updating technical blogs grounding **{arch.name}** in cutting-edge first principles.",
         "",
-        "## Curated Specifications & Primary Sources",
+        "## 1. Foundational Specifications & Primary Canons",
         "",
     ]
     for r in refs:
@@ -234,6 +248,25 @@ The solution must be implemented from first principles without foreign libraries
             f"- **Relevance & Grounding**: {r['relevance']}",
             "",
         ])
+
+    ref_lines.extend([
+        "---",
+        "",
+        "## 2. Daily Frontier News & Technical Engineering Feeds",
+        "",
+        "Monitor these active daily feeds to remain a front-runner in emerging breakthroughs and updates:",
+        "",
+    ])
+    for f in feeds:
+        ref_lines.extend([
+            f"### [{f['title']}]({f['url']})",
+            f"- **Publisher**: {f['publisher']}",
+            f"- **Update Frequency**: `{f['frequency']}`",
+            f"- **Live Link**: [{f['url']}]({f['url']})",
+            f"- **Front-Runner Focus**: {f['focus']}",
+            "",
+        ])
+
     with open(repo_dir / "references" / "LIBRARY.md", "w", encoding="utf-8") as f:
         f.write("\n".join(ref_lines))
 
@@ -285,9 +318,13 @@ Part of the **Genius Lineage** under the **Universal Pillar Invariant** (zero cr
 ## Invariants
 {chr(10).join(f"- {inv}" for inv in arch.invariants)}
 
-## Cutting-Edge Reference Library
-Curated primary sources, international standards, and academic publications are cataloged in [`references/LIBRARY.md`](references/LIBRARY.md):
+## Cutting-Edge Specifications & Daily News Feeds
+Curated primary sources and daily intelligence feeds are cataloged in [`references/LIBRARY.md`](references/LIBRARY.md):
+### Primary Specifications
 {chr(10).join(f"- [{r['title']}]({r['url']}) ({r['authority']})" for r in refs)}
+
+### Daily News & Engineering Blogs
+{chr(10).join(f"- [{f['title']}]({f['url']}) — *{f['publisher']}* ({f['frequency']})" for f in feeds)}
 
 ## Verification
 Run domain invariant tests:
@@ -309,7 +346,8 @@ pytest tests/ -v
         "timestamp": time.time(),
         "tools_sha256": tools_hash,
         "tests_sha256": test_hash,
-        "reference_count": len(refs),
+        "specification_count": len(refs),
+        "daily_feed_count": len(feeds),
         "status": "FORGED",
     }
     with open(repo_dir / "evidence" / "RECEIPTS.jsonl", "w", encoding="utf-8") as f:
@@ -319,22 +357,26 @@ pytest tests/ -v
 
 
 def forge_all(output_root: Path = DEFAULT_OUTPUT_ROOT) -> list[Path]:
-    """Forge all 26 canonical Genius Lineage domain repositories with reference libraries."""
+    """Forge all 26 canonical Genius Lineage domain repositories with specifications and daily feeds."""
     output_root.mkdir(parents=True, exist_ok=True)
     results: list[Path] = []
+    total_specs = sum(len(r) for r in DOMAIN_REFERENCES.values())
+    total_feeds = sum(len(f) for f in DOMAIN_DAILY_FEEDS.values())
+
     estate_library: dict[str, Any] = {
         "lineage": "Genius Lineage",
         "total_domains": len(ARCHETYPES),
-        "total_references": sum(len(r) for r in DOMAIN_REFERENCES.values()),
+        "total_specifications": total_specs,
+        "total_daily_feeds": total_feeds,
         "domains": {},
     }
 
     estate_lib_md_lines = [
-        "# Genius Lineage Master Reference Library",
+        "# Genius Lineage Master Reference & Daily Intelligence Compendium",
         "",
-        "> Master compendium of primary standards, academic research, and official documentation grounding all 26 autonomous Genius domains in cutting-edge science and systems engineering.",
+        "> Master compendium of primary standards, academic research, and daily technical blogs grounding all 26 autonomous Genius domains in cutting-edge science and living industry intelligence.",
         "",
-        f"**Total Registered Domains:** {len(ARCHETYPES)} | **Total Authoritative References:** {sum(len(r) for r in DOMAIN_REFERENCES.values())}",
+        f"**Total Registered Domains:** {len(ARCHETYPES)} | **Foundational Specifications:** {total_specs} | **Daily News & Engineering Feeds:** {total_feeds}",
         "",
         "---",
         "",
@@ -344,23 +386,38 @@ def forge_all(output_root: Path = DEFAULT_OUTPUT_ROOT) -> list[Path]:
         path = forge_domain(arch, output_root=output_root)
         results.append(path)
         refs = get_domain_references(arch.id)
+        feeds = get_domain_daily_feeds(arch.id)
+
         estate_library["domains"][arch.name] = {
             "id": arch.id,
             "domain_group": arch.domain,
             "description": arch.description,
-            "references": refs,
+            "specifications": refs,
+            "daily_feeds": feeds,
         }
 
         estate_lib_md_lines.extend([
             f"## [{arch.name}](file://{path}) (`{arch.domain}`)",
             f"*{arch.description}*",
             "",
+            "### Foundational Specifications & Standards",
             "| Specification / Paper | Authority | Type | Link |",
             "|---|---|---|---|",
         ])
         for r in refs:
             estate_lib_md_lines.append(
                 f"| {r['title']} | {r['authority']} | `{r['type']}` | [{r['url']}]({r['url']}) |"
+            )
+
+        estate_lib_md_lines.extend([
+            "",
+            "### Daily News Feeds & Technical Blogs",
+            "| Source / Feed | Publisher | Frequency | Live Link | Focus |",
+            "|---|---|---|---|---|",
+        ])
+        for f in feeds:
+            estate_lib_md_lines.append(
+                f"| {f['title']} | {f['publisher']} | `{f['frequency']}` | [{f['url']}]({f['url']}) | {f['focus']} |"
             )
         estate_lib_md_lines.append("")
 

@@ -829,7 +829,638 @@ DOMAIN_REFERENCES: dict[str, list[dict[str, Any]]] = {
     ]
 }
 
+DOMAIN_DAILY_FEEDS: dict[str, list[dict[str, Any]]] = {
+    "aerospace": [
+        {
+            "title": "NASA Breaking News & Mission Releases",
+            "url": "https://www.nasa.gov/news/",
+            "publisher": "National Aeronautics and Space Administration (NASA)",
+            "frequency": "Daily / Real-Time",
+            "focus": "Flight test telemetry, Artemis milestones, orbital deployments, and planetary science."
+        },
+        {
+            "title": "SpaceNews Global Industry & Defense Reports",
+            "url": "https://spacenews.com/",
+            "publisher": "Pocket Ventures / SpaceNews",
+            "frequency": "Daily",
+            "focus": "Launch vehicle manifests, military satellite infrastructure, and commercial space flight."
+        },
+        {
+            "title": "SpaceX Mission Updates & Flight Manifests",
+            "url": "https://www.spacex.com/updates/",
+            "publisher": "SpaceX Communications",
+            "frequency": "Daily / Per-Launch",
+            "focus": "Starship test flight tracking, Falcon stage re-use, and Starlink orbital injections."
+        }
+    ],
+
+    "microcode": [
+        {
+            "title": "Phoronix Linux Hardware & Microarchitecture Benchmarks",
+            "url": "https://www.phoronix.com/",
+            "publisher": "Phoronix Media",
+            "frequency": "Daily",
+            "focus": "CPU microcode patches, compiler flags, kernel regressions, and ISA benchmark data."
+        },
+        {
+            "title": "AnandTech Microarchitecture Analysis",
+            "url": "https://www.anandtech.com/",
+            "publisher": "Future plc",
+            "frequency": "Daily",
+            "focus": "Die shots, execution port bottlenecks, branch predictors, and cache latencies."
+        },
+        {
+            "title": "LWN.net Kernel & eBPF Subsystem News",
+            "url": "https://lwn.net/Kernel/",
+            "publisher": "Eklektix, Inc.",
+            "frequency": "Daily / Weekly",
+            "focus": "Linux kernel patches, eBPF verifier updates, scheduler changes, and register tracking."
+        }
+    ],
+
+    "nanosphere": [
+        {
+            "title": "Phys.org Nanotechnology & Materials Science News",
+            "url": "https://phys.org/nanotech-news/",
+            "publisher": "Science X Network",
+            "frequency": "Daily",
+            "focus": "2D crystals, carbon nanotube synthesis, quantum dots, and atomic force microscopy."
+        },
+        {
+            "title": "Nature Nanotechnology Daily Research Highlights",
+            "url": "https://www.nature.com/nnano/",
+            "publisher": "Nature Publishing Group (Springer Nature)",
+            "frequency": "Daily",
+            "focus": "Frontier molecular simulation, self-assembling lattices, and nanofabrication."
+        },
+        {
+            "title": "ScienceDaily Nanotechnology Research",
+            "url": "https://www.sciencedaily.com/news/matter_energy/nanotechnology/",
+            "publisher": "ScienceDaily",
+            "frequency": "Daily",
+            "focus": "Interatomic potentials, molecular dynamics, and novel metamaterials."
+        }
+    ],
+
+    "security": [
+        {
+            "title": "The Hacker News (THN)",
+            "url": "https://thehackernews.com/",
+            "publisher": "The Hacker News Editorial",
+            "frequency": "Daily / Real-Time",
+            "focus": "Zero-day exploits, cryptographic side-channels, nation-state campaigns, and supply chain attacks."
+        },
+        {
+            "title": "Krebs on Security",
+            "url": "https://krebsonsecurity.com/",
+            "publisher": "Brian Krebs",
+            "frequency": "Daily",
+            "focus": "Investigative cybercrime, credential abuse, and critical vulnerability dissections."
+        },
+        {
+            "title": "BleepingComputer Cybersecurity News",
+            "url": "https://www.bleepingcomputer.com/",
+            "publisher": "Bleeping Computer LLC",
+            "frequency": "Daily",
+            "focus": "Active ransomware telemetry, patch alerts, CVE advisories, and reverse engineering."
+        }
+    ],
+
+    "energy": [
+        {
+            "title": "Canary Media Clean Energy Dispatch",
+            "url": "https://www.canarymedia.com/",
+            "publisher": "RMI (Rocky Mountain Institute)",
+            "frequency": "Daily",
+            "focus": "Grid decarbonization, battery storage deployments, transmission bottlenecks, and DERs."
+        },
+        {
+            "title": "Energy Storage News",
+            "url": "https://www.energy-storage.news/",
+            "publisher": "Solar Media",
+            "frequency": "Daily",
+            "focus": "Utility-scale BESS, lithium iron phosphate battery chemistry, and Coulomb efficiency."
+        },
+        {
+            "title": "IEEE Spectrum: Energy & Power Grid Reports",
+            "url": "https://spectrum.ieee.org/energy",
+            "publisher": "IEEE",
+            "frequency": "Daily",
+            "focus": "Grid frequency regulation, high-voltage DC lines, and power electronics governors."
+        }
+    ],
+
+    "physics": [
+        {
+            "title": "Phys.org Physics & Astronomy Daily",
+            "url": "https://phys.org/physics-news/",
+            "publisher": "Science X Network",
+            "frequency": "Daily",
+            "focus": "Quantum mechanics, general relativity, condensed matter physics, and field theory."
+        },
+        {
+            "title": "CERN News & Large Hadron Collider Operations",
+            "url": "https://home.cern/news",
+            "publisher": "CERN Communications",
+            "frequency": "Daily / Beam Runs",
+            "focus": "High energy particle physics, Standard Model precision tests, and detector telemetry."
+        },
+        {
+            "title": "Quanta Magazine: Fundamental Physics",
+            "url": "https://www.quantamagazine.org/physics/",
+            "publisher": "Simons Foundation",
+            "frequency": "Daily",
+            "focus": "Theoretical physics breakthroughs, string theory, black hole thermodynamics, and symmetries."
+        }
+    ],
+
+    "chemistry": [
+        {
+            "title": "Chemical & Engineering News (C&EN)",
+            "url": "https://cen.acs.org/",
+            "publisher": "American Chemical Society (ACS)",
+            "frequency": "Daily",
+            "focus": "Catalysis, synthetic routes, reaction kinetics, and computational chemical modeling."
+        },
+        {
+            "title": "Chemistry World",
+            "url": "https://www.chemistryworld.com/",
+            "publisher": "Royal Society of Chemistry (RSC)",
+            "frequency": "Daily",
+            "focus": "Thermodynamics, crystallography, molecular synthesis, and green chemistry."
+        },
+        {
+            "title": "Phys.org Chemistry Daily",
+            "url": "https://phys.org/chemistry-news/",
+            "publisher": "Science X Network",
+            "frequency": "Daily",
+            "focus": "Spectroscopy, reaction dynamics, free energy studies, and stoichiometric innovations."
+        }
+    ],
+
+    "biology": [
+        {
+            "title": "BioWorld Biotechnology News",
+            "url": "https://www.bioworld.com/",
+            "publisher": "Clarivate",
+            "frequency": "Daily",
+            "focus": "Genomics breakthroughs, enzyme engineering, molecular biology therapeutics."
+        },
+        {
+            "title": "GenomeWeb Sequencing & Bioinformatics",
+            "url": "https://www.genomeweb.com/",
+            "publisher": "Crain Communications",
+            "frequency": "Daily",
+            "focus": "Next-generation sequencing, CRISPR, codon optimization, and molecular diagnostics."
+        },
+        {
+            "title": "Phys.org Biology & Genetics News",
+            "url": "https://phys.org/biology-news/",
+            "publisher": "Science X Network",
+            "frequency": "Daily",
+            "focus": "Central Dogma mechanisms, cellular kinetics, and computational biology."
+        }
+    ],
+
+    "law": [
+        {
+            "title": "SCOTUSblog Supreme Court News & Analysis",
+            "url": "https://www.scotusblog.com/",
+            "publisher": "SCOTUSblog Editorial",
+            "frequency": "Daily",
+            "focus": "Supreme Court opinions, certiorari grants, evidence standards, and federal jurisdiction."
+        },
+        {
+            "title": "Justia Legal News & Appellate Rulings",
+            "url": "https://news.justia.com/",
+            "publisher": "Justia",
+            "frequency": "Daily",
+            "focus": "Circuit court precedents, Federal Rules of Evidence interpretations, and civil procedure."
+        },
+        {
+            "title": "Law360 Litigation & E-Discovery Pulse",
+            "url": "https://www.law360.com/",
+            "publisher": "Portfolio Media (LexisNexis)",
+            "frequency": "Daily",
+            "focus": "Federal court dockets, FRE 902 certification rulings, and forensic evidence admissibility."
+        }
+    ],
+
+    "document-processing": [
+        {
+            "title": "PDF Association News & Technical Updates",
+            "url": "https://www.pdfa.org/news/",
+            "publisher": "PDF Association",
+            "frequency": "Daily",
+            "focus": "PDF 2.0 implementation, ISO committee actions, rasterization, and document extraction."
+        },
+        {
+            "title": "Hugging Face Daily Papers: Document Vision & NLP",
+            "url": "https://huggingface.co/papers",
+            "publisher": "Hugging Face Research",
+            "frequency": "Daily",
+            "focus": "Document layout analysis, optical character recognition, and multimodal AST extraction."
+        },
+        {
+            "title": "Towards Data Science: Document Intelligence",
+            "url": "https://towardsdatascience.com/",
+            "publisher": "Towards Data Science Inc.",
+            "frequency": "Daily",
+            "focus": "Table reconstruction, coordinate tokenization, and lossless text segmentation pipelines."
+        }
+    ],
+
+    "document-generation": [
+        {
+            "title": "A List Apart: Web Typography & Digital Publishing",
+            "url": "https://alistapart.com/",
+            "publisher": "A List Apart Magazine",
+            "frequency": "Daily",
+            "focus": "Vertical baseline grids, modular typographic scale, and print CSS layout engines."
+        },
+        {
+            "title": "Typographica: Typography & Visual Design",
+            "url": "https://typographica.org/",
+            "publisher": "Typographica Editorial",
+            "frequency": "Daily",
+            "focus": "Typeface design, optical kerning, baseline alignment, and typographic hierarchy."
+        },
+        {
+            "title": "Smashing Magazine Design & Paged Media",
+            "url": "https://www.smashingmagazine.com/",
+            "publisher": "Smashing Media AG",
+            "frequency": "Daily",
+            "focus": "Deterministic document styling, PDF/A generation workflows, and layout optimization."
+        }
+    ],
+
+    "metadata-depth": [
+        {
+            "title": "A Few Thoughts on Cryptographic Engineering (Matthew Green)",
+            "url": "https://blog.cryptographyengineering.com/",
+            "publisher": "Matthew Green (Johns Hopkins University)",
+            "frequency": "Daily",
+            "focus": "Cryptographic hash durability (SHA-256, Blake2b), collision defenses, and zero-knowledge receipts."
+        },
+        {
+            "title": "GitHub Engineering Blog: Git Storage & Internals",
+            "url": "https://github.blog/engineering/",
+            "publisher": "GitHub Engineering",
+            "frequency": "Daily",
+            "focus": "Directed acyclic graphs (DAGs), content-addressable storage, and commit metadata integrity."
+        },
+        {
+            "title": "InfoQ Data Engineering & Lineage Reports",
+            "url": "https://www.infoq.com/data-science/",
+            "publisher": "C4Media Inc.",
+            "frequency": "Daily",
+            "focus": "Event streaming lineage, monotonic time synchronization, and immutable audit logs."
+        }
+    ],
+
+    "filesystem": [
+        {
+            "title": "LWN.net Filesystems & Storage Coverage",
+            "url": "https://lwn.net/Kernel/Index/#Filesystems",
+            "publisher": "Eklektix, Inc.",
+            "frequency": "Daily",
+            "focus": "Ext4, XFS, Bcachefs, atomic write system calls, POSIX consistency, and crash recovery."
+        },
+        {
+            "title": "Phoronix Storage & NVMe Benchmarks",
+            "url": "https://www.phoronix.com/news/category/Storage",
+            "publisher": "Phoronix Media",
+            "frequency": "Daily",
+            "focus": "NVMe block I/O throughput, atomic rename latency, and write-ahead log performance."
+        },
+        {
+            "title": "StorageMojo: Distributed Storage Architecture",
+            "url": "https://storagemojo.com/",
+            "publisher": "Robin Harris",
+            "frequency": "Daily",
+            "focus": "Flash wear leveling, log-structured filesystems, and crash-proof extent allocation."
+        }
+    ],
+
+    "cloud-database": [
+        {
+            "title": "Database Weekly",
+            "url": "https://databaseweekly.com/",
+            "publisher": "Cooperpress",
+            "frequency": "Daily / Weekly",
+            "focus": "Distributed SQL, consensus algorithms (Raft, Paxos), MVCC snapshot engines, and 2PC."
+        },
+        {
+            "title": "High Scalability Systems Architecture",
+            "url": "http://highscalability.com/",
+            "publisher": "High Scalability",
+            "frequency": "Daily",
+            "focus": "Database scaling architectures, quorum replication, and low-latency transactional nodes."
+        },
+        {
+            "title": "The Morning Paper (Distributed Database Canon)",
+            "url": "https://blog.acolyer.org/",
+            "publisher": "Adrian Colyer",
+            "frequency": "Archive / Updates",
+            "focus": "Peer-reviewed research in database isolation, replication models, and distributed recovery."
+        }
+    ],
+
+    "device": [
+        {
+            "title": "Embedded.com Firmware & Real-Time Design",
+            "url": "https://www.embedded.com/",
+            "publisher": "AspenCore",
+            "frequency": "Daily",
+            "focus": "MMIO device registers, interrupt latency budgets, RTOS drivers, and low-power states."
+        },
+        {
+            "title": "CNX Software: Embedded Systems News",
+            "url": "https://www.cnx-software.com/",
+            "publisher": "CNXTrans",
+            "frequency": "Daily",
+            "focus": "Microcontroller peripherals, DMA hardware controllers, and bus transceivers."
+        },
+        {
+            "title": "EE Times Semiconductor & Hardware Architecture",
+            "url": "https://www.eetimes.com/",
+            "publisher": "AspenCore",
+            "frequency": "Daily",
+            "focus": "PCIe standards, cache coherency interconnects, and board-level hardware integration."
+        }
+    ],
+
+    "pc": [
+        {
+            "title": "Tom's Hardware: PC Architecture & Motherboard Analysis",
+            "url": "https://www.tomshardware.com/",
+            "publisher": "Future US, Inc.",
+            "frequency": "Daily",
+            "focus": "x86_64 processors, UEFI firmware updates, ACPI power states, and memory timings."
+        },
+        {
+            "title": "AnandTech: Deep Hardware Reviews",
+            "url": "https://www.anandtech.com/",
+            "publisher": "Future plc",
+            "frequency": "Daily",
+            "focus": "4-level page table latency, cache hierarchies, and PE hardware acceleration."
+        },
+        {
+            "title": "ServeTheHome (STH): Workstation & System Hardware",
+            "url": "https://www.servethehome.com/",
+            "publisher": "ServeTheHome",
+            "frequency": "Daily",
+            "focus": "PCIe bus topologies, bare-metal server firmware, and hardware diagnostics."
+        }
+    ],
+
+    "mac": [
+        {
+            "title": "Six Colors: Apple Architecture & macOS Coverage",
+            "url": "https://sixcolors.com/",
+            "publisher": "Jason Snell",
+            "frequency": "Daily",
+            "focus": "macOS operating system updates, Apple Silicon evolution, and unified memory dynamics."
+        },
+        {
+            "title": "Ars Technica: Apple Core & Darwin Reviews",
+            "url": "https://arstechnica.com/gadgets/",
+            "publisher": "Condé Nast",
+            "frequency": "Daily",
+            "focus": "macOS kernel architectural breakdowns, Metal graphics, and hardware security."
+        },
+        {
+            "title": "The Eclectic Light Company: macOS Systems & Forensics",
+            "url": "https://eclecticlight.co/",
+            "publisher": "Howard Oakley",
+            "frequency": "Daily",
+            "focus": "Mach ports, Unified Memory residency, code signing entitlements, and APFS snapshots."
+        }
+    ],
+
+    "linux": [
+        {
+            "title": "LWN.net: The Premier Linux Kernel News Source",
+            "url": "https://lwn.net/",
+            "publisher": "Eklektix, Inc.",
+            "frequency": "Daily",
+            "focus": "Linux kernel development, io_uring evolution, cgroups v2 resource controller, and namespaces."
+        },
+        {
+            "title": "Phoronix Linux Operating System News",
+            "url": "https://www.phoronix.com/",
+            "publisher": "Phoronix Media",
+            "frequency": "Daily",
+            "focus": "Kernel release cycles, Linux scheduling regressions, and open source driver benchmarks."
+        },
+        {
+            "title": "Linux Magazine: Systems Architecture",
+            "url": "https://www.linux-magazine.com/",
+            "publisher": "Computec Media GmbH",
+            "frequency": "Daily",
+            "focus": "Container isolation invariants, eBPF telemetry, and POSIX system call performance."
+        }
+    ],
+
+    "android": [
+        {
+            "title": "Android Developers Blog (Official Google)",
+            "url": "https://android-developers.googleblog.com/",
+            "publisher": "Google Android Engineering",
+            "frequency": "Daily / Weekly",
+            "focus": "Android Runtime (ART) improvements, AIDL IPC optimizations, and Binder kernel updates."
+        },
+        {
+            "title": "Android Police: In-Depth Platform Analysis",
+            "url": "https://www.androidpolice.com/",
+            "publisher": "Valnet Inc.",
+            "frequency": "Daily",
+            "focus": "Android OS releases, AOSP code reviews, framework changes, and API shifts."
+        },
+        {
+            "title": "Android Authority: OS Architecture & Teardowns",
+            "url": "https://www.androidauthority.com/news/",
+            "publisher": "Android Authority",
+            "frequency": "Daily",
+            "focus": "DEX bytecode compiler evolution, ART garbage collection, and device driver layers."
+        }
+    ],
+
+    "ios": [
+        {
+            "title": "Swift.org Official Evolution Blog",
+            "url": "https://www.swift.org/blog/",
+            "publisher": "Swift Project",
+            "frequency": "Daily / Weekly",
+            "focus": "Swift actor concurrency, async/await runtime, ARM64e code generation, and compiler safety."
+        },
+        {
+            "title": "iOS Dev Weekly",
+            "url": "https://iosdevweekly.com/",
+            "publisher": "Dave Verwer",
+            "frequency": "Weekly / Curated Daily",
+            "focus": "ProMotion 120Hz display pacing, CADisplayLink, Memory Graph debugging, and UIKit."
+        },
+        {
+            "title": "Apple Developer News & Security Advisories",
+            "url": "https://developer.apple.com/news/",
+            "publisher": "Apple Inc.",
+            "frequency": "Daily",
+            "focus": "iOS SDK releases, Darwin kernel patches, PAC pointer authentication, and sandbox rules."
+        }
+    ],
+
+    "email": [
+        {
+            "title": "Spamhaus Threat Intelligence & Email Security News",
+            "url": "https://www.spamhaus.org/news/",
+            "publisher": "The Spamhaus Project",
+            "frequency": "Daily",
+            "focus": "Global IP reputation, spam domain detection, and SMTP relay threat intelligence."
+        },
+        {
+            "title": "DMARC.org Authentication Standards & News",
+            "url": "https://dmarc.org/",
+            "publisher": "DMARC.org / Trusted Domain Project",
+            "frequency": "Daily",
+            "focus": "DKIM cryptographic signing adoption, SPF validation policy, and email alignment."
+        },
+        {
+            "title": "Sinch / Email on Acid Architecture Blog",
+            "url": "https://www.sinch.com/blog/",
+            "publisher": "Sinch AB",
+            "frequency": "Daily",
+            "focus": "MIME multipart structure, email rendering engines, and delivery protocols."
+        }
+    ],
+
+    "automation": [
+        {
+            "title": "All Things Distributed (Werner Vogels)",
+            "url": "https://www.allthingsdistributed.com/",
+            "publisher": "Werner Vogels (Amazon CTO)",
+            "frequency": "Daily / Regular",
+            "focus": "Event-driven automation, distributed systems resilience, and idempotency guarantees."
+        },
+        {
+            "title": "Martin Fowler's Software Architecture Bliki",
+            "url": "https://martinfowler.com/",
+            "publisher": "Martin Fowler (Thoughtworks)",
+            "frequency": "Daily",
+            "focus": "Saga orchestration, compensating transactions, and distributed enterprise workflows."
+        },
+        {
+            "title": "The New Stack: Automation & Cloud Systems",
+            "url": "https://thenewstack.io/",
+            "publisher": "The New Stack (Insight Partners)",
+            "frequency": "Daily",
+            "focus": "Temporal orchestration, exponential backoff strategies, and fault-tolerant automation."
+        }
+    ],
+
+    "model-weights": [
+        {
+            "title": "Hugging Face Daily AI Papers",
+            "url": "https://huggingface.co/papers",
+            "publisher": "Hugging Face Community & Research",
+            "frequency": "Daily (Ranked by Upvotes)",
+            "focus": "Symmetric uniform quantization, Rotary Position Embeddings (RoPE), and KV-cache serving."
+        },
+        {
+            "title": "SemiAnalysis: AI Systems & Hardware Economics",
+            "url": "https://www.semianalysis.com/",
+            "publisher": "Dylan Patel (SemiAnalysis)",
+            "frequency": "Daily",
+            "focus": "PagedAttention memory bandwidth, GPU SRAM utilization, and inference throughput."
+        },
+        {
+            "title": "MarkTechPost: Frontier AI Research Dispatches",
+            "url": "https://www.marktechpost.com/",
+            "publisher": "MarkTechPost Media",
+            "frequency": "Daily",
+            "focus": "FlashAttention implementations, INT8/INT4 weight quantization, and transformer architectures."
+        }
+    ],
+
+    "spiritual-awareness": [
+        {
+            "title": "Stanford McCoy Family Center for Ethics in Society",
+            "url": "https://ethicsinsociety.stanford.edu/",
+            "publisher": "Stanford University",
+            "frequency": "Daily / Regular",
+            "focus": "Ethics of technology, human dignity protection, and democratic sovereignty."
+        },
+        {
+            "title": "Future of Life Institute News & AI Governance",
+            "url": "https://futureoflife.org/news/",
+            "publisher": "Future of Life Institute",
+            "frequency": "Daily",
+            "focus": "Non-harm boundaries, epistemic humility in AI systems, and existential safety."
+        },
+        {
+            "title": "Greater Good Magazine (UC Berkeley)",
+            "url": "https://greatergood.berkeley.edu/",
+            "publisher": "Greater Good Science Center, UC Berkeley",
+            "frequency": "Daily",
+            "focus": "Scientific basis of compassion, empathy, ethical decision-making, and dignity."
+        }
+    ],
+
+    "scifi": [
+        {
+            "title": "Universe Today: Space & Theoretical Physics",
+            "url": "https://www.universetoday.com/",
+            "publisher": "Fraser Cain",
+            "frequency": "Daily",
+            "focus": "Relativistic astrophysical discoveries, black holes, time dilation, and exoplanet detection."
+        },
+        {
+            "title": "Centauri Dreams: Interstellar Flight & Advanced Propulsion",
+            "url": "https://www.centauri-dreams.org/",
+            "publisher": "Paul Gilster (Tau Zero Foundation)",
+            "frequency": "Daily",
+            "focus": "Deep space propulsion, Kardashev civilization energy scales, and relativistic navigation."
+        },
+        {
+            "title": "Futurism: Frontier Science & Theoretical Engineering",
+            "url": "https://futurism.com/",
+            "publisher": "Futurism Media",
+            "frequency": "Daily",
+            "focus": "Speculative engineering, causal timelines, antimatter drives, and megastructures."
+        }
+    ],
+
+    "nerd-geek": [
+        {
+            "title": "Hacker News (Y Combinator)",
+            "url": "https://news.ycombinator.com/",
+            "publisher": "Y Combinator",
+            "frequency": "Real-Time / Daily",
+            "focus": "Global tech pulse, retrocomputing emulators, first-principles hacking, and system design."
+        },
+        {
+            "title": "Hackaday: Hardware Hacks & Classic Architecture",
+            "url": "https://hackaday.com/",
+            "publisher": "Supplyframe / Siemens",
+            "frequency": "Daily",
+            "focus": "6502 homebrew computers, assembly instruction golf, reverse engineering, and silicon teardowns."
+        },
+        {
+            "title": "Ars Technica: Technology & Computing Heritage",
+            "url": "https://arstechnica.com/",
+            "publisher": "Condé Nast",
+            "frequency": "Daily",
+            "focus": "In-depth computer science history, RFC protocol analyses, and open source evolution."
+        }
+    ]
+}
+
 
 def get_domain_references(domain_id: str) -> list[dict[str, Any]]:
-    """Return the curated list of reference entries for a given domain."""
+    """Return the curated list of foundational reference entries for a given domain."""
     return DOMAIN_REFERENCES.get(domain_id, [])
+
+
+def get_domain_daily_feeds(domain_id: str) -> list[dict[str, Any]]:
+    """Return the curated list of daily-updating news and engineering blogs for a given domain."""
+    return DOMAIN_DAILY_FEEDS.get(domain_id, [])
