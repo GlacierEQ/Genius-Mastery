@@ -102,10 +102,15 @@ def full_discovery_report(root: Path) -> dict[str, list[DiscoveredCapability]]:
         "integrations": discover_environment_integrations(),
     }
 
-def write_discovery_inventory(root: Path) -> Path:
+def write_discovery_inventory(root: Path, report: dict[str, list[DiscoveredCapability]] | None = None) -> Path:
     target = root / "capabilities" / "RUNTIME_INVENTORY.yaml"
     target.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"schema_version": 1, "repository": root.name, "inventory": full_discovery_report(root), "truth_note": "Only capabilities observable from this runtime are recorded; absence is not proof of global absence."}
+    payload = {
+        "schema_version": 1,
+        "repository": root.name,
+        "inventory": report if report is not None else full_discovery_report(root),
+        "truth_note": "Only capabilities observable from this runtime are recorded; absence is not proof of global absence.",
+    }
     target.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8")
     return target
 

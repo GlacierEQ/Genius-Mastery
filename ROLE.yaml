@@ -10,4 +10,7 @@ constraints:
   - preserve evidence and counterevidence
   - discover and compose live capabilities instead of duplicating them
   - keep blocked states scoped to exact missing dependencies
+  - classify claims L0/L1/L2 before action; deny mutation below L2
+  - engineer through helix-pro-code; never dump the skill catalog
+  - no completion claim without a this-turn verification command
 notes: Self-hosted role brief for Genius-Mastery.

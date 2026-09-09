@@ -1,0 +1,95 @@
+schema_version: 1
+id: genius-mastery.epistemic-engineering
+name: Genius Epistemic Engineering
+purpose: Give every Genius entity a live mind chassis — 6-tier epistemology plus helix engineering — without flattening those skills into this kernel.
+state: implemented
+
+objective:
+  current_reality: Genius-Mastery validates, doctors, and receipts family repos. Epistemology and coding lived in separate estate skills.
+  desired_reality: The forge classifies knowledge, authorizes action, engineers, and proves completion through composed skills, not copied methods.
+  success_conditions:
+    - Combo genius-epistemic-engineering exists and hierarchy-validates.
+    - Mega apex-genius-mastery requires that combo.
+    - Kernel persona and role name epicenter, epistemic-gate, helix-pro-code, and verification-before-completion as routes.
+    - No 700-skill dump into this kernel.
+
+layers:
+  reasoning:
+    required: [L0/L1/L2 claim tags before action]
+    available: [mega-skills/skills/epicenter]
+    missing: []
+    alternate_routes: [manual layer tags in receipts]
+    failure_modes: [file-exists treated as working system]
+    improvement_targets: [bind doctor output to explicit L-tags]
+  metacognition:
+    required: [L0-L6 authorization, deny below L2]
+    available: [mega-skills/skills/epistemic-gate]
+    missing: []
+    alternate_routes: [quality-gate on pytest/validate]
+    failure_modes: [stubs, untagged facts, mastery percentages]
+    improvement_targets: [SHA-256 epistemic receipts in kernel evidence/]
+  code:
+    required: [helix Alpha/Omega engineering]
+    available: [mega-skills/skills/helix-pro-code, ~/.grok/skills/helix-pro-code]
+    missing: []
+    alternate_routes: [load test-driven-development or systematic-debugging only when the step needs them]
+    failure_modes: [catalog dump, sprawl, unverified carryover]
+    improvement_targets: [one-push patches with readback]
+  verification:
+    required: [fresh command output before done-claims]
+    available: [mega-skills/skills/verification-before-completion, tools/validate.py, pytest]
+    missing: []
+    alternate_routes: [genius validate + pytest -q]
+    failure_modes: [confidence as proof]
+    improvement_targets: [this-turn receipts only]
+
+dependencies:
+  - id: skill:epicenter
+    relationship: requires
+    required_for_current_mission: true
+    alternate_routes: []
+  - id: skill:epistemic-gate
+    relationship: verifies
+    required_for_current_mission: true
+    alternate_routes: []
+  - id: skill:helix-pro-code
+    relationship: requires
+    required_for_current_mission: true
+    alternate_routes: []
+  - id: skill:verification-before-completion
+    relationship: verifies
+    required_for_current_mission: true
+    alternate_routes: []
+
+action:
+  preconditions:
+    - Member skills exist in mega-skills registry and runtime adapters.
+  steps:
+    - Tag claims with epicenter.
+    - Run epistemic-gate; stop below L2.
+    - Engineer authorized work with helix-pro-code.
+    - Prove with verification-before-completion.
+  expected_effects:
+    - Genius entities inherit epistemology and engineering by composition.
+  postconditions:
+    - Compound artifact genius-epistemic-engineering-receipt.md exists for the mission.
+  alternate_routes: []
+  failure_modes:
+    - Copying member SKILL.md bodies into this kernel.
+  recovery_routes:
+    - Delete copies; restore ID-only routing.
+
+verification:
+  acceptance:
+    - combo-skills/genius-epistemic-engineering/COMBO.md exists.
+    - mega-skills/apex-genius-mastery/MEGA.md lists genius-epistemic-engineering as required.
+    - python3 scripts/validate_hierarchy.py passes.
+  tests: []
+  evidence_refs: []
+  independent_readback: []
+
+mission_impact:
+  mission_relevance: 1.0
+  necessity: 1.0
+  criticality: 1.0
+  sensitivity: 0.9
