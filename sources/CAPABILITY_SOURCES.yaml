@@ -1,4 +1,4 @@
-schema_version: 1
+schema_version: 2
 sources:
   - id: glaciereq-mega-skills
     kind: capability-registry
@@ -7,16 +7,71 @@ sources:
       - registry/skills.json
       - registry/combo-skills.json
       - registry/mega-skills.json
+      - MESH_PEERS.json
     relationship: discover-and-compose
     copy_policy: reference-not-duplicate
-    purpose: Reuse real atomic, combo, and mission capabilities as ingredients in generated Genius entities.
+    purpose: Reuse real atomic, combo, mission, routing, and evidence capabilities as ingredients in generated Genius entities.
+
   - id: genius-family
     kind: sibling-capabilities
     repository_pattern: GlacierEQ/Genius-*
     path: interfaces/COMPOSITION.yaml
     relationship: cross-domain-composition
     copy_policy: reference-not-duplicate
-    purpose: Discover capabilities exposed by other Genius entities.
+    purpose: Discover capabilities exposed by other Genius entities through explicit provider-consumer contracts.
+
+  - id: far-away-party
+    kind: long-horizon-mission-governance
+    repositories:
+      - GlacierEQ/mega-skills
+      - GlacierEQ/far-away-party-site
+    paths:
+      - skills/far-away-party/SKILL.md
+      - .far-away-party/
+    relationship: compose-for-long-horizon-execution
+    copy_policy: reference-not-duplicate
+    purpose: Donate durable mission state, phase gates, evidence-backed handoff, context-drift resistance, and multi-session continuation patterns.
+
+  - id: mega-pipeline-production
+    kind: verification-and-production-pipeline
+    repository: GlacierEQ/mega-pipeline-production
+    paths:
+      - verify_all.py
+      - test_integration.py
+      - test_pipeline.py
+      - test_production.py
+      - test_properties.py
+      - tests/
+    relationship: compose-for-executable-verification
+    copy_policy: adapt-contracts-not-wholesale-copy
+    purpose: Donate bounded subprocess verification, integration/property/production test patterns, timing telemetry, fail-closed exit semantics, and executable production gates.
+
+  - id: glaciereq-memory-mesh
+    kind: polycentric-memory-and-continuity
+    repository: GlacierEQ/mega-skills
+    paths:
+      - skills/unified-memory-connect/SKILL.md
+      - skills/casey-operator-execution-kernel/OPERATOR_INVARIANTS.json
+    peers:
+      - Mem0
+      - MemoryPlugin
+      - Supermemory
+      - Pinecone
+      - Qdrant
+      - Notion
+      - Supabase
+    relationship: provenance-bound-retrieval-and-continuity
+    copy_policy: route-not-centralize
+    purpose: Donate known-state reuse, source/provenance preservation, contradiction handling, provider-specific retrieval, and secret-safe memory interoperability without creating a global source of truth.
+
+  - id: notion-skill-projection
+    kind: projection-and-human-control-surface
+    repository: GlacierEQ/mega-skills
+    path: integrations/notion-skill-bridge.json
+    relationship: mirror-and-drift-check
+    copy_policy: live-repo-outranks-projection
+    purpose: Donate typed-edge skill projection, proof-state vocabulary, page/repo linkage, and drift detection while preserving Git/source authority boundaries.
+
   - id: live-runtime
     kind: executable-environment
     surfaces:
@@ -31,7 +86,8 @@ sources:
       - browsers
       - artifact generators
     relationship: inspect-before-claim
-    purpose: Ground generated capability plans in what can actually execute.
+    purpose: Ground generated capability plans in what can actually execute now; configuration or historical availability alone is not connectivity proof.
+
   - id: authoritative-research
     kind: knowledge-and-evidence
     surfaces:
@@ -44,3 +100,12 @@ sources:
       - production receipts
     relationship: research-and-verify
     purpose: Turn inferred capability hypotheses into evidence-backed mastery.
+
+composition_invariants:
+  - route instead of duplicate when the donor remains independently usable
+  - preserve donor repository identity and provenance
+  - do not promote a projection, memory hit, or generated representation above proposition-specific source evidence
+  - retrieval failure is not factual disproof
+  - generated is not executed and executed is not verified
+  - no provider mutation claim without tool/provider evidence; use readback when available
+  - never copy credentials or secret values into capability metadata, prompts, evidence, examples, or memory
