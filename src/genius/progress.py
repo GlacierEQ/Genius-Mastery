@@ -21,8 +21,13 @@ PROGRESS_PHASES = ("recover", "prioritize", "execute", "persist", "verify", "com
 
 PROGRESS_INVARIANTS = (
     "Inspect current state before claiming it.",
+    "Recover material operator language from source-bearing history before assistant summaries when exact wording affects intent, facts, constraints, architecture, or criticism.",
+    "Never claim a full-history or full-source review unless coverage itself is evidenced; partial retrieval must remain explicitly partial.",
     "Preserve verified gains unless replacement is demonstrably stronger.",
     "Choose the highest-leverage executable action, not merely the easiest action.",
+    "Do not stop at diagnosis, documentation, or a token patch while authorized high-value executable work remains in the current coherent tranche.",
+    "A successful run must record a direct operator-objective state delta; support-only motion is not sufficient by itself.",
+    "Prefer diverse durable outputs when distinct code, tests, evidence, records, receipts, or recovery artifacts create additional mission value.",
     "Distinguish proposed, executed, observed, and verified state.",
     "Make durable state changes when a writable durable surface exists.",
     "Read back mutations from the destination of record.",
@@ -136,15 +141,23 @@ def build_progress_contract(
         "default_progress_stack": list(DEFAULT_PROGRESS_CODES),
         "invariants": list(PROGRESS_INVARIANTS),
         "phases": [
-            {"name": "recover", "requirement": "Inspect live/durable state, prior receipts, context, and constraints before mutation.", "done_when": "Current state and uncertainty are explicitly represented."},
+            {"name": "recover", "requirement": "Inspect live/durable state, prior receipts, constraints, and material source-bearing operator language before mutation; preserve verbatim wording when it controls intent or truth state.", "done_when": "Current state, source coverage, exact controlling language, and uncertainty are explicitly represented."},
             {"name": "prioritize", "requirement": "Rank bottlenecks and leverage; select the strongest executable next action.", "done_when": "A specific action is selected with an inspectable basis."},
-            {"name": "execute", "requirement": "Use available tools to perform the selected action rather than only describe it.", "done_when": "The target system reports an actual mutation or execution result."},
-            {"name": "persist", "requirement": "Write the gain to the appropriate durable system while preserving validated prior capability.", "done_when": "The durable destination contains the intended new state."},
-            {"name": "verify", "requirement": "Test and read back the destination; bind success claims to receipts.", "done_when": "Observed evidence supports the claimed post-state or records counterevidence."},
-            {"name": "compound", "requirement": "Feed verified gain, counterevidence, and newly exposed bottlenecks into the next cycle.", "done_when": "The next cycle begins from the stronger verified state rather than a reset."},
+            {"name": "execute", "requirement": "Use available tools to perform the selected action and continue through the strongest coherent tranche rather than stopping after diagnosis, a token patch, or summary.", "done_when": "The target system reports substantive execution results and no higher-value authorized step in the current tranche was skipped merely to end early."},
+            {"name": "persist", "requirement": "Write gains to the appropriate durable systems while preserving validated prior capability; create multiple distinct durable outputs when each adds mission value.", "done_when": "The durable destinations contain the intended new state and additive outputs are linked to the run."},
+            {"name": "verify", "requirement": "Test and read back the destination; bind success and coverage claims to receipts; record the operator-objective before/after delta.", "done_when": "Observed evidence supports the claimed post-state or records counterevidence, and at least one direct objective-state delta is represented before calling the run progress."},
+            {"name": "compound", "requirement": "Feed verified gain, counterevidence, source coverage, and newly exposed bottlenecks into the next cycle; reject repetition unless it deepens evidence, implementation, verification, interoperability, or recoverability.", "done_when": "The next cycle begins from the stronger verified state rather than a reset or duplicate analysis."},
         ],
         "next_best_action": next_best_action,
         "decision_loop": loop,
+        "run_quality_contract": {
+            "verbatim_source_before_summary": True,
+            "coverage_claims_require_evidence": True,
+            "continue_while_high_value_authorized_work_remains": True,
+            "objective_state_delta_required": True,
+            "diverse_outputs_when_value_additive": True,
+            "repetition_requires_deeper_evidence_or_execution": True,
+        },
         "truth_contract": {
             "planned_is_not_executed": True,
             "executed_is_not_verified": True,
@@ -177,6 +190,17 @@ def validate_progress_contract(contract: dict[str, Any]) -> list[str]:
         errors.append("decision_loop must be a mapping")
     else:
         errors.extend(f"decision_loop: {error}" for error in validate_loop(loop))
+    quality = contract.get("run_quality_contract") or {}
+    for key in (
+        "verbatim_source_before_summary",
+        "coverage_claims_require_evidence",
+        "continue_while_high_value_authorized_work_remains",
+        "objective_state_delta_required",
+        "diverse_outputs_when_value_additive",
+        "repetition_requires_deeper_evidence_or_execution",
+    ):
+        if quality.get(key) is not True:
+            errors.append(f"run_quality_contract.{key} must be true")
     truth = contract.get("truth_contract") or {}
     for key in ("planned_is_not_executed", "executed_is_not_verified", "verified_requires_receipts", "counterevidence_is_retained"):
         if truth.get(key) is not True:
@@ -203,5 +227,9 @@ def progress_report(contract: dict[str, Any]) -> str:
     lines.extend(["", "Progress cycle:"])
     for phase in contract["phases"]:
         lines.append(f"  {phase['name'].upper()}: {phase['requirement']}")
-    lines.extend(["", "Truth contract: plan != execution; execution != verification; verification requires receipts."])
+    lines.extend([
+        "",
+        "Run quality: verbatim source before summary; evidence for coverage claims; long-run execution; objective-state delta; additive output diversity; anti-repetition.",
+        "Truth contract: plan != execution; execution != verification; verification requires receipts.",
+    ])
     return "\n".join(lines)

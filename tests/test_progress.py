@@ -85,6 +85,37 @@ def test_progress_report_keeps_truth_boundary_visible(tmp_path):
     assert "verification requires receipts" in report
 
 
+
+def test_progress_defaults_enforce_source_fidelity_depth_and_mission_delta():
+    required = {
+        "SOURCE-FIRST",
+        "VERBATIM-FIRST",
+        "LONG-RUN",
+        "MISSION-DELTA",
+        "DIVERSE OUTPUTS",
+    }
+    assert required.issubset(set(DEFAULT_PROGRESS_CODES))
+
+
+def test_progress_contract_contains_anti_shallow_run_quality_contract(tmp_path):
+    _write_graph(tmp_path)
+    contract = build_progress_contract(tmp_path, "Make durable meaningful progress")
+    quality = contract["run_quality_contract"]
+    assert all(quality.values())
+    assert quality["verbatim_source_before_summary"] is True
+    assert quality["coverage_claims_require_evidence"] is True
+    assert quality["continue_while_high_value_authorized_work_remains"] is True
+    assert quality["objective_state_delta_required"] is True
+    assert quality["diverse_outputs_when_value_additive"] is True
+    assert quality["repetition_requires_deeper_evidence_or_execution"] is True
+
+
+def test_progress_validator_rejects_weakened_run_quality_contract(tmp_path):
+    contract = build_progress_contract(tmp_path, "Do not accept shallow completion")
+    contract["run_quality_contract"]["objective_state_delta_required"] = False
+    errors = validate_progress_contract(contract)
+    assert "run_quality_contract.objective_state_delta_required must be true" in errors
+
 def test_cli_codes_exposes_progress():
     result = subprocess.run([sys.executable, "-m", "genius.cli", "codes", "--category", "orchestration"], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr

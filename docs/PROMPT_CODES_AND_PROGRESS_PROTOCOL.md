@@ -6,6 +6,19 @@ Genius-Mastery treats concise prompt codes as a **command vocabulary** and treat
 
 The goal is not prettier prompting. The goal is to reduce a recurring failure mode: analysis that does not change durable state.
 
+## Anti-shallow execution law
+
+A progress run is not allowed to collapse into a short summary, diagnosis-only answer, or token mutation when stronger authorized execution remains. The runtime contract therefore requires:
+
+- **verbatim-first recovery** when Operator language controls facts, intent, constraints, architecture, or criticism;
+- **coverage honesty** — never claim a full-history/full-source review without evidence of that coverage;
+- **long-run execution** — continue through the strongest coherent tranche of high-value work rather than optimizing for an early stopping point;
+- **mission delta** — at least one Operator objective state must change before the run is counted as progress;
+- **durable output diversity** when distinct code, tests, evidence, records, receipts, or recovery artifacts add value;
+- **anti-repetition** — repeating prior analysis is rejected unless the new pass deepens evidence, implementation, verification, interoperability, or recoverability.
+
+This is deliberately stronger than “be thorough.” It converts depth and forward motion into machine-visible invariants instead of leaving them as tone preferences.
+
 ## Core law
 
 ```text
@@ -27,13 +40,18 @@ A progress cycle is successful only when the claimed post-state is supported by 
 PROGRESS
 + CONTINUE
 + TOOL-FIRST
++ SOURCE-FIRST
++ VERBATIM-FIRST
 + NEXT BEST ACTION
 + MAXIMUM ADVANCE
++ LONG-RUN
 + EXECUTE
 + DURABLE
 + TEST
 + READBACK
 + RECEIPTS
++ MISSION-DELTA
++ DIVERSE OUTPUTS
 + PRESERVE GAINS
 ```
 
@@ -91,10 +109,10 @@ The machine-readable registry in `src/genius/prompt_codes.py` is authoritative.
 `REASONING SUMMARY`, `MULTI-PERSPECTIVE`, `SOCRATIC MODE`, `PRE-MORTEM`, `POST-MORTEM`, `SWOT`, `TRADEOFFS`, `COUNTERARGUE`, `STEELMAN`, `RED TEAM`, `DEVIL'S ADVOCATE`, `SECOND-ORDER`, `SYSTEMS THINKING`
 
 ### Quality / evidence
-`VERIFY`, `SOURCE-FIRST`, `FACT / INFERENCE / HYPOTHESIS`, `EVIDENCE MATRIX`, `EVAL-SELF`, `CONTRADICTION CHECK`, `EDGE CASES`, `CONFIDENCE`, `ASSUMPTIONS`
+`VERIFY`, `SOURCE-FIRST`, `VERBATIM-FIRST`, `FACT / INFERENCE / HYPOTHESIS`, `EVIDENCE MATRIX`, `EVAL-SELF`, `CONTRADICTION CHECK`, `EDGE CASES`, `CONFIDENCE`, `ASSUMPTIONS`
 
 ### Execution
-`EXECUTE`, `TOOL-FIRST`, `BUILD`, `FIX`, `CONTINUE`, `MAXIMUM ADVANCE`, `PRODUCTION-GRADE`, `READBACK`, `TEST`, `SHIP`
+`EXECUTE`, `TOOL-FIRST`, `BUILD`, `FIX`, `CONTINUE`, `MAXIMUM ADVANCE`, `LONG-RUN`, `PRODUCTION-GRADE`, `READBACK`, `TEST`, `SHIP`
 
 ### Strategy
 `PRIORITIZE`, `80/20`, `LEVERAGE`, `BOTTLENECK`, `NEXT BEST ACTION`, `DECISION MATRIX`, `SCENARIO PLAN`, `WAR GAME`
@@ -109,7 +127,7 @@ The machine-readable registry in `src/genius/prompt_codes.py` is authoritative.
 `TABLE`, `CHECKLIST`, `PLAYBOOK`, `BLUEPRINT`, `MATRIX`, `TIMELINE`, `TREE`, `ONE-PAGER`
 
 ### Modifiers
-`FULL FIELD`, `RANKED`, `NO ASSUMPTIONS`, `PRESERVE GAINS`, `COMPOSE`, `DURABLE`, `RECEIPTS`, `MAXIMUM`
+`FULL FIELD`, `RANKED`, `NO ASSUMPTIONS`, `PRESERVE GAINS`, `COMPOSE`, `DURABLE`, `RECEIPTS`, `MISSION-DELTA`, `DIVERSE OUTPUTS`, `MAXIMUM`
 
 ## CLI
 
