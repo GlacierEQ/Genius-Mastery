@@ -4,7 +4,7 @@
   "contract_id": "genius-mastery.operating-loop",
   "provider": {
     "repository": "GlacierEQ/Genius-Mastery",
-    "ref": "d16b0859a5e74f0586d505c93f972109d96395d3",
+    "ref": "eb63c06b46812ccc43f80a37b480ff2638d5e0b5",
     "module": "src/genius/operating_loop.py",
     "schema": "schemas/operating-loop.schema.json",
     "module_blob_sha": "db36f71aed06969089a6498c3677f9004e6cc273",
