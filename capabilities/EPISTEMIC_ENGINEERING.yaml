@@ -4,6 +4,20 @@ name: Genius Epistemic Engineering
 purpose: Give every Genius entity a live mind chassis — 6-tier epistemology plus helix engineering — without flattening those skills into this kernel.
 state: implemented
 
+governing_doctrine:
+  epistemology: docs/EPISTEMOLOGY.md
+  authority_sources: sources/EPISTEMIC_SOURCES.yaml
+  prime_law: A representation may route knowledge, but only proposition-specific evidence may justify a claim.
+  invariants:
+    - preserve aspiration, hypothesis, mapped, implemented, executable, observed, verified, reproduced, transferred, mastered, and revalidated as distinct states
+    - preserve proposition-specific source authority and provenance
+    - retain contradictions, counterevidence, failed reproductions, and negative results
+    - retrieval failure is not factual disproof
+    - observation, computation, inference, and assumption remain separable
+    - uncertainty and temporal decay remain explicit
+    - imported capability is not automatically locally verified capability
+    - do not redefine domain proof burdens inside the family kernel
+
 objective:
   current_reality: Genius-Mastery validates, doctors, and receipts family repos. Epistemology and coding lived in separate estate skills.
   desired_reality: The forge classifies knowledge, authorizes action, engineers, and proves completion through composed skills, not copied methods.
@@ -11,6 +25,8 @@ objective:
     - Combo genius-epistemic-engineering exists and hierarchy-validates.
     - Mega apex-genius-mastery requires that combo.
     - Kernel persona and role name epicenter, epistemic-gate, helix-pro-code, and verification-before-completion as routes.
+    - Family epistemology and authority corpus are source-visible and composition-safe.
+    - Generated entities can distinguish routing representations from proposition-specific evidence.
     - No 700-skill dump into this kernel.
 
 layers:
@@ -19,15 +35,15 @@ layers:
     available: [mega-skills/skills/epicenter]
     missing: []
     alternate_routes: [manual layer tags in receipts]
-    failure_modes: [file-exists treated as working system]
-    improvement_targets: [bind doctor output to explicit L-tags]
+    failure_modes: [file-exists treated as working system, summary-treated-as-source, retrieval-failure-treated-as-disproof]
+    improvement_targets: [bind doctor output to explicit L-tags, add source/provenance/counterevidence readback]
   metacognition:
     required: [L0-L6 authorization, deny below L2]
     available: [mega-skills/skills/epistemic-gate]
     missing: []
     alternate_routes: [quality-gate on pytest/validate]
-    failure_modes: [stubs, untagged facts, mastery percentages]
-    improvement_targets: [SHA-256 epistemic receipts in kernel evidence/]
+    failure_modes: [stubs, untagged facts, mastery percentages, hidden inference, stale certainty]
+    improvement_targets: [SHA-256 epistemic receipts in kernel evidence/, revalidation triggers, contradiction state]
   code:
     required: [helix Alpha/Omega engineering]
     available: [mega-skills/skills/helix-pro-code, ~/.grok/skills/helix-pro-code]
@@ -40,8 +56,8 @@ layers:
     available: [mega-skills/skills/verification-before-completion, tools/validate.py, pytest]
     missing: []
     alternate_routes: [genius validate + pytest -q]
-    failure_modes: [confidence as proof]
-    improvement_targets: [this-turn receipts only]
+    failure_modes: [confidence as proof, green-ui-treated-as-terminal-receipt]
+    improvement_targets: [this-turn receipts only, domain-specific proof burden routing]
 
 dependencies:
   - id: skill:epicenter
@@ -60,29 +76,43 @@ dependencies:
     relationship: verifies
     required_for_current_mission: true
     alternate_routes: []
+  - id: doctrine:genius-family-epistemology
+    relationship: governs
+    required_for_current_mission: true
+    alternate_routes: []
 
 action:
   preconditions:
     - Member skills exist in mega-skills registry and runtime adapters.
+    - Relevant proposition-specific sources can be recovered or their absence is explicitly marked.
   steps:
+    - Recover source-bearing state before relying on summaries or projections.
     - Tag claims with epicenter.
+    - Preserve source authority, provenance, uncertainty, contradiction, and temporal scope.
     - Run epistemic-gate; stop below L2.
     - Engineer authorized work with helix-pro-code.
-    - Prove with verification-before-completion.
+    - Prove with verification-before-completion using the domain-appropriate evidence method.
+    - Read back provider/runtime state when the action changed an external system.
+    - Reconcile new evidence into established, contradicted, superseded, unresolved, or revalidation-needed state.
   expected_effects:
-    - Genius entities inherit epistemology and engineering by composition.
+    - Genius entities inherit epistemology and engineering by composition without evidence laundering.
   postconditions:
     - Compound artifact genius-epistemic-engineering-receipt.md exists for the mission.
+    - Material claims remain traceable to proposition-specific evidence and source versions.
   alternate_routes: []
   failure_modes:
     - Copying member SKILL.md bodies into this kernel.
+    - Promoting memory, graph, manifest, summary, badge, or generated plan above source-bearing evidence.
   recovery_routes:
     - Delete copies; restore ID-only routing.
+    - Rehydrate source-bearing state and downgrade any unsupported promotion.
 
 verification:
   acceptance:
     - combo-skills/genius-epistemic-engineering/COMBO.md exists.
     - mega-skills/apex-genius-mastery/MEGA.md lists genius-epistemic-engineering as required.
+    - docs/EPISTEMOLOGY.md exists and defines family-level provenance, contradiction, uncertainty, decay, composition, and claim-promotion law.
+    - sources/EPISTEMIC_SOURCES.yaml exists and preserves primary/authoritative references.
     - python3 scripts/validate_hierarchy.py passes.
   tests: []
   evidence_refs: []
