@@ -1,0 +1,72 @@
+schema_version: 1
+purpose: Authoritative foundations for Genius-Mastery family-level epistemic engineering.
+sources:
+  - id: w3c-prov-publications
+    title: W3C Provenance Working Group Recommendations
+    url: https://www.w3.org/groups/wg/prov/publications/
+    authority: standard
+    publisher: World Wide Web Consortium
+    domain_tags: [provenance, derivation, entities, activities, agents]
+    last_verified: "2026-09-12"
+    trust_notes: PROV-DM models entities, activities, agents, derivations, collections, and responsibility relationships; use as a provenance vocabulary, not as proof of claim truth.
+
+  - id: nasem-reproducibility-2019
+    title: Reproducibility and Replicability in Science
+    url: https://nap.nationalacademies.org/catalog/25303/reproducibility-and-replicability-in-science
+    authority: consensus-report
+    publisher: National Academies of Sciences, Engineering, and Medicine
+    domain_tags: [reproducibility, replicability, research-integrity, scientific-method]
+    last_verified: "2026-09-12"
+    trust_notes: Consensus report distinguishing computational reproducibility from independent replicability and analyzing causes of non-reproducibility/non-replicability.
+
+  - id: nist-uncertainty-1900
+    title: Simple Guide for Evaluating and Expressing the Uncertainty of NIST Measurement Results
+    url: https://www.nist.gov/publications/simple-guide-evaluating-and-expressing-uncertainty-nist-measurement-results
+    authority: government-primary
+    publisher: National Institute of Standards and Technology
+    domain_tags: [measurement, uncertainty, models, probability, calibration]
+    last_verified: "2026-09-12"
+    trust_notes: Use as a rigorous model for expressing quantitative measurement uncertainty where a real measurand and defensible measurement model exist.
+
+  - id: sep-epistemology
+    title: Epistemology
+    url: https://plato.stanford.edu/entries/epistemology/
+    authority: scholarly-reference
+    publisher: Stanford Encyclopedia of Philosophy
+    domain_tags: [knowledge, justification, evidence, belief]
+    last_verified: "2026-09-12"
+    trust_notes: Peer-reviewed philosophical synthesis useful for calibrating the distinction between belief, justification, evidence, and knowledge.
+
+  - id: acm-artifact-review
+    title: ACM Artifact Review and Reproducibility Practice
+    url: https://www.acm.org/publications/policies/artifact-review-and-badging-current
+    authority: professional-standard
+    publisher: Association for Computing Machinery
+    domain_tags: [artifacts, reproducibility, replication, software-research]
+    last_verified: "2026-09-12"
+    trust_notes: Professional computing practice separating artifact availability, functional/reusable evaluation, reproduced results, and replicated results.
+
+  - id: genius-code-epistemology
+    title: Genius-Code Epistemology
+    url: https://github.com/GlacierEQ/Genius-Code/blob/main/mastery/EPISTEMOLOGY.md
+    authority: estate-domain
+    publisher: GlacierEQ / Genius-Code
+    domain_tags: [software-engineering, claim-types, runtime-evidence]
+    last_verified: "2026-09-12"
+    trust_notes: Domain-specific evidence law; Mastery routes to it rather than copying software-development proof rules into the family kernel.
+
+  - id: genius-verification-epistemology
+    title: Genius-Verification Epistemology
+    url: https://github.com/GlacierEQ/Genius-Verification/blob/main/mastery/EPISTEMOLOGY.md
+    authority: estate-domain
+    publisher: GlacierEQ / Genius-Verification
+    domain_tags: [verification, specification, counterexamples, trusted-base]
+    last_verified: "2026-09-12"
+    trust_notes: Domain-specific verification law; supplies method-specific proof limits and receipt semantics.
+
+composition_invariants:
+  - provenance is necessary for auditability but does not itself prove truth
+  - reproducibility and replicability are distinct states
+  - uncertainty may be quantified only when the model justifies quantification
+  - philosophical epistemology guides justification semantics but domain evidence remains proposition-specific
+  - family-level synthesis must preserve donor identity, scope, assumptions, counterevidence, and revalidation triggers
