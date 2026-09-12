@@ -37,6 +37,25 @@ can be compiled into a purpose-built starting entity containing:
 
 Generated capability is explicitly **mapped**, not magically mastered. Research, execution, challenge, evidence, transfer, and teaching move it upward.
 
+## Family epistemology
+
+[`docs/EPISTEMOLOGY.md`](docs/EPISTEMOLOGY.md) governs how Genius entities acquire, classify, promote, compose, and teach knowledge.
+
+Prime law:
+
+> A representation may route knowledge, but only proposition-specific evidence may justify a claim.
+
+The family therefore preserves distinctions among aspiration, hypothesis, mapped structure, implementation, executability, observation, verification, reproduction, transfer, mastery, and revalidation. Memory hits, summaries, graphs, manifests, badges, and generated plans are routing surfaces; they do not silently outrank source-bearing evidence.
+
+The family cognition loop is:
+
+```text
+RECOVER → CLASSIFY → SOURCE → MODEL → CHALLENGE → EXECUTE
+       → VERIFY → READ BACK → RECONCILE → COMPOSE → TEACH → REVALIDATE
+```
+
+The authority nucleus is in [`sources/EPISTEMIC_SOURCES.yaml`](sources/EPISTEMIC_SOURCES.yaml), and the executable composition contract is bound into [`capabilities/EPISTEMIC_ENGINEERING.yaml`](capabilities/EPISTEMIC_ENGINEERING.yaml).
+
 ## Doctrine
 
 > Mastery is demonstrated by creating stronger practitioners.
@@ -66,6 +85,7 @@ The universal entity anatomy asks:
 
 See:
 
+- `docs/EPISTEMOLOGY.md`
 - `docs/GENIUS_ENTITY_ANATOMY.md`
 - `docs/MASTER_TEACHER_FORGE.md`
 - `docs/DYNAMIC_ADJUSTMENT_AND_FOUR_PILLARS.md`
@@ -76,10 +96,11 @@ See:
 - `templates/CAPABILITY.yaml`
 - `templates/CASE_POSITION_CAMPAIGN.yaml`
 - `sources/CAPABILITY_SOURCES.yaml`
+- `sources/EPISTEMIC_SOURCES.yaml`
 
 ## Case Position Mastery
 
-Genius-Mastery now includes a controlled case-outbound campaign substrate:
+Genius-Mastery includes a controlled case-outbound campaign substrate:
 
 - `docs/CASE_POSITION_MASTERY.md` defines the doctrine for Operator-approved position, single outbound authority, stale-send suppression, escalation clocks, and provider receipt/readback requirements.
 - `schemas/case-position-campaign.schema.json` defines a machine-checkable campaign contract for objectives, escalation ladders, review boundaries, and verification.
@@ -151,10 +172,9 @@ genius new Performance --dest /tmp
 
 `genius new` creates a bare domain substrate. `genius synthesize` creates and teaches a role-shaped starting entity.
 
-
 ### Analyze a Genius entity
 
-Every synthesized entity carries a capability graph. The kernel can now rank that graph by mission impact, readiness, evidence strength, dependency centrality, and recorded substitutes:
+Every synthesized entity carries a capability graph. The kernel can rank that graph by mission impact, readiness, evidence strength, dependency centrality, and recorded substitutes:
 
 ```bash
 genius analyze /path/to/Genius-Engineering --top 12
@@ -164,7 +184,6 @@ genius analyze /path/to/Genius-Engineering --write
 ```
 
 The analysis emits ranked priorities, candidate bottlenecks, high-leverage nodes, and reasons for each score. It is an action-prioritization model, not a certification shortcut: unverified state remains unverified until evidence and challenge results justify promotion.
-
 
 ### Analyze the Genius family
 
@@ -177,152 +196,3 @@ genius family /path/to/genius-estate --top 12
 genius family /path/to/genius-estate \
   --output /tmp/genius-family-analysis.yaml
 ```
-
-The family engine reads each repository's own `GENIUS.yaml` and composition contract, resolves declared provider/consumer bindings, exposes unresolved dependencies and provider fan-out, and proposes cross-repository capability combinations. Composition candidates remain hypotheses until their combined behavior is executed, challenged, and verified.
-
-
-### Compute the mastery vector
-
-```bash
-genius vector .
-genius vector . --write
-```
-
-The vector is computed from `claims/CLAIMS.yaml` and `evidence/ledger.jsonl`. It reports per-dimension claim counts, evidence coverage, demonstrated tier, counterevidence presence, dangling evidence references, and ledger-to-claim mismatches. It deliberately does **not** emit a single mastery percentage.
-
-`--write` regenerates `mastery/VECTOR.yaml` from those source records so the diagnostic state cannot drift into hand-maintained vanity scoring.
-
-## Progress kernel
-
-Genius-Mastery now treats **progress as a first-class orchestration contract**, not as a side effect of a good answer.
-
-The default cycle is:
-
-```text
-RECOVER → PRIORITIZE → EXECUTE → PERSIST → VERIFY → COMPOUND ↺
-```
-
-Inspect the composable command vocabulary:
-
-```bash
-genius codes
-genius codes --category execution
-genius codes --category orchestration
-```
-
-Build the next progress cycle from a Genius repository's current capability graph:
-
-```bash
-genius progress . \
-  --mission "Convert the strongest bottleneck into verified capability"
-
-genius progress . \
-  --mission "Strengthen the current system" \
-  --code "RED TEAM" \
-  --code "EVAL-SELF" \
-  --json
-```
-
-`PROGRESS` automatically composes:
-
-```text
-PROGRESS
-+ CONTINUE
-+ TOOL-FIRST
-+ NEXT BEST ACTION
-+ MAXIMUM ADVANCE
-+ EXECUTE
-+ DURABLE
-+ TEST
-+ READBACK
-+ RECEIPTS
-+ PRESERVE GAINS
-```
-
-The generated contract deliberately distinguishes **planned**, **executed**, **observed**, and **verified** state. A plan is not execution; execution is not verification; verification requires receipts.
-
-Prompt-code syntax is also deterministic:
-
-```text
-FIRST PRINCIPLES + RED TEAM + EVAL-SELF: Analyze this architecture.
-TOOL-FIRST / CONTINUE / BUILD / TEST / READBACK: Fix it.
-```
-
-See `docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md`.
-
-## Instruction engineering
-
-Genius-Mastery treats prompts as compiled runtime projections rather than magical prose.
-
-```text
-semantic outcome
-→ authority + constraints
-→ selected context + trust boundaries
-→ tools + execution truth state
-→ model-specific projection
-→ execution trajectory
-→ verification/eval
-→ smallest-layer repair
-↺
-```
-
-Compile and audit a contract:
-
-```bash
-genius instruct \
-  --objective "Repair the repository and prove the resulting state" \
-  --instruction "Recover current durable state before mutation." \
-  --tool "GitHub repository read/write" \
-  --output "Return changed paths and observed state." \
-  --verify "Read back every changed path." \
-  --model-family "gpt-5.6" \
-  --json
-```
-
-The compiler removes exact duplicates, isolates retrieved/external material as data,
-preserves tool-state truth boundaries, flags common instruction anti-patterns, and emits
-a lean model-facing projection. Its audit is structural: representative task evals remain
-the authority for behavioral quality.
-
-See `docs/INSTRUCTION_ENGINEERING.md`.
-
-## Capability sources
-
-The forge is designed to **discover and compose**, not duplicate.
-
-Initial source families include:
-
-- `GlacierEQ/mega-skills` atomic Skills;
-- `GlacierEQ/mega-skills` Combo Skills;
-- `GlacierEQ/mega-skills` Mega Skills;
-- sibling `Genius-*` composition contracts;
-- live models, tools, APIs, MCP servers, connectors, runtimes, browsers, files, and devices;
-- authoritative research, standards, source repositories, benchmarks, and production receipts.
-
-## Family
-
-| Repository | Purpose |
-|---|---|
-| Genius-Mastery | teacher-forge + family kernel |
-| Genius-Code | code vertical excellence |
-| Genius-Verification | verification vertical excellence |
-
-See `family/INDEX.json`.
-
-## Current truth
-
-### 1.1 core
-
-The **core Mastery kernel is release-complete** when `genius closure .` passes on the exact repository head. Closure requires structural validation, clean evidence referential integrity, no near-term core work, and no unresolved release-blocking frontier item.
-
-Core capabilities include entity synthesis and standalone descendants; universal capability anatomy and graphs; Mega Skills dependency edges; mission intelligence and calibration; evidence vectors and counterevidence retention; durable progress orchestration and prompt codes; typed instruction-contract compilation with authority/context/tool-state truth boundaries; normalized runtime discovery; executable challenge verification; lossless migration; family contract composition receipts; doctor diagnostics; and release closure.
-
-### Open-ended research
-
-Core completion does **not** mean mastery research stops. The non-blocking frontier remains visible in `frontier/QUEUE.yaml`: semantic role synthesis, broader remote capability inventory, real learner-outcome feedback, observed-outcome calibration, emergent cross-Genius mission behavior, provenance/attestation, and higher-order capability promotion.
-
-Never convert "generated" into "mastered", a file write into execution proof, or a release label into external verification.
-
-## License
-
-MIT. See LICENSE.
