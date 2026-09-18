@@ -102,12 +102,12 @@ See:
 
 Genius-Mastery includes a controlled case-outbound campaign substrate:
 
-- `docs/CASE_POSITION_MASTERY.md` defines the doctrine for Operator-approved position, single outbound authority, stale-send suppression, escalation clocks, and provider receipt/readback requirements.
+- `docs/CASE_POSITION_MASTERY.md` defines the doctrine for Operator-approved position, peer-mesh execution, per-WORK_UNIT single-writer/idempotency, stale-send suppression, escalation clocks, and provider receipt/readback requirements.
 - `schemas/case-position-campaign.schema.json` defines a machine-checkable campaign contract for objectives, escalation ladders, review boundaries, and verification.
 - `templates/CASE_POSITION_CAMPAIGN.yaml` provides the reusable campaign skeleton.
 - `examples/case-position/NEX_CAMPAIGN_REDACTED.yaml` seeds the NEX campaign as a redacted doctrine object without publishing private evidence or uncontrolled allegations.
 
-The rule is simple: external case communication is strategic action. A vague acknowledgment is not automatically progress, and no worker may improvise posture, recipient class, remedy, concession, or counsel-seeking outreach outside an approved campaign mandate.
+The rule is simple: external case communication is strategic action. A vague acknowledgment is not automatically progress. No worker may improvise posture, recipient class, remedy, concession, or counsel-seeking outreach outside an approved campaign mandate, but routine constituent actions inside that mandate may be executed by any qualified peer holding the exact WORK_UNIT idempotency lease.
 
 ## Install
 
