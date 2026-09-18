@@ -40,7 +40,7 @@ objectives:
     evidence_required:
       - "initial sent receipt(s)"
       - "response readback(s)"
-      - "current Supabase action status"
+      - "current execution-state record"
   - objective_id: "NEX-PRESERVATION"
     description: "Confirm preservation handling for incident evidence, reports, camera footage, databases, exclusions, station/transport/processing records, communications, and complaint-routing records."
     status: "OPEN"
@@ -66,14 +66,20 @@ objectives:
       - "substantive response"
 
 outbound_control:
-  designated_executor: "Cross-Case Mission Executor"
-  operator_review_default: true
-  send_preflight_required: true
+  execution_model: "peer_mesh_per_work_unit_single_writer"
+  operator_review_default: false
+  authority_recovery_required: true
+  active_plan_required: true
+  idempotency_required: true
+  stale_send_check_required: true
+  qualified_executor_classes:
+    - "peer able to recover the controlling campaign authority and acquire the exact WORK_UNIT idempotency lease"
   allowed_channels:
-    - "Gmail after Operator-approved final text or locked routine escalation tier"
+    - "current provider channel already covered by the controlling campaign/action class"
   forbidden_workers:
-    - "GlacierEQ substantive mission worker"
-    - "generic hourly estate worker"
+    - "workers unable to recover source-bearing authority for the exact WORK_UNIT"
+    - "workers unable to perform same-run stale/idempotency checks"
+    - "workers unable to capture provider-native receipt/readback"
 
 escalation_ladder:
   - tier: 0
@@ -82,10 +88,10 @@ escalation_ladder:
     allowed_purpose: "demand accountable intake, preservation, ownership, tracking/status, and database/status path"
     operator_review_required: true
   - tier: 1
-    trigger: "six days or approved clock elapsed with silence or non-substantive reply"
+    trigger: "approved clock elapsed with silence or non-substantive reply"
     recipient_class: "same recipients plus supervisory/escalation recipients already approved"
     allowed_purpose: "document elapsed time and unanswered objectives; require owner/tracking/status/timeline"
-    operator_review_required: true
+    operator_review_required: false
   - tier: 2
     trigger: "continued silence or no owner/tracking/status after tier 1"
     recipient_class: "records, privacy, compliance, command, inspector-general, or legal authority as approved"
@@ -106,13 +112,15 @@ stale_send_suppression:
 
 verification:
   pre_send_checks:
-    - "read current sent receipts for NEX matter"
-    - "read current response state from Gmail and Supabase"
-    - "confirm no case/reference/owner/tracking response already arrived"
-    - "confirm escalation tier and recipient class are Operator-approved"
+    - "recover the controlling Operator-approved campaign/action class for the exact WORK_UNIT"
+    - "read current sent receipts and current provider response state for the same objective"
+    - "confirm no owner/tracking/status response already satisfied or superseded the action"
+    - "acquire or confirm the per-WORK_UNIT idempotency key / single-writer lease"
+    - "confirm escalation tier, recipient class, and channel remain inside the recovered authority"
+    - "classify only a material strategy delta outside the recovered authority as REPLAN_REQUIRED"
     - "confirm message keeps allegations truth-labeled and avoids unsupported database certainty"
   post_send_receipts:
-    - "Gmail message id"
+    - "provider-native message id"
     - "sent readback with recipients and timestamp"
-    - "Supabase action update with receipt binding"
+    - "execution-state update bound to WORK_UNIT_ID and provider receipt"
   supabase_update_required: true
