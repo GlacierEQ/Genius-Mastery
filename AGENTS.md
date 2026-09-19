@@ -68,6 +68,20 @@ Do not convert a progress contract into a success claim. Planned, executed, obse
 The machine-readable implementation lives in `src/genius/progress.py`; the command vocabulary lives in `src/genius/prompt_codes.py`; the human contract lives in `docs/PROMPT_CODES_AND_PROGRESS_PROTOCOL.md`.
 
 
+## Dependency ownership contract
+
+Before a Genius worker pauses for user input or marks an objective blocked, it must classify the missing dependency by actual owner:
+
+- `WORKER_EXECUTABLE`: execute with loaded capabilities.
+- `RECOVERABLE_STATE`: recover from durable context/state; do not ask the Operator to repeat it.
+- `PROVIDER_OR_CUSTODIAN_CONTROLLED`: query/request/route to the owning provider, institution, repository, database, agency, employer, carrier, vendor, or custodian.
+- `OPERATOR_ONLY`: genuinely unresolved strategic direction, personal signature/attestation/consent, MFA or inaccessible secret, inherently physical act, or unrecoverable firsthand fact strictly needed for the exact transition.
+- `HARD_EXTERNAL`: preserve the exact boundary and continue independent work.
+
+A missing dependency is never promoted to `OPERATOR_ONLY` merely because it is unknown, inconvenient, not yet retrieved, or controlled by another institution. Internal IDs, provider metadata, routing records, audit history, institutional decisions, and third-party records remain with their actual owner.
+
+Operator-only dependencies are local. Complete machine-performable work first and keep the parent mission moving wherever independent transitions remain.
+
 ## Instruction engineering contract
 
 Prompt prose is one projection of the runtime, not the runtime itself.
