@@ -17,9 +17,11 @@ from genius.operating_loop import build_loop, validate_loop
 from genius.prompt_codes import DEFAULT_PROGRESS_CODES, normalize_codes
 
 
-PROGRESS_PHASES = ("recover", "prioritize", "execute", "persist", "verify", "compound")
+CONTEXT_HYDRATION_STATES = ("VERIFIED", "PARTIAL", "UNAVAILABLE")
+PROGRESS_PHASES = ("context_hydrate", "recover", "prioritize", "execute", "persist", "verify", "compound")
 
 PROGRESS_INVARIANTS = (
+    "Hydrate relevant context/history before interpretation, prioritization, or mutation; never silently fall back to prompt-only cognition.",
     "Inspect current state before claiming it.",
     "Recover material operator language from source-bearing history before assistant summaries when exact wording affects intent, facts, constraints, architecture, or criticism.",
     "Never claim a full-history or full-source review unless coverage itself is evidenced; partial retrieval must remain explicitly partial.",
@@ -66,6 +68,10 @@ def build_progress_contract(
     *,
     context: Iterable[str] | None = None,
     codes: Iterable[str] | None = None,
+    context_status: str | None = None,
+    context_sources: Iterable[str] | None = None,
+    context_failures: Iterable[str] | None = None,
+    context_unknowns: Iterable[str] | None = None,
 ) -> dict[str, Any]:
     root_path = Path(root).resolve()
     mission_text = str(mission).strip()
@@ -76,6 +82,41 @@ def build_progress_contract(
     ranked, evidence_state, source_refs = _load_ranked_actions(root_path)
 
     context_items = _items(context)
+    hydration_sources = _items(context_sources)
+    hydration_failures = _items(context_failures)
+    hydration_unknowns = _items(context_unknowns)
+    if str(root_path) not in hydration_sources:
+        hydration_sources.append(str(root_path))
+    for source_ref in source_refs:
+        if source_ref not in hydration_sources:
+            hydration_sources.append(source_ref)
+
+    if context_status is None:
+        context_status = "PARTIAL" if (context_items or root_path.exists() or source_refs) else "UNAVAILABLE"
+    context_status = str(context_status).upper().strip()
+    if context_status not in CONTEXT_HYDRATION_STATES:
+        raise ValueError(
+            "context_status must be one of: " + ", ".join(CONTEXT_HYDRATION_STATES)
+        )
+    if context_status == "VERIFIED" and not hydration_sources:
+        raise ValueError("VERIFIED context hydration requires at least one source")
+    if context_status == "UNAVAILABLE" and not hydration_failures:
+        hydration_failures.append("relevant_context_history_retrieval_unavailable_or_not_evidenced")
+    if context_status != "VERIFIED" and not hydration_unknowns:
+        hydration_unknowns.append("full_relevant_context_history_coverage_not_evidenced")
+
+    context_hydration = {
+        "schema": "glaciereq.genius-context-hydration.v1",
+        "status": context_status,
+        "attempted": True,
+        "before_interpretation": True,
+        "before_prioritization": True,
+        "silent_prompt_only_fallback_forbidden": True,
+        "mission_continues_if_partial_or_unavailable": True,
+        "sources": hydration_sources,
+        "failures": hydration_failures,
+        "unknowns": hydration_unknowns,
+    }
     if root_path.exists():
         context_items.insert(0, f"Repository exists: {root_path}")
     else:
@@ -137,10 +178,12 @@ def build_progress_contract(
         "mission": mission_text,
         "root": str(root_path),
         "status": "ready_to_execute",
+        "context_hydration": context_hydration,
         "codes": selected_codes,
         "default_progress_stack": list(DEFAULT_PROGRESS_CODES),
         "invariants": list(PROGRESS_INVARIANTS),
         "phases": [
+            {"name": "context_hydrate", "requirement": "Attempt retrieval of materially relevant conversation/history, durable project state, corrections, receipts, and source-bearing context before interpretation or prioritization. Record VERIFIED/PARTIAL/UNAVAILABLE coverage explicitly; never silently treat the current prompt as the whole state.", "done_when": "A context-hydration record exists with sources, failures, unknowns, and explicit coverage status before any next-action ranking."},
             {"name": "recover", "requirement": "Inspect live/durable state, prior receipts, constraints, and material source-bearing operator language before mutation; preserve verbatim wording when it controls intent or truth state.", "done_when": "Current state, source coverage, exact controlling language, and uncertainty are explicitly represented."},
             {"name": "prioritize", "requirement": "Rank bottlenecks and leverage; select the strongest executable next action.", "done_when": "A specific action is selected with an inspectable basis."},
             {"name": "execute", "requirement": "Use available tools to perform the selected action and continue through the strongest coherent tranche rather than stopping after diagnosis, a token patch, or summary.", "done_when": "The target system reports substantive execution results and no higher-value authorized step in the current tranche was skipped merely to end early."},
@@ -151,6 +194,8 @@ def build_progress_contract(
         "next_best_action": next_best_action,
         "decision_loop": loop,
         "run_quality_contract": {
+            "context_hydration_before_reasoning": True,
+            "silent_prompt_only_fallback_forbidden": True,
             "verbatim_source_before_summary": True,
             "coverage_claims_require_evidence": True,
             "continue_while_high_value_authorized_work_remains": True,
@@ -182,6 +227,28 @@ def validate_progress_contract(contract: dict[str, Any]) -> list[str]:
         missing = [code for code in DEFAULT_PROGRESS_CODES if code not in codes]
         if missing:
             errors.append(f"default progress codes missing: {', '.join(missing)}")
+    hydration = contract.get("context_hydration")
+    if not isinstance(hydration, dict):
+        errors.append("context_hydration must be a mapping")
+    else:
+        if hydration.get("status") not in CONTEXT_HYDRATION_STATES:
+            errors.append("context_hydration.status invalid")
+        if hydration.get("attempted") is not True:
+            errors.append("context_hydration.attempted must be true")
+        if hydration.get("before_interpretation") is not True:
+            errors.append("context_hydration.before_interpretation must be true")
+        if hydration.get("before_prioritization") is not True:
+            errors.append("context_hydration.before_prioritization must be true")
+        if hydration.get("silent_prompt_only_fallback_forbidden") is not True:
+            errors.append("context_hydration.silent_prompt_only_fallback_forbidden must be true")
+        if hydration.get("mission_continues_if_partial_or_unavailable") is not True:
+            errors.append("context_hydration.mission_continues_if_partial_or_unavailable must be true")
+        if not isinstance(hydration.get("sources"), list):
+            errors.append("context_hydration.sources must be a list")
+        if not isinstance(hydration.get("failures"), list):
+            errors.append("context_hydration.failures must be a list")
+        if not isinstance(hydration.get("unknowns"), list):
+            errors.append("context_hydration.unknowns must be a list")
     phase_names = [phase.get("name") for phase in (contract.get("phases") or []) if isinstance(phase, dict)]
     if tuple(phase_names) != PROGRESS_PHASES:
         errors.append(f"phases must be exactly: {', '.join(PROGRESS_PHASES)}")
@@ -192,6 +259,8 @@ def validate_progress_contract(contract: dict[str, Any]) -> list[str]:
         errors.extend(f"decision_loop: {error}" for error in validate_loop(loop))
     quality = contract.get("run_quality_contract") or {}
     for key in (
+        "context_hydration_before_reasoning",
+        "silent_prompt_only_fallback_forbidden",
         "verbatim_source_before_summary",
         "coverage_claims_require_evidence",
         "continue_while_high_value_authorized_work_remains",
@@ -210,8 +279,10 @@ def validate_progress_contract(contract: dict[str, Any]) -> list[str]:
 
 def progress_report(contract: dict[str, Any]) -> str:
     action = contract["next_best_action"]
+    hydration = contract.get("context_hydration") or {}
     lines = [
         f"Progress contract: {contract['mission']}",
+        f"context hydration: {hydration.get('status', 'UNKNOWN')}",
         f"status: {contract['status']}",
         f"root: {contract['root']}",
         "codes: " + " + ".join(contract["codes"]),
