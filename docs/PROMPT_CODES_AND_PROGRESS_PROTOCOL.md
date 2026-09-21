@@ -22,7 +22,8 @@ This is deliberately stronger than “be thorough.” It converts depth and forw
 ## Core law
 
 ```text
-CURRENT STATE
+CURRENT OPERATOR MESSAGE / ACTIVE OBJECTIVE
+→ CONTEXT_HYDRATE
 → RECOVER
 → PRIORITIZE
 → EXECUTE
@@ -169,9 +170,9 @@ The progress engine reads `capabilities/GRAPH.yaml`, reuses `mission-intelligenc
 
 When the operator asks to continue, build, fix, strengthen, harden, improve, or make progress:
 
-1. inspect actual state;
-2. retrieve relevant prior context and durable evidence;
-3. run mission-aware prioritization;
+1. CONTEXT_HYDRATE before interpretation: retrieve materially relevant conversation/history, corrections, durable project state, receipts, and source-bearing context; record VERIFIED/PARTIAL/UNAVAILABLE coverage and never silently use prompt-only cognition;
+2. inspect and reconcile the nearest valid actual state;
+3. run mission-aware prioritization only after hydration;
 4. execute the strongest coherent action available;
 5. write the result to the correct durable destination;
 6. test;
