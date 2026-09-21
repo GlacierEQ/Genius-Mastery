@@ -61,6 +61,9 @@ def test_progress_contract_selects_ranked_next_action(tmp_path):
     contract = build_progress_contract(tmp_path, "Make measurable progress", context=["A working repository exists"], codes=["RED TEAM", "EVAL-SELF"])
     assert validate_progress_contract(contract) == []
     assert contract["status"] == "ready_to_execute"
+    assert contract["context_hydration"]["attempted"] is True
+    assert contract["context_hydration"]["before_prioritization"] is True
+    assert contract["phases"][0]["name"] == "context_hydrate"
     assert contract["next_best_action"]["target"] == "cap:critical"
     assert contract["decision_loop"]["status"] == "ready_to_act"
     assert contract["decision_loop"]["evidence_state"] == "searched_found"
@@ -79,6 +82,8 @@ def test_progress_report_keeps_truth_boundary_visible(tmp_path):
     _write_graph(tmp_path)
     report = progress_report(build_progress_contract(tmp_path, "Advance safely"))
     assert "Next best action:" in report
+    assert "context hydration:" in report
+    assert "CONTEXT_HYDRATE:" in report
     assert "RECOVER:" in report
     assert "VERIFY:" in report
     assert "plan != execution" in report
@@ -115,6 +120,40 @@ def test_progress_validator_rejects_weakened_run_quality_contract(tmp_path):
     contract["run_quality_contract"]["objective_state_delta_required"] = False
     errors = validate_progress_contract(contract)
     assert "run_quality_contract.objective_state_delta_required must be true" in errors
+
+
+def test_progress_contract_rejects_silent_prompt_only_fallback(tmp_path):
+    contract = build_progress_contract(tmp_path, "Hydrate first")
+    contract["context_hydration"]["attempted"] = False
+    errors = validate_progress_contract(contract)
+    assert "context_hydration.attempted must be true" in errors
+
+
+def test_progress_contract_tracks_partial_context_without_stopping(tmp_path):
+    contract = build_progress_contract(
+        tmp_path,
+        "Continue with bounded epistemic state",
+        context=["Current operator message recovered"],
+        context_status="PARTIAL",
+        context_sources=["chat-history-search"],
+        context_unknowns=["older connector state not yet inspected"],
+    )
+    assert validate_progress_contract(contract) == []
+    hydration = contract["context_hydration"]
+    assert hydration["status"] == "PARTIAL"
+    assert hydration["mission_continues_if_partial_or_unavailable"] is True
+    assert hydration["silent_prompt_only_fallback_forbidden"] is True
+
+
+def test_verified_context_hydration_is_explicit(tmp_path):
+    contract = build_progress_contract(
+        tmp_path,
+        "Execute from recovered state",
+        context_status="VERIFIED",
+        context_sources=["conversation-history", "provider-readback"],
+    )
+    assert validate_progress_contract(contract) == []
+    assert contract["context_hydration"]["status"] == "VERIFIED"
 
 def test_cli_codes_exposes_progress():
     result = subprocess.run([sys.executable, "-m", "genius.cli", "codes", "--category", "orchestration"], capture_output=True, text=True)
