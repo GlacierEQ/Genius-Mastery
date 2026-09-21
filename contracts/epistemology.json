@@ -1,0 +1,106 @@
+{
+  "schema": "glaciereq.genius-epistemology.v2",
+  "model": "ASPEN_GROVE",
+  "root_genome": {
+    "shared": [
+      "CONTEXT_HYDRATION_BEFORE_INTERPRETATION",
+      "PROPOSITION_SPECIFIC_AUTHORITY",
+      "PROVENANCE_AND_LINEAGE",
+      "TRUTH_STATE_DISTINCTIONS",
+      "CONTRADICTION_RETENTION",
+      "UNCERTAINTY_MODELING",
+      "ADVERSARIAL_FALSIFICATION",
+      "VERIFICATION_AND_READBACK",
+      "EVIDENCE_EXECUTION_AXIS_SEPARATION",
+      "TYPED_COMPOSITION",
+      "REVALIDATION_AND_LEARNING"
+    ],
+    "authority_holder_for_project_direction": "OPERATOR"
+  },
+  "domain_locality": {
+    "substantive_knowledge_domain_local_by_default": true,
+    "domain_identity_merge_by_composition": false,
+    "local_ontology_preserved": true,
+    "local_memory_preserved": true,
+    "local_evidence_standards_preserved": true,
+    "local_tools_and_failure_modes_preserved": true,
+    "law": "SHARED_ROOTS_INDEPENDENT_TRUNKS_COMPOSABLE_BRANCHES"
+  },
+  "context_hydration": {
+    "required_before_interpretation": true,
+    "statuses": [
+      "VERIFIED",
+      "PARTIAL",
+      "UNAVAILABLE"
+    ],
+    "silent_prompt_only_fallback_forbidden": true,
+    "partial_or_unavailable_narrows_confidence_not_mission": true,
+    "search_hit_alone_is_not_hydration": true
+  },
+  "claim_semantics": {
+    "truth_is_scoped_by": [
+      "proposition",
+      "source",
+      "time",
+      "environment",
+      "jurisdiction",
+      "version",
+      "observation_boundary"
+    ],
+    "absence_of_retrieval_is_not_absence": true,
+    "contradiction_is_first_class": true,
+    "stale_state_may_be_superseded_but_not_erased": true
+  },
+  "axes": {
+    "evidence": [
+      "UNKNOWN",
+      "SOURCED",
+      "OBSERVED",
+      "CHALLENGED",
+      "VERIFIED",
+      "REPRODUCED",
+      "REVALIDATED"
+    ],
+    "execution": [
+      "NOT_ATTEMPTED",
+      "PREPARED",
+      "INVOKED",
+      "PROVIDER_ACKNOWLEDGED",
+      "COMPLETED",
+      "READ_BACK",
+      "EFFECT_VERIFIED"
+    ],
+    "one_axis_may_not_imply_the_other": true
+  },
+  "cross_domain_bridge": {
+    "typed_relation_required": true,
+    "required_fields": [
+      "donor_domain",
+      "consumer_domain",
+      "relation_type",
+      "transfer_object",
+      "transfer_assumptions",
+      "consumer_validation",
+      "provenance"
+    ],
+    "allowed_transfer_objects": [
+      "CLAIM",
+      "EVIDENCE",
+      "METHOD",
+      "CAPABILITY",
+      "ARTIFACT",
+      "EXECUTION_RESULT"
+    ],
+    "composition_may_create_higher_order_capability": true,
+    "composition_may_not_merge_domain_identity": true,
+    "donor_verification_does_not_auto_transfer": true
+  },
+  "promotion_law": {
+    "rhetoric_cannot_promote_state": true,
+    "representation_is_not_reality": true,
+    "retrieval_is_not_proof": true,
+    "execution_is_not_verification": true,
+    "verification_is_not_universal_truth": true,
+    "current_truth_requires_freshness_when_state_can_drift": true
+  }
+}
