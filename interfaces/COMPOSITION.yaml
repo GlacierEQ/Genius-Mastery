@@ -2,7 +2,7 @@ spec_version: 1
 repository: Genius-Mastery
 provides:
   - id: mastery.kernel.epistemology
-    description: Aspen-grove epistemic root contract: context-before-interpretation, proposition-specific authority, domain-local knowledge, typed cross-domain bridges, evidence/execution axis separation, contradiction preservation, and revalidation
+    description: "Aspen-grove epistemic root contract: context-before-interpretation, proposition-specific authority, domain-local knowledge, typed cross-domain bridges, evidence/execution axis separation, contradiction preservation, and revalidation"
     stage: implemented
     interface: contracts/epistemology.json
     evidence_refs: []
