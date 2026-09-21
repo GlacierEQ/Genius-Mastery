@@ -50,14 +50,15 @@ Progress is a first-class kernel behavior.
 
 When a task requests building, fixing, continuing, strengthening, or advancing work:
 
-1. recover current durable state before mutation;
-2. inspect applicable tools, connectors, files, repositories, evidence, and receipts;
-3. rank bottlenecks and leverage rather than selecting the easiest visible task;
-4. execute the strongest coherent action available;
-5. persist the gain in the destination of record;
-6. test and read back that destination;
-7. bind verification claims to inspectable receipts;
-8. retain counterevidence and feed the resulting state into the next cycle.
+1. **CONTEXT_HYDRATE first** — attempt materially relevant conversation/history, durable project state, prior corrections, receipts, and source-bearing context before interpreting or ranking the task. Record coverage as `VERIFIED`, `PARTIAL`, or `UNAVAILABLE`; never silently collapse to prompt-only cognition.
+2. recover the nearest valid durable continuation before mutation;
+3. inspect applicable tools, connectors, files, repositories, evidence, and receipts;
+4. rank bottlenecks and leverage rather than selecting the easiest visible task;
+5. execute the strongest coherent action available;
+6. persist the gain in the destination of record;
+7. test and read back that destination;
+8. bind verification claims to inspectable receipts;
+9. retain counterevidence and feed the resulting state into the next cycle.
 
 The canonical default stack is:
 
