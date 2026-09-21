@@ -15,9 +15,100 @@ Memory, summaries, graphs, generated plans, embeddings, indexes, manifests, badg
 The family cognition loop is:
 
 ```text
-RECOVER → CLASSIFY → SOURCE → MODEL → CHALLENGE → EXECUTE
-       → VERIFY → READ BACK → RECONCILE → COMPOSE → TEACH → REVALIDATE
+CONTEXT_HYDRATE
+→ RECOVER → CLASSIFY → SOURCE → MODEL → CHALLENGE
+→ EXECUTE → VERIFY → READ BACK → RECONCILE
+→ COMPOSE → TEACH → REVALIDATE
 ```
+
+`CONTEXT_HYDRATE` precedes interpretation. It attempts materially relevant conversation/history, durable state, corrections, receipts, provider readback, and source-bearing context before the current message is treated as the whole problem. Coverage is recorded as `VERIFIED`, `PARTIAL`, or `UNAVAILABLE`. Partial or unavailable retrieval narrows epistemic confidence; it does not erase the mission or convert prompt-only cognition into acceptable certainty.
+
+## Aspen-grove epistemology — shared roots, domain-local trunks
+
+Genius is a grove, not one book.
+
+The family shares **epistemic roots**:
+
+- context hydration before interpretation;
+- proposition-specific source authority;
+- provenance and lineage;
+- truth-state distinctions;
+- contradiction retention;
+- uncertainty;
+- falsification;
+- verification/readback;
+- evidence/execution separation;
+- typed composition;
+- revalidation and learning.
+
+But substantive knowledge remains **domain-local by default**. Aviation does not become chemistry; chemistry does not become law; legal evidence does not become provider-runtime evidence. Each Genius domain keeps its own ontology, corpus, memory, evidence standards, tools, failure modes, and mastery frontier.
+
+Cross-domain work uses typed bridges:
+
+```text
+DOMAIN A CLAIM/CAPABILITY
+        │
+        ├── typed relation / adapter / work-unit edge
+        │
+DOMAIN B CLAIM/CAPABILITY
+```
+
+The bridge may compose capabilities or exchange evidence, but it must not merge domain identity, erase provenance, or promote one domain's verification method into another domain without explicit transfer validation.
+
+**Law: shared roots, independent trunks, composable branches.**
+
+## Context precedes interpretation
+
+A current prompt is evidence of current Operator direction; it is not proof that all relevant context is contained in the prompt.
+
+Before substantial reasoning:
+
+1. attempt materially relevant history/context recovery;
+2. recover sticky corrections and superseded states;
+3. recover the nearest valid continuation;
+4. inspect source-bearing/provider state where material;
+5. record retrieval coverage and unknowns;
+6. only then classify, model, prioritize, and execute.
+
+A search hit alone is not hydration. Hydration means reconstructing the state needed to understand why the current problem has its present shape.
+
+## Evidence state and execution state are orthogonal
+
+A claim may be well supported without being executed. An action may execute successfully without proving the underlying proposition.
+
+Keep two axes separate:
+
+```text
+EVIDENCE AXIS:
+unknown → sourced → observed → challenged → verified → reproduced/revalidated
+
+EXECUTION AXIS:
+not_attempted → prepared → invoked → provider_acknowledged → completed
+              → read_back → effect_verified
+```
+
+Do not infer one axis from the other.
+
+Examples:
+
+- a legal proposition can be strongly sourced while no filing has occurred;
+- a provider mutation can succeed while the assistant's causal explanation remains uncertain;
+- a test can pass while the deployment was never invoked;
+- a retrieved memory can route investigation without proving the external fact.
+
+## Provenance-local truth
+
+Truth claims are scoped by proposition, source, time, environment, jurisdiction, version, and observation boundary.
+
+Prefer:
+
+```text
+claim + scope + provenance + time + evidence state
+```
+
+over an unscoped universal assertion.
+
+Different nodes may carry different locally valid observations without contradiction when their scopes differ. When scopes genuinely conflict, preserve the contradiction explicitly rather than flattening it into a single summary.
 
 ## 1. Separate reality from representations of reality
 
@@ -226,6 +317,8 @@ Escalate toward the source as consequence or ambiguity rises.
 
 ## 15. Composition must preserve epistemic boundaries
 
+Composition is a typed bridge between trunks in the grove, not permission to merge their books.
+
 When one Genius entity consumes another:
 
 - preserve donor identity;
@@ -237,6 +330,18 @@ When one Genius entity consumes another:
 - reverify environment-sensitive behavior at the consumer boundary.
 
 Composition is not evidence laundering.
+
+Cross-domain transfer additionally requires:
+
+- explicit donor and consumer domains;
+- relation type;
+- what is transferred: claim, evidence, method, capability, artifact, or execution result;
+- transfer assumptions;
+- consumer-side validation requirements;
+- whether the donor's verification method is valid in the consumer domain;
+- whether imported knowledge remains queryable at the donor.
+
+A cross-domain composition may create a higher-order capability while the underlying domain identities remain separate.
 
 ## 16. Teaching is a verification surface
 
@@ -330,4 +435,4 @@ The kernel succeeds when generated entities become progressively better at answe
 
 ## Final rule
 
-> Never promote representation into reality, repetition into independence, execution into verification, verification into universal truth, or stale truth into current truth. Preserve provenance, contradiction, uncertainty, source authority, and the path by which stronger evidence changes the state of belief.
+> Hydrate before interpreting. Keep knowledge domain-local unless a typed bridge justifies transfer. Never promote representation into reality, retrieval into proof, repetition into independence, execution into verification, verification into universal truth, or stale truth into current truth. Preserve provenance, scope, contradiction, uncertainty, source authority, domain identity, and the path by which stronger evidence changes the state of belief.
