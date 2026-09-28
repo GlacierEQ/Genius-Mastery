@@ -1,0 +1,260 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://glaciereq.local/schemas/representation-contract.schema.json",
+  "title": "Genius Representation Contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "statement",
+    "truth",
+    "signals",
+    "projection",
+    "action_gate",
+    "pillars",
+    "invariants",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "kind": {
+      "const": "genius-representation-contract"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "truth": {
+      "type": "object",
+      "required": [
+        "maturity",
+        "evidence_refs",
+        "execution_refs",
+        "counterevidence_refs",
+        "system_state"
+      ],
+      "properties": {
+        "maturity": {
+          "enum": [
+            "demonstrated",
+            "verified",
+            "designed_for",
+            "aspirational",
+            "unknown",
+            "contradicted"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "execution_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "counterevidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "system_state": {
+          "enum": [
+            "live",
+            "tested",
+            "partial",
+            "degraded",
+            "simulated",
+            "planned",
+            "unavailable",
+            "unknown"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "signals": {
+      "type": "object",
+      "required": [
+        "next_actor",
+        "purpose",
+        "impact",
+        "evidence_quality",
+        "reversibility",
+        "emotional_weight",
+        "external_action"
+      ],
+      "properties": {
+        "next_actor": {
+          "enum": [
+            "person",
+            "expert",
+            "machine",
+            "mesh"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impact": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "evidence_quality": {
+          "enum": [
+            "none",
+            "weak",
+            "mixed",
+            "strong"
+          ]
+        },
+        "reversibility": {
+          "enum": [
+            "reversible",
+            "hard_to_reverse",
+            "irreversible"
+          ]
+        },
+        "emotional_weight": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "external_action": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "projection": {
+      "type": "object",
+      "required": [
+        "preferred_pillar",
+        "claim_label",
+        "verification_intensity",
+        "restraint",
+        "truth_state_locked"
+      ],
+      "properties": {
+        "preferred_pillar": {
+          "enum": [
+            "orientation",
+            "mastery",
+            "machine_contract",
+            "mesh"
+          ]
+        },
+        "claim_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_intensity": {
+          "enum": [
+            "standard",
+            "strict"
+          ]
+        },
+        "restraint": {
+          "enum": [
+            "normal",
+            "high"
+          ]
+        },
+        "truth_state_locked": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "action_gate": {
+      "type": "object",
+      "required": [
+        "requires_host_authorization",
+        "representation_can_authorize",
+        "execution_eligible",
+        "rule"
+      ],
+      "properties": {
+        "requires_host_authorization": {
+          "type": "boolean"
+        },
+        "representation_can_authorize": {
+          "const": false
+        },
+        "execution_eligible": {
+          "const": false
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "pillars": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "orientation"
+        },
+        {
+          "const": "mastery"
+        },
+        {
+          "const": "machine_contract"
+        },
+        {
+          "const": "mesh"
+        }
+      ],
+      "items": false
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 7
+    },
+    "integrity": {
+      "type": "object",
+      "required": [
+        "clean",
+        "errors"
+      ],
+      "properties": {
+        "clean": {
+          "type": "boolean"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
