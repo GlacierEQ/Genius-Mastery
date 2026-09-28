@@ -9,6 +9,7 @@
     "objective",
     "model_profile",
     "authority",
+    "representation_policy",
     "context",
     "capabilities",
     "output_contract",
@@ -143,6 +144,36 @@
         "counts",
         "truth_note"
       ]
+    },
+    "representation_policy": {
+      "type": "object",
+      "required": [
+        "invariants",
+        "truth_state_locked",
+        "authorization_source",
+        "rule"
+      ],
+      "properties": {
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 7
+        },
+        "truth_state_locked": {
+          "const": true
+        },
+        "authorization_source": {
+          "const": "trusted-host-only"
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": true
