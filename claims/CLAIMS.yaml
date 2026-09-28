@@ -113,3 +113,14 @@ claims:
       - ev-gha-instruction-engineering-001
     challenge_refs: []
     counterevidence_refs: []
+
+  - id: representation-integrity-001
+    statement: Genius-Mastery compiles truth-locked four-pillar representation contracts that preserve maturity and contradiction state, require source evidence for verified claims and execution receipts for demonstrated claims, adapt verification/restraint to consequence signals, and prevent representation logic from granting consequential execution authority.
+    dimension: mechanisms
+    status: implemented
+    source_refs: []
+    evidence_refs:
+      - ev-gha-representation-kernel-001
+      - ev-codeql-representation-kernel-001
+    challenge_refs: []
+    counterevidence_refs: []

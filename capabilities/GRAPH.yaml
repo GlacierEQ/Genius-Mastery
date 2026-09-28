@@ -367,6 +367,76 @@
       }
     },
     {
+      "id": "family:representation-integrity",
+      "kind": "capability-family",
+      "label": "representation-integrity",
+      "state": "implemented",
+      "mission_impact": 0.8,
+      "metadata": {
+        "layers": []
+      }
+    },
+    {
+      "id": "target:maturity-truth-locking",
+      "kind": "capability-target",
+      "label": "maturity truth locking",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "representation-integrity"
+      }
+    },
+    {
+      "id": "target:evidence-bound-claim-promotion",
+      "kind": "capability-target",
+      "label": "evidence-bound claim promotion",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "representation-integrity"
+      }
+    },
+    {
+      "id": "target:adaptive-pillar-routing",
+      "kind": "capability-target",
+      "label": "adaptive pillar routing",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "representation-integrity"
+      }
+    },
+    {
+      "id": "target:consequence-aware-verification",
+      "kind": "capability-target",
+      "label": "consequence-aware verification",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "representation-integrity"
+      }
+    },
+    {
+      "id": "target:trusted-host-authorization-gating",
+      "kind": "capability-target",
+      "label": "trusted-host authorization gating",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "representation-integrity"
+      }
+    },
+    {
+      "id": "target:contradiction-preservation",
+      "kind": "capability-target",
+      "label": "contradiction preservation",
+      "state": "research-and-verify",
+      "mission_impact": 0.6,
+      "metadata": {
+        "family": "representation-integrity"
+      }
+    },
+    {
       "id": "family:forge-learning",
       "kind": "capability-family",
       "label": "forge-learning",
@@ -662,6 +732,55 @@
     },
     {
       "from": "role:master-teacher-and-genius-entity-forge",
+      "to": "family:representation-integrity",
+      "relation": "requires-capability-family",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:representation-integrity",
+      "to": "target:maturity-truth-locking",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:representation-integrity",
+      "to": "target:evidence-bound-claim-promotion",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:representation-integrity",
+      "to": "target:adaptive-pillar-routing",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:representation-integrity",
+      "to": "target:consequence-aware-verification",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:representation-integrity",
+      "to": "target:trusted-host-authorization-gating",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "family:representation-integrity",
+      "to": "target:contradiction-preservation",
+      "relation": "develops",
+      "required_for_current_mission": true,
+      "evidence_refs": []
+    },
+    {
+      "from": "role:master-teacher-and-genius-entity-forge",
       "to": "family:forge-learning",
       "relation": "requires-capability-family",
       "required_for_current_mission": true,
@@ -690,23 +809,27 @@
     }
   ],
   "analysis": {
-    "node_count": 41,
-    "edge_count": 40,
+    "node_count": 48,
+    "edge_count": 47,
     "engine": "mission-intelligence-v1",
     "mission_roots": [
       "role:master-teacher-and-genius-entity-forge"
     ],
     "candidate_bottlenecks": [
+      "target:adaptive-pillar-routing",
       "target:alternate-route-discovery",
       "target:authority-and-trust-separation",
       "target:blank-state-reconstruction",
       "target:capability-family-inference",
       "target:connector-and-mcp-discovery",
+      "target:consequence-aware-verification",
       "target:context-selection-and-compression",
+      "target:contradiction-preservation",
       "target:demonstration",
       "target:dependency-graph-compilation",
       "target:descendant-outcome-telemetry",
       "target:downstream-leverage",
+      "target:evidence-bound-claim-promotion",
       "target:explanation",
       "target:frontier-generation",
       "target:generator-improvement-from-evidence",
@@ -714,6 +837,7 @@
       "target:instruction-contract-compilation",
       "target:learner-verification",
       "target:mastery-map-generation",
+      "target:maturity-truth-locking",
       "target:mega-skills-ingestion",
       "target:mission-sensitive-importance",
       "target:model-and-tool-discovery",
@@ -727,25 +851,27 @@
       "target:tool-execution-truth-boundaries",
       "target:trajectory-evaluation",
       "target:transfer",
+      "target:trusted-host-authorization-gating",
       "target:vertical-anatomy-instantiation",
       "family:capability-discovery",
       "family:capability-graph",
       "family:forge-learning",
       "family:instruction-engineering",
       "family:entity-synthesis",
+      "family:representation-integrity",
       "family:teaching"
     ],
     "high_leverage_nodes": [
       "role:master-teacher-and-genius-entity-forge",
+      "target:adaptive-pillar-routing",
       "target:alternate-route-discovery",
       "target:authority-and-trust-separation",
       "target:blank-state-reconstruction",
       "target:capability-family-inference",
       "target:connector-and-mcp-discovery",
+      "target:consequence-aware-verification",
       "target:context-selection-and-compression",
-      "target:demonstration",
-      "target:dependency-graph-compilation",
-      "target:descendant-outcome-telemetry"
+      "target:contradiction-preservation"
     ],
     "ranked_priorities": [
       {
@@ -818,6 +944,30 @@
           "high mission impact",
           "supports 1 upstream dependent(s)",
           "low readiness state: desired",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:adaptive-pillar-routing",
+        "kind": "capability-target",
+        "label": "adaptive pillar routing",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
           "weak or absent evidence references",
           "required by current mission path",
           "no recorded substitute"
@@ -944,9 +1094,57 @@
         ]
       },
       {
+        "id": "target:consequence-aware-verification",
+        "kind": "capability-target",
+        "label": "consequence-aware verification",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
         "id": "target:context-selection-and-compression",
         "kind": "capability-target",
         "label": "context selection and compression",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:contradiction-preservation",
+        "kind": "capability-target",
+        "label": "contradiction preservation",
         "state": "research-and-verify",
         "priority": 0.7747,
         "leverage": 0.66,
@@ -1043,6 +1241,30 @@
         "id": "target:downstream-leverage",
         "kind": "capability-target",
         "label": "downstream leverage",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:evidence-bound-claim-promotion",
+        "kind": "capability-target",
+        "label": "evidence-bound claim promotion",
         "state": "research-and-verify",
         "priority": 0.7747,
         "leverage": 0.66,
@@ -1211,6 +1433,30 @@
         "id": "target:mastery-map-generation",
         "kind": "capability-target",
         "label": "mastery-map generation",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "target:maturity-truth-locking",
+        "kind": "capability-target",
+        "label": "maturity truth locking",
         "state": "research-and-verify",
         "priority": 0.7747,
         "leverage": 0.66,
@@ -1544,6 +1790,30 @@
         ]
       },
       {
+        "id": "target:trusted-host-authorization-gating",
+        "kind": "capability-target",
+        "label": "trusted-host authorization gating",
+        "state": "research-and-verify",
+        "priority": 0.7747,
+        "leverage": 0.66,
+        "mission_impact": 0.6,
+        "mission_proximity": 0.3333,
+        "readiness": 0.25,
+        "evidence_strength": 0,
+        "dependent_count": 2,
+        "dependency_count": 0,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
         "id": "target:vertical-anatomy-instantiation",
         "kind": "capability-target",
         "label": "vertical anatomy instantiation",
@@ -1573,7 +1843,7 @@
         "label": "capability-discovery",
         "state": "implemented-local-frontier-remote",
         "priority": 0.739,
-        "leverage": 0.605,
+        "leverage": 0.6013,
         "mission_impact": 0.8,
         "mission_proximity": 0.5,
         "readiness": 0.35,
@@ -1598,7 +1868,7 @@
         "label": "capability-graph",
         "state": "implemented-core-frontier-emergent",
         "priority": 0.739,
-        "leverage": 0.605,
+        "leverage": 0.6013,
         "mission_impact": 0.8,
         "mission_proximity": 0.5,
         "readiness": 0.35,
@@ -1623,7 +1893,7 @@
         "label": "forge-learning",
         "state": "research",
         "priority": 0.739,
-        "leverage": 0.595,
+        "leverage": 0.5928,
         "mission_impact": 0.8,
         "mission_proximity": 0.5,
         "readiness": 0.35,
@@ -1654,7 +1924,7 @@
         "readiness": 0.4,
         "evidence_strength": 0,
         "dependent_count": 0,
-        "dependency_count": 40,
+        "dependency_count": 47,
         "substitute_count": 0,
         "required_for_current_mission": false,
         "candidate_bottleneck": false,
@@ -1671,7 +1941,7 @@
         "label": "instruction-engineering",
         "state": "implemented",
         "priority": 0.665,
-        "leverage": 0.615,
+        "leverage": 0.6098,
         "mission_impact": 0.8,
         "mission_proximity": 0.5,
         "readiness": 0.72,
@@ -1695,7 +1965,31 @@
         "label": "entity-synthesis",
         "state": "implemented",
         "priority": 0.665,
-        "leverage": 0.61,
+        "leverage": 0.6055,
+        "mission_impact": 0.8,
+        "mission_proximity": 0.5,
+        "readiness": 0.72,
+        "evidence_strength": 0,
+        "dependent_count": 1,
+        "dependency_count": 6,
+        "substitute_count": 0,
+        "required_for_current_mission": true,
+        "candidate_bottleneck": true,
+        "reasons": [
+          "high mission impact",
+          "supports 1 upstream dependent(s)",
+          "weak or absent evidence references",
+          "required by current mission path",
+          "no recorded substitute"
+        ]
+      },
+      {
+        "id": "family:representation-integrity",
+        "kind": "capability-family",
+        "label": "representation-integrity",
+        "state": "implemented",
+        "priority": 0.665,
+        "leverage": 0.6055,
         "mission_impact": 0.8,
         "mission_proximity": 0.5,
         "readiness": 0.72,
@@ -1719,7 +2013,7 @@
         "label": "teaching",
         "state": "implemented",
         "priority": 0.665,
-        "leverage": 0.605,
+        "leverage": 0.6013,
         "mission_impact": 0.8,
         "mission_proximity": 0.5,
         "readiness": 0.72,
@@ -1739,6 +2033,16 @@
       }
     ],
     "top_next_actions": [
+      {
+        "id": "target:adaptive-pillar-routing",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
       {
         "id": "target:alternate-route-discovery",
         "priority": 0.7747,
@@ -1790,6 +2094,16 @@
         ]
       },
       {
+        "id": "target:consequence-aware-verification",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
         "id": "target:context-selection-and-compression",
         "priority": 0.7747,
         "reasons": [
@@ -1800,37 +2114,17 @@
         ]
       },
       {
+        "id": "target:contradiction-preservation",
+        "priority": 0.7747,
+        "reasons": [
+          "supports 2 upstream dependent(s)",
+          "low readiness state: research-and-verify",
+          "weak or absent evidence references",
+          "required by current mission path"
+        ]
+      },
+      {
         "id": "target:demonstration",
-        "priority": 0.7747,
-        "reasons": [
-          "supports 2 upstream dependent(s)",
-          "low readiness state: research-and-verify",
-          "weak or absent evidence references",
-          "required by current mission path"
-        ]
-      },
-      {
-        "id": "target:dependency-graph-compilation",
-        "priority": 0.7747,
-        "reasons": [
-          "supports 2 upstream dependent(s)",
-          "low readiness state: research-and-verify",
-          "weak or absent evidence references",
-          "required by current mission path"
-        ]
-      },
-      {
-        "id": "target:descendant-outcome-telemetry",
-        "priority": 0.7747,
-        "reasons": [
-          "supports 2 upstream dependent(s)",
-          "low readiness state: research-and-verify",
-          "weak or absent evidence references",
-          "required by current mission path"
-        ]
-      },
-      {
-        "id": "target:downstream-leverage",
         "priority": 0.7747,
         "reasons": [
           "supports 2 upstream dependent(s)",

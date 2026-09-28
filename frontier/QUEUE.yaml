@@ -88,3 +88,17 @@ items:
     release_blocker: false
     core_resolution: Typed contract compilation, trust boundaries, structural diagnostics, and model-family labeling are implemented and regression-tested.
 
+
+  - id: frontier-representation-host-001
+    question: How should truth-locked representation contracts bind to authenticated human or policy authorization and provider-native execution receipts without allowing a model, prompt, or CLI flag to self-attest approval?
+    why_it_matters: The representation kernel deliberately classifies authorization requirements but cannot mint authority; the trusted host must prove approval and bind it to the exact action and provider readback.
+    related_claims: [representation-integrity-001]
+    dependencies: [src/genius/representation.py, trusted host runtime, provider adapters]
+    evidence_to_resolve:
+      - authenticated authorization event bound to exact action identity
+      - provider mutation receipt and independent readback bound to the same action
+      - negative tests proving model- or content-supplied approval cannot satisfy the gate
+      - replay/idempotency tests for consequential side effects
+    status: research
+    release_blocker: false
+    core_resolution: Truth locking, consequence classification, evidence requirements, and the non-authorizing representation boundary are implemented and exact-main regression-tested.
