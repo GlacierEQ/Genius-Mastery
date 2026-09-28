@@ -26,6 +26,17 @@ from genius.vector import compute_vector, vector_report, write_vector
 from genius.progress import build_progress_contract, progress_report, validate_progress_contract
 from genius.prompt_codes import code_catalog_report
 from genius.instruction_engineering import compile_instruction_contract, instruction_report
+from genius.representation import (
+    EVIDENCE_QUALITY,
+    EMOTIONAL_WEIGHT,
+    IMPACT_LEVELS,
+    MATURITY_STATES,
+    NEXT_ACTORS,
+    REVERSIBILITY,
+    SYSTEM_STATES,
+    compile_representation_contract,
+    representation_report,
+)
 from genius.calibration import calibrate_graph, calibration_report
 from genius.composition import execute_family_composition, composition_report, write_composition_receipt
 from genius.closure import closure_status, closure_report
@@ -171,6 +182,33 @@ def cmd_instruct(args: argparse.Namespace) -> int:
     else:
         print(instruction_report(contract))
     return 0 if (contract.get("audit") or {}).get("clean") else 2
+
+
+def cmd_represent(args: argparse.Namespace) -> int:
+    try:
+        contract = compile_representation_contract(
+            args.statement,
+            maturity=args.maturity,
+            next_actor=args.next_actor,
+            purpose=args.purpose,
+            evidence_refs=args.evidence_ref,
+            execution_refs=args.execution_ref,
+            counterevidence_refs=args.counterevidence_ref,
+            impact=args.impact,
+            evidence_quality=args.evidence_quality,
+            reversibility=args.reversibility,
+            emotional_weight=args.emotional_weight,
+            system_state=args.system_state,
+            external_action=args.external_action,
+        )
+    except ValueError as exc:
+        print(f"ERROR: cannot compile representation contract: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(contract, indent=2, ensure_ascii=False))
+    else:
+        print(representation_report(contract))
+    return 0 if (contract.get("integrity") or {}).get("clean") else 2
 
 
 def cmd_progress(args: argparse.Namespace) -> int:
@@ -454,6 +492,26 @@ def main(argv: list[str] | None = None) -> int:
     p_instruct.add_argument("--model-family", default="generic", help="Target model/runtime family")
     p_instruct.add_argument("--json", action="store_true", help="Emit the full machine-readable contract")
     p_instruct.set_defaults(func=cmd_instruct)
+
+    p_represent = sub.add_parser(
+        "represent",
+        help="Compile a truth-locked dynamic-adjustment/four-pillar representation contract",
+    )
+    p_represent.add_argument("--statement", required=True, help="Capability statement to represent without changing its truth state")
+    p_represent.add_argument("--maturity", required=True, choices=MATURITY_STATES)
+    p_represent.add_argument("--next-actor", required=True, choices=NEXT_ACTORS)
+    p_represent.add_argument("--purpose", required=True, help="Orientation, evaluation, integration, operation, composition, or another concrete purpose")
+    p_represent.add_argument("--evidence-ref", action="append", default=[], help="Source-bearing evidence reference; repeat as needed")
+    p_represent.add_argument("--execution-ref", action="append", default=[], help="Execution/observation receipt; repeat as needed")
+    p_represent.add_argument("--counterevidence-ref", action="append", default=[], help="Contradictory evidence reference; repeat as needed")
+    p_represent.add_argument("--impact", choices=IMPACT_LEVELS, default="medium")
+    p_represent.add_argument("--evidence-quality", choices=EVIDENCE_QUALITY, default="mixed")
+    p_represent.add_argument("--reversibility", choices=REVERSIBILITY, default="reversible")
+    p_represent.add_argument("--emotional-weight", choices=EMOTIONAL_WEIGHT, default="medium")
+    p_represent.add_argument("--system-state", choices=SYSTEM_STATES, default="unknown")
+    p_represent.add_argument("--external-action", action="store_true", help="Classify this representation as preceding an external action; does not grant authorization")
+    p_represent.add_argument("--json", action="store_true", help="Emit the machine-readable contract")
+    p_represent.set_defaults(func=cmd_represent)
 
     p_progress = sub.add_parser(
         "progress",

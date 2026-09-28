@@ -89,6 +89,7 @@ See:
 - `docs/GENIUS_ENTITY_ANATOMY.md`
 - `docs/MASTER_TEACHER_FORGE.md`
 - `docs/DYNAMIC_ADJUSTMENT_AND_FOUR_PILLARS.md`
+- `schemas/representation-contract.schema.json`
 - `docs/CASE_POSITION_MASTERY.md`
 - `schemas/capability.schema.json`
 - `schemas/role-brief.schema.json`
@@ -97,6 +98,24 @@ See:
 - `templates/CASE_POSITION_CAMPAIGN.yaml`
 - `sources/CAPABILITY_SOURCES.yaml`
 - `sources/EPISTEMIC_SOURCES.yaml`
+
+## Executable dynamic adjustment
+
+The four-pillar doctrine is enforced by `src/genius/representation.py` and exposed through `genius represent`.
+
+It keeps one capability truth state across orientation, mastery, machine-contract, and mesh projections. Rendering may adapt depth, routing, verification intensity, and restraint; it may not promote aspiration, discard contradiction, or mint execution authority.
+
+```bash
+genius represent \
+  --statement "Connector supports structured invocation." \
+  --maturity designed_for \
+  --next-actor machine \
+  --purpose integration \
+  --system-state planned \
+  --json
+```
+
+`verified` requires source-bearing evidence, `demonstrated` requires an execution receipt, and consequential external actions are classified as requiring trusted-host authorization. The representation layer deliberately has no flag that can self-assert human approval.
 
 ## Case Position Mastery
 
@@ -164,6 +183,7 @@ genius vector .
 genius vector . --write
 genius discover . --write
 genius calibrate .
+genius represent --statement "Capability statement" --maturity aspirational --next-actor person --purpose orientation --json
 genius compose /path/to/genius-estate --output /tmp/composition-receipt.json
 genius rebuild-graph .
 genius closure .
