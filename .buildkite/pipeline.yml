@@ -50,6 +50,26 @@ steps:
       mkdir -p .verification-artifacts
       pytest -q --junitxml=.verification-artifacts/junit.xml
 
+      genius represent \
+        --statement "Autonomous legal-case closure is a future capability." \
+        --maturity aspirational \
+        --next-actor person \
+        --purpose orientation \
+        --json > .verification-artifacts/representation-contract.json
+
+      if genius represent \
+        --statement "Provider write succeeded." \
+        --maturity verified \
+        --next-actor expert \
+        --purpose evaluation \
+        --json > /tmp/invalid-representation.json; then
+        echo "ERROR: unsupported verified claim was accepted"
+        exit 1
+      else
+        status=$?
+        test "$status" -eq 2
+      fi
+
       genius name "Distributed Systems" | grep -q '^Genius-Distributed-Systems$'
       genius new SmokeTest --dest /tmp
       genius validate /tmp/Genius-SmokeTest
@@ -103,5 +123,6 @@ steps:
     artifact_paths:
       - ".verification-artifacts/junit.xml"
       - ".verification-artifacts/mastery-vector.yaml"
+      - ".verification-artifacts/representation-contract.json"
       - ".verification-artifacts/buildkite-verified-receipt.json"
       - ".verification-artifacts/buildkite-verified-receipt.json.sha256"
