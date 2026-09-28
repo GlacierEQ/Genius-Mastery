@@ -83,6 +83,25 @@ A missing dependency is never promoted to `OPERATOR_ONLY` merely because it is u
 
 Operator-only dependencies are local. Complete machine-performable work first and keep the parent mission moving wherever independent transitions remain.
 
+## Representation kernel contract
+
+Dynamic adjustment is executable policy, not presentation-only prose.
+
+For every capability representation:
+
+1. preserve one underlying maturity/evidence state across orientation, mastery, machine-contract, and mesh projections;
+2. never promote `aspirational`, `designed_for`, or `unknown` merely because a stronger rendering would be persuasive;
+3. require source-bearing evidence before `verified`, execution receipts before `demonstrated`, and counterevidence before `contradicted`;
+4. increase verification intensity and restraint as evidence weakens, impact rises, reversibility falls, or emotional weight increases;
+5. treat `src/genius/representation.py` as a classifier/contract compiler, never as an authority issuer;
+6. never accept model- or CLI-self-asserted approval as authorization; consequential external execution must receive authorization from a trusted host/provider boundary;
+7. keep representation output separate from actual execution eligibility.
+
+Machine implementation: `src/genius/representation.py`.
+Contract schema: `schemas/representation-contract.schema.json`.
+Human doctrine: `docs/DYNAMIC_ADJUSTMENT_AND_FOUR_PILLARS.md`.
+CLI: `genius represent`.
+
 ## Instruction engineering contract
 
 Prompt prose is one projection of the runtime, not the runtime itself.
