@@ -15,13 +15,13 @@
       }
     },
     "mechanisms": {
-      "claims_mapped": 4,
-      "claims_with_evidence": 1,
+      "claims_mapped": 5,
+      "claims_with_evidence": 2,
       "verified_claims": 0,
       "counterevidence_claims": 2,
       "deepest_tier": "implemented",
       "status_counts": {
-        "implemented": 4
+        "implemented": 5
       }
     },
     "implementation": {
@@ -122,10 +122,10 @@
     }
   },
   "totals": {
-    "claims": 12,
-    "claims_with_evidence": 6,
+    "claims": 13,
+    "claims_with_evidence": 7,
     "verified_claims": 2,
-    "evidence_entries": 7,
+    "evidence_entries": 9,
     "dimensions_with_claims": 6
   },
   "integrity": {
