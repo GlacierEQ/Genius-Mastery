@@ -1,5 +1,13 @@
 # Changelog
 
+### Executable Dynamic Adjustment & Four-Pillar Integrity
+- Promoted the dynamic-adjustment doctrine from documentation into `src/genius/representation.py` with a machine-readable representation contract.
+- Locked maturity state across orientation, mastery, machine-contract, and mesh projections so rendering cannot silently promote aspiration or suppress contradiction.
+- Required source-bearing evidence for `verified`, execution receipts for `demonstrated`, and counterevidence for `contradicted`.
+- Added impact/evidence/reversibility/emotional-weight signals that increase verification intensity and restraint without changing truth state.
+- Added a trusted-host authorization boundary: representation logic classifies consequential external action but cannot grant execution eligibility.
+- Added `genius represent`, JSON Schema coverage, instruction-compiler inheritance, focused regression tests, and Buildkite smoke enforcement.
+
 ### Genius Lineage Archetypes & Universal Pillar Invariant
 - Implemented the 26 canonical Genius Lineage Archetypes across Frontier Science, Systems Platforms, Legal Enterprise, Physical Systems, and Telos/Craftsmanship.
 - Enforced the Universal Pillar Invariant: each archetype is strictly decoupled and universal, functioning independently without monolithic entanglement.
