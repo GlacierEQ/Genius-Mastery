@@ -1,5 +1,6 @@
 """Scale FDE reusable-capability compounding tests."""
 import json
+from pathlib import Path
 
 import pytest
 
