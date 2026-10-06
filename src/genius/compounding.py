@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -165,6 +167,38 @@ def select_reusable_capability(
     }
 
 
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Durably replace a UTF-8 text file without exposing a partial registry."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temp_path = Path(handle.name)
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_path, path)
+        temp_path = None
+
+        # Persist the directory entry where the platform exposes directory fsync.
+        if hasattr(os, "O_DIRECTORY"):
+            directory_fd = os.open(path.parent, os.O_RDONLY | os.O_DIRECTORY)
+            try:
+                os.fsync(directory_fd)
+            finally:
+                os.close(directory_fd)
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
+
+
 def register_capability(path: Path, capability: dict[str, Any]) -> dict[str, Any]:
     """Idempotently persist a learned capability in a deterministic JSON registry."""
     path = Path(path)
@@ -191,8 +225,7 @@ def register_capability(path: Path, capability: dict[str, Any]) -> dict[str, Any
     }
     rendered = json.dumps(rendered_obj, indent=2, sort_keys=True) + "\n"
     digest = hashlib.sha256(rendered.encode("utf-8")).hexdigest()
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(rendered, encoding="utf-8")
+    _atomic_write_text(path, rendered)
     return {
         "path": str(path),
         "capability_id": capability_id,
