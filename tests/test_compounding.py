@@ -1,6 +1,5 @@
 """Scale FDE reusable-capability compounding tests."""
 import json
-from pathlib import Path
 
 import pytest
 
@@ -83,3 +82,18 @@ def test_register_capability_preserves_previous_registry_on_interrupted_write(tm
         register_capability(path, capability)
 
     assert path.read_bytes() == previous
+
+
+def test_extract_reusable_capability_rejects_non_object_contract():
+    receipt = _verified_receipt()
+    receipt["reusable_capability"] = "not-an-object"
+    with pytest.raises(TypeError, match="reusable_capability"):
+        extract_reusable_capability(receipt)
+
+
+def test_register_capability_rejects_invalid_registry_shape(tmp_path):
+    path = tmp_path / "capability-registry.json"
+    path.write_text('{"schema_version": 1, "capabilities": {}}', encoding="utf-8")
+    capability = extract_reusable_capability(_verified_receipt())
+    with pytest.raises(TypeError, match="capability registry"):
+        register_capability(path, capability)
