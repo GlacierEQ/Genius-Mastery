@@ -66,3 +66,27 @@ def test_mission2_automatically_selects_mission1_capability():
     assert selection["selected"]["capability"]["id"] == capability["id"]
     assert selection["selected"]["score"] >= 0.35
     assert {"provider", "readback"} & set(selection["selected"]["matched_terms"])
+
+
+def test_register_capability_preserves_previous_registry_on_interrupted_write(tmp_path, monkeypatch):
+    path = tmp_path / "capability-registry.json"
+    capability = extract_reusable_capability(_verified_receipt())
+    register_capability(path, capability)
+    previous = path.read_bytes()
+
+    original_write_text = Path.write_text
+
+    def interrupted_write(self, data, *args, **kwargs):
+        if self == path:
+            self.write_text = original_write_text
+            with self.open("w", encoding="utf-8") as handle:
+                handle.write("{")
+                handle.flush()
+            raise OSError("simulated process interruption during registry replacement")
+        return original_write_text(self, data, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", interrupted_write)
+    with pytest.raises(OSError, match="simulated process interruption"):
+        register_capability(path, capability)
+
+    assert path.read_bytes() == previous
