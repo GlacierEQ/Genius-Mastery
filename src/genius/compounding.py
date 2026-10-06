@@ -11,8 +11,9 @@ import hashlib
 import json
 import os
 import tempfile
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from genius.family import _tokens
 
@@ -68,7 +69,7 @@ def extract_reusable_capability(mission_receipt: dict[str, Any]) -> dict[str, An
 
     candidate = mission_receipt.get("reusable_capability")
     if not isinstance(candidate, dict):
-        raise ValueError("verified mission receipt must include reusable_capability")
+        raise TypeError("verified mission receipt must include reusable_capability")
 
     capability_id = str(candidate.get("id") or "").strip()
     description = str(candidate.get("description") or "").strip()
@@ -207,7 +208,7 @@ def register_capability(path: Path, capability: dict[str, Any]) -> dict[str, Any
     else:
         data = {"schema_version": 1, "capabilities": []}
     if not isinstance(data, dict) or not isinstance(data.get("capabilities"), list):
-        raise ValueError("capability registry must be an object with capabilities[]")
+        raise TypeError("capability registry must be an object with capabilities[]")
 
     by_id = {
         str(item.get("id")): dict(item)
