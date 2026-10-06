@@ -2,7 +2,6 @@
 import json
 
 import pytest
-
 from genius.compounding import (
     extract_reusable_capability,
     register_capability,
