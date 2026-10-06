@@ -75,17 +75,10 @@ def test_register_capability_preserves_previous_registry_on_interrupted_write(tm
     register_capability(path, capability)
     previous = path.read_bytes()
 
-    original_write_text = Path.write_text
+    def interrupted_replace(_source, _destination):
+        raise OSError("simulated process interruption before atomic replacement")
 
-    def interrupted_write(self, data, *args, **kwargs):
-        if self == path:
-            with self.open("w", encoding="utf-8") as handle:
-                handle.write("{")
-                handle.flush()
-            raise OSError("simulated process interruption during registry replacement")
-        return original_write_text(self, data, *args, **kwargs)
-
-    monkeypatch.setattr(Path, "write_text", interrupted_write)
+    monkeypatch.setattr("genius.compounding.os.replace", interrupted_replace)
     with pytest.raises(OSError, match="simulated process interruption"):
         register_capability(path, capability)
 
