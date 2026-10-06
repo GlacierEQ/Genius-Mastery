@@ -78,7 +78,6 @@ def test_register_capability_preserves_previous_registry_on_interrupted_write(tm
 
     def interrupted_write(self, data, *args, **kwargs):
         if self == path:
-            self.write_text = original_write_text
             with self.open("w", encoding="utf-8") as handle:
                 handle.write("{")
                 handle.flush()
