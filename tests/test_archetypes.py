@@ -45,11 +45,12 @@ EXPECTED_ARCHETYPE_IDS = [
     "spiritual-awareness",
     "scifi",
     "nerd-geek",
+    "engineering",
 ]
 
 
-def test_all_26_canonical_archetypes_registered():
-    assert len(ARCHETYPES) == 26
+def test_all_27_canonical_archetypes_registered():
+    assert len(ARCHETYPES) == 27
     for aid in EXPECTED_ARCHETYPE_IDS:
         assert aid in ARCHETYPES, f"Missing archetype: {aid}"
         arch = ARCHETYPES[aid]
@@ -57,7 +58,7 @@ def test_all_26_canonical_archetypes_registered():
         assert arch.id == aid
         assert arch.name.startswith("Genius-")
         assert arch.lineage == "Genius Lineage"
-        assert arch.domain in {"frontier_science", "systems_platforms", "legal_enterprise", "physical_systems", "sovereign_infrastructure", "telos_culture"}
+        assert arch.domain in {"frontier_science", "systems_platforms", "legal_enterprise", "physical_systems", "sovereign_infrastructure", "telos_culture", "engineering"}
         assert len(arch.description) > 20
         assert len(arch.keywords) >= 3
         assert len(arch.layers) >= 4
@@ -93,7 +94,7 @@ def test_get_archetype_resolution_and_aliases():
 
 def test_list_archetypes_and_domains():
     all_archs = list_archetypes()
-    assert len(all_archs) == 26
+    assert len(all_archs) == 27
 
     frontier = list_archetypes("frontier_science")
     assert any(a.id == "aerospace" for a in frontier)
@@ -269,7 +270,7 @@ def test_synthesize_role_with_nerd_geek_archetype(tmp_path):
 def test_archetype_reports_and_catalog():
     catalog = archetype_catalog_report()
     assert "# Genius Lineage Archetype Catalog" in catalog
-    assert "Total Registered Archetypes: **26**" in catalog
+    assert "Total Registered Archetypes: **27**" in catalog
     assert "Genius-Aerospace" in catalog
     assert "Genius-iOS" in catalog
     assert "Genius-Microcode" in catalog
@@ -280,3 +281,41 @@ def test_archetype_reports_and_catalog():
     assert "First-Principles Invariants" in report
     assert "Pipeline hazard prevention" in report
     assert "eBPF bytecode verification" in report
+
+
+def test_engineering_archetype_is_production_delivery_native():
+    arch = get_archetype("engineering")
+    assert arch is not None
+    assert arch.name == "Genius-Engineering"
+    assert "engineering" in arch.keywords
+    assert "deployment" in arch.keywords
+    assert "code" in arch.layers
+    assert "verification" in arch.layers
+    assert "reliability_recovery" in arch.layers
+    assert "architecture and interface design" in arch.targets
+    assert "test-driven implementation and regression prevention" in arch.targets
+    assert "exact-revision deployment and provider readback" in arch.targets
+    assert any("terminal outcome" in inv.casefold() for inv in arch.invariants)
+    assert any("readback" in gate.casefold() for gate in arch.verification_gates)
+
+
+def test_engineering_role_auto_matches_engineering_archetype():
+    matched = match_archetypes(
+        "Engineering",
+        ["End-to-end production deployment and operations"],
+    )
+    assert any(a.id == "engineering" for a in matched)
+
+
+def test_synthesize_engineering_inherits_domain_contract(tmp_path):
+    root = synthesize_role(
+        role="Engineering",
+        outcomes=["Ship production systems end-to-end with verification"],
+        dest_parent=tmp_path,
+    )
+    role_data = yaml.safe_load((root / "ROLE.yaml").read_text(encoding="utf-8"))
+    assert "engineering" in role_data["archetypes"]
+    assert any("terminal outcome" in inv.casefold() for inv in role_data["domain_invariants"])
+    assert "test_runner" in role_data["required_tools"]
+    assert any("readback" in gate.casefold() for gate in role_data["verification_gates"])
+    assert validate_repo(root) == []

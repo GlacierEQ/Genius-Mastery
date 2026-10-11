@@ -46,7 +46,7 @@ class ArchetypeDefinition:
         }
 
 
-# The 26 Canonical Genius Lineage Archetypes
+# The 27 Canonical Genius Lineage Archetypes
 _RAW_ARCHETYPES: list[ArchetypeDefinition] = [
     # 1. Aerospace
     ArchetypeDefinition(
@@ -856,6 +856,60 @@ _RAW_ARCHETYPES: list[ArchetypeDefinition] = [
             "RFC citations verify author, date, and exact section paragraph",
         ),
         teaching_transfer="Implement a cycle-accurate MOS 6502 microprocessor emulator in pure Python that passes the complete Klaus Dormann 6502 functional test suite.",
+    ),
+
+    # 27. Engineering
+    ArchetypeDefinition(
+        id="engineering",
+        name="Genius-Engineering",
+        lineage="Genius Lineage",
+        domain="engineering",
+        description="Production software, systems, AI, reliability, and delivery engineering from diagnosis through exact-revision deployment, provider readback, operations, recovery, and transfer.",
+        keywords=(
+            "engineering", "engineer", "software-engineering", "production-engineering",
+            "sdlc", "devops", "sre", "deployment", "production",
+        ),
+        layers=(
+            "compute", "runtime", "code", "planning", "reasoning", "tools",
+            "apis", "connectors_mcp", "verification", "observability",
+            "reliability_recovery", "security_integrity", "orchestration",
+            "capability_composition", "teaching",
+        ),
+        targets=(
+            "architecture and interface design",
+            "test-driven implementation and regression prevention",
+            "root-cause debugging and failure reproduction",
+            "contract integration and compatibility verification",
+            "distributed-system correctness and idempotent recovery",
+            "security threat modeling and least-privilege enforcement",
+            "observability, SLOs, and incident learning",
+            "exact-revision deployment and provider readback",
+            "repository-scale recovery, deduplication, and mainline convergence",
+            "AI model, tool, retrieval, memory, and agent-runtime integration",
+            "engineering method reconstruction and transfer",
+        ),
+        invariants=(
+            "Terminal outcome preservation: prioritization may change order but may not redefine the requested mission to a smaller target.",
+            "Evidence boundary: code existence, local test success, deployment attempt, provider effect, and independent readback are distinct states.",
+            "Regression law: preserve stronger verified existing behavior unless the mission explicitly authorizes replacement.",
+            "Change-impact law: every consequential change must satisfy verification gates appropriate to the surfaces it can affect.",
+            "Deployment identity: production proof binds the deployed artifact to the exact tested source revision.",
+            "Counterevidence retention: contradictory evidence is preserved and reconciled rather than deleted to improve apparent confidence.",
+        ),
+        tools=(
+            "version_control", "test_runner", "static_analyzer", "type_checker",
+            "ci_cd_runner", "dependency_scanner", "security_scanner",
+            "deployment_provider", "logs_metrics_traces", "load_tester",
+        ),
+        verification_gates=(
+            "Dependency graph is complete, acyclic, and exposes every unblocked required work item.",
+            "Impact-selected unit, contract, integration, security, concurrency, migration, performance, and regression gates pass as applicable.",
+            "Exact tested revision is the revision deployed to the intended environment.",
+            "Provider-native deployment receipt exists and independent readback confirms the intended effect.",
+            "Rollback or recovery route is verified for consequential production changes.",
+            "No required terminal outcome or unresolved counterevidence is hidden by a local success signal.",
+        ),
+        teaching_transfer="Starting from an unfamiliar repository and failing production behavior, recover context, map dependencies, reproduce the defect, implement and regression-test the root fix, deploy the exact tested revision, independently read back production state, preserve receipts, and teach the method to another engineer without copying the solution.",
     ),
 ]
 
