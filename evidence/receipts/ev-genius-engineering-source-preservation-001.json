@@ -1,0 +1,30 @@
+{
+  "artifact": "evidence/artifacts/Genius-Engineering-fe43e040b873c9b0ff6b605cd8277321be83d22d.bundle",
+  "artifact_bytes": 57195,
+  "artifact_sha256": "bb1f50982099a3d35de7baabd044f1d3fc0f928efe32c96319b0ca1de40e2cf1",
+  "artifact_type": "git-bundle-complete-history",
+  "bundle_history_complete": true,
+  "bundle_refs": {
+    "HEAD": "fe43e040b873c9b0ff6b605cd8277321be83d22d",
+    "refs/heads/main": "fe43e040b873c9b0ff6b605cd8277321be83d22d"
+  },
+  "id": "ev-genius-engineering-source-preservation-001",
+  "preserved_head": "fe43e040b873c9b0ff6b605cd8277321be83d22d",
+  "publication_state": {
+    "github_repository": "GlacierEQ/Genius-Engineering",
+    "ready_frontier": "create_private_repository",
+    "state": "not_created"
+  },
+  "recovery_verification": {
+    "compile": "pass",
+    "fresh_clone_head": "fe43e040b873c9b0ff6b605cd8277321be83d22d",
+    "genius_doctor": "pass",
+    "genius_validate": "pass",
+    "tests": "28 passed in 0.27s"
+  },
+  "schema_version": 1,
+  "source_execution_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+  "source_repository": "Genius-Engineering",
+  "timestamp": "2026-10-11T06:43:50.910512Z",
+  "truth_boundary": "This receipt verifies durable, complete-history source recovery from the bundle. It does not claim that GlacierEQ/Genius-Engineering exists on GitHub or that provider publication/readback has occurred."
+}

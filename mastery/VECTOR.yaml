@@ -105,7 +105,7 @@ totals:
   claims: 14
   claims_with_evidence: 8
   verified_claims: 3
-  evidence_entries: 10
+  evidence_entries: 11
   dimensions_with_claims: 6
 integrity:
   unresolved_evidence_refs: []

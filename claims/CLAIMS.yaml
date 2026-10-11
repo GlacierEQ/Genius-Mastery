@@ -131,5 +131,6 @@ claims:
     source_refs: []
     evidence_refs:
       - ev-genius-engineering-chain-a-promotion-001
+      - ev-genius-engineering-source-preservation-001
     challenge_refs: []
     counterevidence_refs: []
