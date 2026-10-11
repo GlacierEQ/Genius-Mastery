@@ -27,7 +27,7 @@ layers:
     missing: [trajectory-backed automatic prompt optimization, authenticated host-to-execution authorization adapter]
     alternate_routes: [manual model-specific prompt tuning with representative evals, provider-native authorization/readback outside representation layer]
     failure_modes: [ornamental prompt inflation, duplicate instructions, context bloat, retrieved data treated as authority, tool availability treated as execution, model-agnostic prompt carryover, adaptive rendering promoting maturity, representation logic self-authorizing consequential action]
-    improvement_targets: [eval adapters, trajectory failure clustering, model-specific projection profiles, automatic smallest-layer repair, authenticated host authorization binding]
+    improvement_targets: [eval adapters, trajectory failure clustering, model-specific projection profiles, automatic owning-layer mission-preserving repair, authenticated host authorization binding]
   capability_composition:
     required: [atomic capabilities, dependency edges, emergent higher-order capabilities]
     available: [interfaces/COMPOSITION.yaml, schemas/composition.schema.json, schemas/capability.schema.json]

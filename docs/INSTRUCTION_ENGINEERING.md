@@ -22,8 +22,8 @@ MODEL
 → LEARNING
 ```
 
-The optimization target is not the longest or most dramatic prompt. It is the smallest
-high-signal instruction/context configuration that preserves the product contract and
+The optimization target is not the longest or most dramatic prompt. It is the highest-signal
+instruction/context configuration that preserves the product contract and
 passes representative evaluations.
 
 ## Prime laws
@@ -36,7 +36,7 @@ passes representative evaluations.
 6. **Do not request private reasoning traces.** Ask for observable assumptions, evidence, checks, decision points, and conclusions when an audit trail is useful.
 7. **Compile per model/runtime.** Preserve a portable semantic contract, but tune prompt projection, tools, structured outputs, reasoning settings, and caching for the target model.
 8. **Evals decide.** A prompt that reads well is still a hypothesis until representative trajectories establish performance.
-9. **Optimize the smallest owning layer.** If the defect is retrieval, tool metadata, state handling, or output validation, do not keep adding prose to the system prompt.
+9. **Repair the owning layer without narrowing the mission.** If the defect is retrieval, tool metadata, state handling, or output validation, do not keep adding prose to the system prompt.
 10. **Preserve receipts and counterevidence.** Prompt optimization must obey the same truth-state contract as the rest of Genius.
 
 ## Instruction contract
@@ -82,7 +82,7 @@ SEMANTIC CONTRACT
 → REPRESENTATIVE TASK SET
 → EXECUTION TRAJECTORIES
 → FAILURE CLUSTERING
-→ SMALLEST-LAYER REPAIR
+→ OWNING-LAYER REPAIR
 → REGRESSION EVAL
 → VERSIONED WINNER
 ↺
@@ -98,7 +98,7 @@ preserved.
 These sources are tracked in `sources/REGISTRY.yaml`:
 
 - OpenAI model guidance: leaner prompts, outcome-first prompting, relevant tool exposure, model-specific evaluation.
-- Anthropic context engineering: curate the smallest high-signal token set across instructions, tools, history, and retrieved state.
+- Anthropic context engineering: curate high-signal context across instructions, tools, history, and retrieved state while preserving task-critical state.
 - Google Gemini prompt design: precise/direct instructions, consistent delimiters, decomposed tasks, model-specific prompt structure.
 - DSPy: programmatic, metric-driven optimization of LM behavior rather than hand-editing prompt prose as the only control surface.
 - GEPA: trajectory reflection and prompt evolution using observed failures and candidate updates.

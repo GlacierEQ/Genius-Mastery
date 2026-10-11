@@ -22,7 +22,7 @@ capability_families:
     targets: [dependency graph compilation, alternate-route discovery, mission-sensitive importance, downstream leverage, higher-order capability promotion]
   - id: instruction-engineering
     status: implemented
-    targets: [instruction contract compilation, authority and trust separation, context selection and compression, tool execution truth boundaries, model-specific projection, trajectory evaluation, smallest-layer repair]
+    targets: [instruction contract compilation, authority and trust separation, context selection and compression, tool execution truth boundaries, model-specific projection, trajectory evaluation, owning-layer mission-preserving repair]
   - id: representation-integrity
     status: implemented
     targets: [maturity truth locking, evidence-bound claim promotion, adaptive pillar routing, consequence-aware verification, trusted-host authorization gating, contradiction preservation]

@@ -56,7 +56,7 @@ _CODES = (
     PromptCode("TEST", "execution", "Validate behavior at the appropriate layer with meaningful tests."),
     PromptCode("SHIP", "execution", "Complete implementation, verification, and deployable delivery."),
     PromptCode("PRIORITIZE", "strategy", "Rank options by leverage, impact, urgency, dependencies, risk, and cost."),
-    PromptCode("80/20", "strategy", "Identify the smallest set of actions producing most of the desired result."),
+    PromptCode("80/20", "strategy", "Identify the highest-leverage actions producing most of the desired result without redefining the mission to a smaller target."),
     PromptCode("LEVERAGE", "strategy", "Find actions that unlock disproportionate downstream capability."),
     PromptCode("BOTTLENECK", "strategy", "Find the constraint currently limiting the system."),
     PromptCode("NEXT BEST ACTION", "strategy", "Select the highest-value executable action from current state."),

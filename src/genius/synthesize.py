@@ -338,7 +338,7 @@ def synthesize_role(
         "3. Rebuild the outcome from a blank state.",
         "4. Introduce adversarial and degraded conditions.",
         "5. Measure what fails and why.",
-        "6. Repair the smallest high-leverage dependency.",
+        "6. Repair the highest-leverage blocking dependency and all coupled failures required for mission completion.",
         "7. Reverify and preserve the gain.",
         "8. Transfer the method to a novel case.",
         "9. Teach the method to another agent or human.",

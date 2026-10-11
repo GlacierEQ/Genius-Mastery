@@ -8,7 +8,7 @@ def base(**overrides):
         context=["A baseline exists"],
         options=["Change", "Do not change"],
         impact=["Capability may improve", "Regression is possible"],
-        action="Make the smallest meaningful change",
+        action="Make the highest-leverage coherent change",
     )
     values.update(overrides)
     return build_loop(**values)

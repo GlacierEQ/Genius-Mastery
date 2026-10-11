@@ -191,7 +191,7 @@ def compile_instruction_contract(
         "context": {
             "trusted_reference": normalized["context"],
             "untrusted_external": normalized["untrusted_sources"],
-            "selection_rule": "Prefer the smallest high-signal context set that preserves task-critical facts, constraints, provenance, and state.",
+            "selection_rule": "Prefer the highest-signal context set that fully preserves task-critical facts, constraints, provenance, dependencies, unresolved state, and continuation state.",
         },
         "capabilities": {
             "tools": normalized["tools"],
