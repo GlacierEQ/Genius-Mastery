@@ -1,0 +1,164 @@
+{
+  "capabilities": [
+    {
+      "description": "Maps change surfaces to required verification gates.",
+      "evidence_refs": [
+        "Genius-Engineering:evidence-chain-a-gates-001",
+        "Genius-Engineering:evidence/chain-a-publication/completion-receipt.json",
+        "ev-genius-engineering-chain-a-promotion-001"
+      ],
+      "id": "engineering.change-impact-gates",
+      "input_contract": {
+        "requires": [
+          "change impact tags"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "deterministic required verification gates"
+        ]
+      },
+      "source_mission_id": "genius-engineering-chain-a-publication",
+      "source_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+      "stage": "operationally_verified",
+      "tags": [
+        "deployment",
+        "engineering",
+        "gates",
+        "readback",
+        "verification"
+      ]
+    },
+    {
+      "description": "Canonical hash-bound engineering evidence receipts.",
+      "evidence_refs": [
+        "Genius-Engineering:evidence-chain-a-receipt-001",
+        "Genius-Engineering:evidence/chain-a-publication/completion-receipt.json",
+        "ev-genius-engineering-chain-a-promotion-001"
+      ],
+      "id": "engineering.deterministic-receipts",
+      "input_contract": {
+        "requires": [
+          "JSON-serializable evidence payload"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "canonical JSON",
+          "SHA-256 digest",
+          "receipt schema"
+        ]
+      },
+      "source_mission_id": "genius-engineering-chain-a-publication",
+      "source_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+      "stage": "operationally_verified",
+      "tags": [
+        "engineering",
+        "evidence",
+        "provenance",
+        "receipt",
+        "sha256"
+      ]
+    },
+    {
+      "description": "Blocks completion on unfinished work, missing gates, deployment/readback gaps, or unresolved counterevidence.",
+      "evidence_refs": [
+        "Genius-Engineering:evidence-chain-a-failclosed-001",
+        "Genius-Engineering:evidence/chain-a-publication/completion-receipt.json",
+        "ev-genius-engineering-chain-a-promotion-001"
+      ],
+      "id": "engineering.fail-closed-completion",
+      "input_contract": {
+        "requires": [
+          "mission outcomes",
+          "work state",
+          "revision",
+          "gates",
+          "deployment evidence",
+          "counterevidence"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "completion state",
+          "incomplete work",
+          "evidence gaps",
+          "ready frontier",
+          "critical path"
+        ]
+      },
+      "source_mission_id": "genius-engineering-chain-a-publication",
+      "source_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+      "stage": "operationally_verified",
+      "tags": [
+        "completion",
+        "counterevidence",
+        "deployment",
+        "engineering",
+        "fail-closed",
+        "readback"
+      ]
+    },
+    {
+      "description": "Returns every currently executable unfinished work item rather than shrinking a mission to one convenient task.",
+      "evidence_refs": [
+        "Genius-Engineering:evidence-chain-a-frontier-001",
+        "Genius-Engineering:evidence/chain-a-publication/completion-receipt.json",
+        "ev-genius-engineering-chain-a-promotion-001"
+      ],
+      "id": "engineering.maximal-ready-frontier",
+      "input_contract": {
+        "requires": [
+          "work items with dependency and completion state"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "all currently executable unfinished work in leverage order"
+        ]
+      },
+      "source_mission_id": "genius-engineering-chain-a-publication",
+      "source_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+      "stage": "operationally_verified",
+      "tags": [
+        "dependencies",
+        "engineering",
+        "frontier",
+        "mission",
+        "scope-fidelity"
+      ]
+    },
+    {
+      "description": "Dependency-aware engineering work graph with parallel execution waves and critical-path visibility.",
+      "evidence_refs": [
+        "Genius-Engineering:evidence-chain-a-mission-graph-001",
+        "Genius-Engineering:evidence/chain-a-publication/completion-receipt.json",
+        "ev-genius-engineering-chain-a-promotion-001"
+      ],
+      "id": "engineering.mission-execution-graph",
+      "input_contract": {
+        "requires": [
+          "work items with ids and dependencies"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "deterministic execution waves",
+          "critical path",
+          "preserved work graph"
+        ]
+      },
+      "source_mission_id": "genius-engineering-chain-a-publication",
+      "source_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+      "stage": "operationally_verified",
+      "tags": [
+        "critical-path",
+        "dependency",
+        "engineering",
+        "execution-graph",
+        "mission"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

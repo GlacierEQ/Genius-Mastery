@@ -1,0 +1,83 @@
+- id: recover_exact_tested_tree
+  depends_on: []
+  priority: 100
+  required: true
+  status: verified
+  change_tags: [code]
+  gates:
+    unit: passed
+  evidence:
+    local_revision: dad518065356872edc2b3d5873012af7edc5fcc5
+    test_result: 28 passed in 0.10s
+
+- id: resolve_github_account_identity
+  depends_on: [recover_exact_tested_tree]
+  priority: 95
+  required: true
+  status: verified
+  change_tags: [docs]
+  gates:
+    docs: passed
+  evidence:
+    authenticated_login: GlacierEQ
+    authenticated_user_id: 194243768
+    organization_memberships: []
+    conclusion: GlacierEQ is the authenticated user account, so repository creation must use the user route rather than an organization route.
+
+- id: create_private_repository
+  depends_on: [resolve_github_account_identity]
+  priority: 100
+  required: true
+  status: pending
+  change_tags: [deployment]
+  gates:
+    unit: passed
+    deployment: missing
+    readback: missing
+    rollback: missing
+  blocker:
+    github_glacier_connector: unavailable
+    browser_session: unauthenticated
+    corrected_route: create repository in authenticated user account with organization omitted
+
+- id: publish_exact_tested_tree
+  depends_on: [create_private_repository]
+  priority: 100
+  required: true
+  status: pending
+  change_tags: [deployment, code]
+  gates:
+    unit: passed
+    deployment: missing
+    readback: missing
+    rollback: missing
+
+- id: read_back_provider_head
+  depends_on: [publish_exact_tested_tree]
+  priority: 100
+  required: true
+  status: pending
+  change_tags: [deployment]
+  gates:
+    unit: passed
+    deployment: missing
+    readback: missing
+    rollback: missing
+
+- id: rerun_exact_published_revision
+  depends_on: [read_back_provider_head]
+  priority: 100
+  required: true
+  status: pending
+  change_tags: [code]
+  gates:
+    unit: missing
+
+- id: preserve_provider_receipts
+  depends_on: [rerun_exact_published_revision]
+  priority: 90
+  required: true
+  status: pending
+  change_tags: [docs]
+  gates:
+    docs: missing

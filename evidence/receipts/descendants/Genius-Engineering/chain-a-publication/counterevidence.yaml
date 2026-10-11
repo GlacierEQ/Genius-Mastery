@@ -1,0 +1,9 @@
+- id: browser-session-not-authenticated
+  status: open
+  observation: GitHub browser route opened github.com but exposed Sign in and Sign up rather than an authenticated account.
+  effect: Browser repository creation cannot currently produce a provider receipt.
+
+- id: github-glacier-create-route-unavailable
+  status: open
+  observation: The write-capable GitHub Glacier connector returned UNAVAILABLE when retried with the corrected user-account creation route.
+  effect: Repository creation remains externally blocked despite the corrected account semantics.

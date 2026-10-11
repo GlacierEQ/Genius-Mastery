@@ -101,6 +101,15 @@ sources:
     relationship: research-and-verify
     purpose: Turn inferred capability hypotheses into evidence-backed mastery.
 
+
+  - id: genius-learned-capabilities
+    kind: learned-capability-registry
+    repository: GlacierEQ/Genius-Mastery
+    path: capabilities/LEARNED_REGISTRY.json
+    relationship: reuse-after-evidence
+    copy_policy: preserve-source-mission-and-evidence-provenance
+    purpose: Retain reusable capabilities proven by descendant missions so future Genius work can compose them without converting recommendation into execution truth.
+
 composition_invariants:
   - route instead of duplicate when the donor remains independently usable
   - preserve donor repository identity and provenance

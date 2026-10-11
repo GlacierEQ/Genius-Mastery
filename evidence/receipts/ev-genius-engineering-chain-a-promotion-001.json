@@ -1,0 +1,35 @@
+{
+  "id": "ev-genius-engineering-chain-a-promotion-001",
+  "promoted_capabilities": [
+    "engineering.mission-execution-graph",
+    "engineering.maximal-ready-frontier",
+    "engineering.change-impact-gates",
+    "engineering.fail-closed-completion",
+    "engineering.deterministic-receipts"
+  ],
+  "registry": {
+    "capability_count": 5,
+    "path": "capabilities/LEARNED_REGISTRY.json",
+    "sha256": "d3a1745ef4a98f491b9d52737613cea2dbcc38cc4eaa31c6caa6d59c5aa92ac6"
+  },
+  "schema_version": 1,
+  "source_artifacts": {
+    "child_evidence_ledger_sha256": "08143fd252421398c4fd691a22962b110fe00525cfad6fc71e48e1191d0963d8",
+    "completion_receipt_file_sha256": "0f5ba482f12d830095bb7f44acf54a0c28ab0c536386934621c3f262754d361b",
+    "completion_report_sha256": "9f283eb94d23581925cbd73486a33c909cb76b66956fd3867c30953949b7ca74",
+    "counterevidence_sha256": "59bfc6a52239c157b61bb954dfbb1741ab5bef4090bbb853be35b13444d76f49",
+    "mission_sha256": "8a611036b3643a74af3cf23b13cd9992e1d763ce959f5a4aac6308ad8dff6c13",
+    "work_sha256": "b124cddcc6743e42c23d6f9835c6ba99181a8d643b030bf6ab6f2472f07cc6ce"
+  },
+  "source_completion_receipt_canonical_sha256": "a82486cd0bd988a829dc4d64b7e8f18b84d66c6732d2ad63b8053ec5856757fa",
+  "source_mission_id": "genius-engineering-chain-a-publication",
+  "source_mission_state": "incomplete",
+  "source_ready_frontier": [
+    "create_private_repository"
+  ],
+  "source_repository": "Genius-Engineering",
+  "source_repository_state": "local-verified-unpublished",
+  "source_revision": "dad518065356872edc2b3d5873012af7edc5fcc5",
+  "timestamp": "2026-10-11T06:37:44.517100Z",
+  "truth_boundary": "Five narrow Engineering kernel capabilities are promoted from a real mission execution. The source publication mission remains incomplete; this receipt does not claim that GlacierEQ/Genius-Engineering exists on GitHub or that provider publication/readback occurred."
+}

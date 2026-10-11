@@ -139,6 +139,12 @@ provides:
     interface: tools/buildkite_receipt.py
     evidence_refs:
       - ev-bk-mastery-002
+  - id: mastery.kernel.compounding
+    description: Evidence-bound descendant capability extraction, mission-fit scoring, and atomic learned-capability registration with provenance and negative-constraint protection
+    stage: operationally_verified
+    interface: src/genius/compounding.py
+    evidence_refs:
+      - ev-genius-engineering-chain-a-promotion-001
 consumes:
   - repository: apex-control-plane
     capability: execution.buildkite.genius-family

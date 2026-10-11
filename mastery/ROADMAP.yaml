@@ -23,6 +23,7 @@ completed_foundations:
   - entity-aware doctor and release-closure diagnostics
   - generated descendant standalone validation in a clean isolated Python environment
   - GitHub and Buildkite verification pipelines for the kernel
+  - execution-backed descendant capability promotion into an atomic learned-capability registry
 near_term: []
 external_verification:
   - GitHub Actions must pass validate-contract on the exact release head.
@@ -38,7 +39,7 @@ continuing_research:
   - trajectory-backed instruction optimization and model-specific projection profiles
 frontier:
   - automatic capability invention from graph gaps and available compositions
-  - recursive higher-capability promotion after evidence
+  - recursive higher-capability promotion across multiple independent descendant missions, transfer contexts, and revalidation cycles
   - cross-Genius mission orchestration
   - Colossal Agent composition from complete vertical Genius entities
   - automated challenge generation from weak or high-leverage dimensions

@@ -1,0 +1,13 @@
+mission_id: genius-engineering-chain-a-publication
+objective: Publish the exact tested Genius-Engineering core to private GitHub repository GlacierEQ/Genius-Engineering, verify the provider head, and independently rerun the published revision.
+terminal_outcomes:
+  - Private GitHub repository GlacierEQ/Genius-Engineering exists.
+  - The repository main branch contains the exact tested Genius-Engineering tree.
+  - GitHub readback identifies the exact published head revision.
+  - The exact published revision passes the full Genius-Engineering test suite.
+  - Provider-native publication and readback evidence is preserved.
+constraints:
+  - Do not substitute local tests for GitHub publication.
+  - Do not mark deployment or publication verified without provider readback.
+  - Preserve the tested tree exactly unless a new change is separately tested.
+  - Do not reduce the mission because one provider route is blocked.

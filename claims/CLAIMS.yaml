@@ -124,3 +124,12 @@ claims:
       - ev-codeql-representation-kernel-001
     challenge_refs: []
     counterevidence_refs: []
+  - id: descendant-capability-promotion-001
+    statement: Genius-Mastery extracts operationally verified reusable capabilities from descendant mission evidence and atomically registers them with source mission, revision, and evidence provenance while preserving the boundary between capability reuse and provider execution truth.
+    dimension: synthesis_transfer
+    status: operationally_verified
+    source_refs: []
+    evidence_refs:
+      - ev-genius-engineering-chain-a-promotion-001
+    challenge_refs: []
+    counterevidence_refs: []
