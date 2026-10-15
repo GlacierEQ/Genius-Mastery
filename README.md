@@ -169,6 +169,40 @@ The result is a generated `Genius-Researcher` repository with `ROLE.yaml`, `pers
 
 The archetype/outcome is directional input. It is never treated as proof that the generated entity already possesses those abilities.
 
+## Reuse the estate through Monolith during synthesis
+
+The role compiler can route a purpose and outcomes through a **local copy** of
+Monolith's machine-readable capability index, while keeping implementation and
+runtime verification separate. The index is an inventory, not a provider receipt.
+
+```bash
+genius synthesize "Business Process Automation" \
+  --outcome "workflow automation with idempotency and provider readback" \
+  --outcome "reliable context recovery, evaluation and human approvals" \
+  --monolith-catalog /path/to/monolith/catalog/AI_DYNAMIC_CAPABILITY_INDEX.json \
+  --mega-skills-root /path/to/mega-skills \
+  --dest /path/to/private-output
+
+genius validate /path/to/private-output/Genius-Business-Process-Automation
+```
+
+A supplied Monolith catalog is read without changing it. Its filename, version,
+generation timestamp and exact SHA-256 are retained in the generated
+`capabilities/ESTATE_DISCOVERY.yaml`; matching intent vectors name candidate
+owning repositories and the verification required before actual reuse.
+`synthesis/PLAN.yaml` references that evidence-bounded discovery artifact.
+
+**Privacy and proof:** Keep outputs containing private repository references in
+private storage. No private index is fetched or embedded in the public Mastery
+repository. Catalog entries are labeled `catalog-pointer-unverified` even if a
+README claims production readiness; check the current owning revision, interface,
+authorized execution, native receipt and independent readback. A successful
+generation proves role compilation, not live business-process automation.
+
+The CI smoke test uses an explicitly **synthetic** index and saves an inspectable
+`genius-bpa-synthetic-smoke` artifact. It is regression evidence for the
+compiler and never a substitute for a real estate capability audit.
+
 ## Lower-level commands
 
 ```bash

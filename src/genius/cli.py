@@ -258,6 +258,7 @@ def cmd_synthesize(args: argparse.Namespace) -> int:
             archetype=args.archetype,
             constraints=list(args.constraint or []),
             mega_skills_root=Path(args.mega_skills_root).resolve() if args.mega_skills_root else None,
+            monolith_catalog=Path(args.monolith_catalog).resolve() if args.monolith_catalog else None,
             force=args.force,
         )
     except (ValueError, FileExistsError) as e:
@@ -536,6 +537,7 @@ def main(argv: list[str] | None = None) -> int:
     p_syn.add_argument("--archetype", default=None, help="Optional explicit directional archetype/persona reference.")
     p_syn.add_argument("--constraint", action="append", default=[], help="Optional constraint. Repeat as needed.")
     p_syn.add_argument("--mega-skills-root", default=None, help="Optional local GlacierEQ/mega-skills checkout for real capability matching.")
+    p_syn.add_argument("--monolith-catalog", default=None, help="Optional Monolith capability index JSON path.")
     p_syn.add_argument("--dest", default=".", help="Parent directory for the generated repo (default: cwd)")
     p_syn.add_argument("--force", action="store_true", help="Allow writing into an existing non-empty directory")
     p_syn.set_defaults(func=cmd_synthesize)

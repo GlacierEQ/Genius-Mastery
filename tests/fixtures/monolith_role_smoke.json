@@ -1,0 +1,39 @@
+{
+  "title": "SYNTHETIC CI FIXTURE — no live estate claims",
+  "version": "test-fixture",
+  "generated_timestamp": "2026-10-14 sample",
+  "intent_vectors": {
+    "WORKFLOW_AUTOMATION": {
+      "keywords": [
+        "business",
+        "process",
+        "workflow",
+        "automation",
+        "idempotency"
+      ],
+      "anchor_repositories": [
+        "example-workflow-orchestrator"
+      ]
+    },
+    "EXECUTION_GOVERNANCE": {
+      "keywords": [
+        "approval",
+        "provider",
+        "verification"
+      ],
+      "anchor_repositories": [
+        "example-admission-control"
+      ]
+    },
+    "CONTEXT_CONTINUITY": {
+      "keywords": [
+        "stateful",
+        "recovery",
+        "memory"
+      ],
+      "anchor_repositories": [
+        "example-continuity-journal"
+      ]
+    }
+  }
+}

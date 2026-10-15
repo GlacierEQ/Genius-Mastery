@@ -16,6 +16,7 @@ from genius.archetypes import match_archetypes
 from genius.graph import build_synthesis_graph
 from genius.scaffold import create_domain
 from genius.sources import match_mega_skills
+from genius.estate_capabilities import inspect_monolith_catalog
 
 
 BASE_FAMILIES = {
@@ -173,11 +174,18 @@ def synthesize_role(
     archetype: str | None = None,
     constraints: list[str] | None = None,
     mega_skills_root: Path | None = None,
+    monolith_catalog: Path | None = None,
     force: bool = False,
 ) -> Path:
     """Create and enrich a Genius repository from a role + desired outcomes."""
     if not outcomes:
         raise ValueError("at least one outcome is required")
+
+    estate_discovery = (
+        inspect_monolith_catalog(monolith_catalog, " ".join([role, *outcomes, *(constraints or [])]))
+        if monolith_catalog is not None
+        else None
+    )
 
     root = create_domain(role, dest_parent, force=force)
     repo_name = root.name
@@ -274,6 +282,16 @@ def synthesize_role(
             "teach-another",
         ],
     }
+    if estate_discovery is not None:
+        synthesis["estate_discovery"] = "capabilities/ESTATE_DISCOVERY.yaml"
+        synthesis["capability_sources"].append({
+            "repository": "GlacierEQ/monolith",
+            "catalog": estate_discovery["source_catalog"],
+            "sha256": estate_discovery["catalog_sha256"],
+            "status": "catalog-pointer-unverified",
+            "purpose": "Route to existing owning implementations before creating replacements.",
+        })
+        _write_yaml(root / "capabilities" / "ESTATE_DISCOVERY.yaml", estate_discovery)
     _write_yaml(root / "synthesis" / "PLAN.yaml", synthesis)
 
     graph = build_synthesis_graph(
