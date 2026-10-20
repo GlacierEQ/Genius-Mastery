@@ -55,15 +55,20 @@ objectives:
       - "response from accountable office"
 
 outbound_control:
-  designated_executor: "Cross-Case Mission Executor"
-  operator_review_default: true
-  send_preflight_required: true
+  execution_model: "peer_mesh_per_work_unit_single_writer"
+  operator_review_default: false
+  authority_recovery_required: true
+  active_plan_required: true
+  idempotency_required: true
+  stale_send_check_required: true
+  qualified_executor_classes:
+    - "any peer that can prove the WORK_UNIT authority, current provider route, and idempotency lease"
   allowed_channels:
-    - "Gmail only after Operator-approved final text or pre-approved routine escalation tier"
+    - "provider channel covered by the controlling plan/action class and current target state"
   forbidden_workers:
-    - "GlacierEQ substantive mission worker"
-    - "diagnostic/audit workers"
-    - "case-development-only workers"
+    - "workers that cannot recover source-bearing authority for the exact WORK_UNIT"
+    - "workers that cannot perform same-run stale/idempotency checks"
+    - "workers that cannot capture provider-native receipt/readback"
 
 escalation_ladder:
   - tier: 0
@@ -96,13 +101,14 @@ stale_send_suppression:
 
 verification:
   pre_send_checks:
-    - "hydrate current Supabase execution state"
-    - "read prior sent receipts and response receipts for same matter/objective"
-    - "confirm objective status is not SATISFIED, SUPERSEDED, RETIRED, or CLOSED"
-    - "confirm recipient and escalation tier are authorized by the campaign doctrine"
-    - "confirm the exact final text is approved or within pre-approved routine escalation wording"
+    - "recover the controlling Operator-approved plan/batch/action class for this WORK_UNIT"
+    - "read prior provider receipts and responses for the same WORK_UNIT/objective"
+    - "confirm the objective is not SATISFIED, SUPERSEDED, RETIRED, or CLOSED"
+    - "acquire or confirm the per-WORK_UNIT single-writer/idempotency key"
+    - "confirm recipient, channel, and escalation tier remain inside the recovered authority"
+    - "classify only a material strategy delta outside that authority as REPLAN_REQUIRED"
   post_send_receipts:
-    - "Gmail message id or provider-native sent receipt"
-    - "readback of sent subject, recipients, timestamp, and body hash when available"
-    - "Supabase action state update with receipt id"
+    - "provider-native message/submission id"
+    - "readback of target, timestamp, and action/body hash when available"
+    - "execution-state update bound to WORK_UNIT_ID and provider receipt"
   supabase_update_required: true
