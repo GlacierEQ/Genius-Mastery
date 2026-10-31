@@ -145,3 +145,27 @@ def test_cli_forge_executes_existing_archetype_and_preserves_repeated_output(tmp
     assert rerun.returncode != 0
     assert "refusing to overwrite" in rerun.stderr
     assert (tmp_path / "Genius-Aerospace" / "GENIUS.yaml").is_file()
+
+
+def test_force_publication_failure_restores_every_existing_user_byte(tmp_path, monkeypatch, arch):
+    target = foundry.forge_domain(arch, tmp_path)
+    original = target / "user-work.md"
+    original.write_text("important uncommitted edits", encoding="utf-8")
+    before = original.read_bytes()
+    real_rename = Path.rename
+
+    def fail_staged_publish(source, destination):
+        if (source.name == arch.name
+                and source.parent.name.startswith(f".{arch.name}.stage-")
+                and Path(destination) == target):
+            raise OSError("injected atomic publish failure")
+        return real_rename(source, destination)
+
+    monkeypatch.setattr(Path, "rename", fail_staged_publish)
+    with pytest.raises(OSError, match="injected atomic publish failure"):
+        foundry.forge_domain(replace(arch, description="new build"), tmp_path, force=True)
+
+    assert original.read_bytes() == before
+    assert not list(tmp_path.glob(f".{arch.name}.backup-*"))
+    assert not list(tmp_path.glob(f".{arch.name}.stage-*"))
+    assert not list(tmp_path.glob(f".{arch.name}.genius-forge.lock"))
