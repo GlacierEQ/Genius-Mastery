@@ -27,7 +27,7 @@ genius = "genius.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-genius = ["templates/**/*", "typescript_task_board_lock.json"]
+genius = ["templates/**/*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

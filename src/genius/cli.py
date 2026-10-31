@@ -16,7 +16,7 @@ from genius.naming import genius_name
 from genius.operating_loop import EVIDENCE_STATES, OUTCOME_STATUSES, build_loop, loop_report, validate_loop
 from genius.scaffold import create_domain
 from genius.repository_foundry import generate_python_text_audit, PROFILE
-from genius.repository_foundry_typescript import generate_typescript_task_board, PROFILE as TYPESCRIPT_PROFILE
+from genius.repository_foundry_ts import generate_typescript_taskboard, PROFILE as TYPESCRIPT_PROFILE
 from genius.lineage.forge import forge_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
@@ -301,7 +301,7 @@ def cmd_foundry(args: argparse.Namespace) -> int:
         return 1
     profiles = {
         PROFILE: generate_python_text_audit,
-        TYPESCRIPT_PROFILE: generate_typescript_task_board,
+        TYPESCRIPT_PROFILE: generate_typescript_taskboard,
     }
     generator = profiles.get(args.profile)
     if generator is None:
@@ -312,8 +312,8 @@ def cmd_foundry(args: argparse.Namespace) -> int:
     except (OSError, ValueError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 1
-    print(f"Generated independent application: {output}")
-    print("State: GENERATED_UNVERIFIED. Execute its native build, tests and functional checks.")
+    print(f"Generated independent {args.profile} application: {output}")
+    print("State: GENERATED_UNVERIFIED. Run the generated native tests and CLI.")
     return 0
 
 
@@ -611,7 +611,7 @@ def main(argv: list[str] | None = None) -> int:
     p_foundry_new = p_foundry_sub.add_parser("new", help="Create a real, independently runnable repository")
     p_foundry_new.add_argument("--name", required=True, help="Project name")
     p_foundry_new.add_argument("--objective", required=True, help="Original mission in the Operator's words")
-    p_foundry_new.add_argument("--profile", default=PROFILE, help="Executable product profile: python-text-audit or typescript-task-board")
+    p_foundry_new.add_argument("--profile", default=PROFILE, help="Profiles: python-text-audit, typescript-taskboard")
     p_foundry_new.add_argument("--dest", default=None, help="Parent output directory (default: cwd/Genius-Lineage)")
     p_foundry_new.set_defaults(func=cmd_foundry)
 

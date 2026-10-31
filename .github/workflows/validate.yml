@@ -40,8 +40,31 @@ jobs:
           python tools/validate.py .
           python tools/doctor.py .
 
+      - name: Configure independent Node 22 product runner
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Run regression suite
         run: pytest -q
+
+      - name: Independent TypeScript web/API acceptance mission
+        run: |
+          set -euo pipefail
+          workspace="$(mktemp -d)"
+          genius foundry new --name Taskboard --profile typescript-taskboard \
+            --objective "Create a local task manager with browser UI, persistent JSON store, HTTP CRUD and real integration tests" \
+            --dest "$workspace"
+          cd "$workspace/Genius-Taskboard"
+          npm ci --offline --ignore-scripts --no-audit
+          npm test
+          npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund typescript@5.8.3 @types/node@22.15.3
+          npm run typecheck
+          test -s dist/server.js
+          test -s public/index.html
+          test -s source-manifest.json
+          node -e 'const m=require("./source-manifest.json"); if(m.status!=="GENERATED_UNVERIFIED") process.exit(1)'
+
 
       - name: Exercise forge and mission intelligence
         run: |
@@ -146,24 +169,6 @@ jobs:
           path: .verification-artifacts/bpa-synthetic-output
           retention-days: 7
           if-no-files-found: error
-
-      - name: Set up Node.js for generated TypeScript product
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Independently install, compile and execute generated TypeScript full stack
-        run: |
-          destination="$(mktemp -d)"
-          genius foundry new \
-            --profile typescript-task-board \
-            --name "Task Board" \
-            --objective "Deliver a working TypeScript task board with browser and API" \
-            --dest "$destination"
-          cd "$destination/Genius-Task-Board"
-          npm ci --ignore-scripts --no-audit --no-fund
-          npm run build
-          npm test
 
       - name: Exercise completion mechanisms
         run: |

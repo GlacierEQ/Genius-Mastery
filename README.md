@@ -1,25 +1,5 @@
 # Genius-Mastery
 
-## Repository Foundry: executable application profiles
-
-Two implemented profiles are available under the existing `genius foundry new` CLI:
-
-- `python-text-audit`: standalone Python Unicode text analysis (CLI + native tests).
-- `typescript-task-board`: standalone full-stack TypeScript HTTP API, persistent local task data, compiled browser client, and HTTP integration tests.
-
-Example:
-
-```bash
-genius foundry new --profile typescript-task-board --name "Task Board" \
-  --objective "Deliver a working TypeScript task board" --dest ./output
-cd ./output/Genius-Task-Board
-npm ci --ignore-scripts
-npm run build && npm test && npm start
-```
-
-The generated program binds to localhost and is not an authenticated Internet service. Generation does not claim successful deployment or support arbitrary software objectives. See the canonical Foundry master plan for remaining milestones.
-
-
 **Repository-building program:** [GENIUS REPOSITORY FOUNDRY — canonical end-to-end master implementation plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md). This is a planned, source-grounded upgrade of the **existing** Genius-Mastery generator and Genius-Engineering execution spine, not a claim that all new factory capabilities have already been implemented. The plan's Phase 0–2 work resolves actual forge portability and capability-verification defects before claiming production generation.
 
 [![Buildkite](https://badge.buildkite.com/53fcc89c70c0eb2508067aa8108bf0f15d27da721a94f8c63c.svg)](https://buildkite.com/casey-1/genius-mastery)
@@ -159,6 +139,44 @@ pip install -e .
 ```
 
 Requires Python >= 3.10 and PyYAML.
+
+
+## Foundry Phase 3: independently runnable TypeScript taskboard
+
+The existing `genius foundry new` front door now supports an additional product
+profile, `typescript-taskboard`, alongside the existing `python-text-audit`:
+
+```sh
+genius foundry new --profile typescript-taskboard --name Taskboard \
+  --objective "Build a local task manager with a browser UI and persistent REST API" \
+  --dest ./workspaces
+
+cd ./workspaces/Genius-Taskboard
+npm ci
+npm test
+npm start
+```
+
+This produces a **standalone** Node 22 app, not a Genius-runtime-dependent
+scaffold: a browser UI, TypeScript HTTP backend, JSON task persistence, real
+create/list/update/delete operations, negative-path handling, and native
+integration tests using a live ephemeral HTTP port. The output includes its
+own package metadata, lockfile, GitHub Actions workflow, source digests,
+original objective, and exact run instructions. The server defaults to
+`127.0.0.1:3000` and deliberately has no public authentication.
+
+The build uses Node 22's dependency-free TypeScript stripping API. This
+runs genuine erasable TypeScript and builds JavaScript but **does not perform
+static TypeScript typechecking**; richer compiler-driven assurance remains
+a separate future Foundry task. Use only with Node 22.13 or later. The generated
+`mission.json` remains `GENERATED_UNVERIFIED` at creation. Tests and provider
+receipts must be checked separately; generated source is not a production
+deployment or proof that an arbitrary original objective was satisfied.
+
+The same callable `genius foundry new --profile python-text-audit` remains
+supported. Both profiles share the existing staged, preserving publication
+mechanism. See the [Foundry master plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md)
+for remaining execution, rehabilitation, delivery and verification phases.
 
 ## Foundry Phase 2: portable Lineage forge (implemented)
 
