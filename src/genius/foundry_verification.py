@@ -151,6 +151,7 @@ def verify_generated_repository(root: Path | str, *, receipt_dir: Path | str | N
         "environment": {"python": sys.version.split()[0], "platform": sys.platform},
         "state": "FAILED_INTEGRITY" if problems else "UNTESTED",
         "integrity_problems": problems,
+        "execution_problems": [],
         "native_executions": [],
         "external_provider_verified": False,
         "deployment_verified": False,
@@ -187,7 +188,9 @@ def verify_generated_repository(root: Path | str, *, receipt_dir: Path | str | N
                 ]
         if not commands:
             report["state"] = "BLOCKED_TOOLCHAIN"
-            report["integrity_problems"] = ["npm is unavailable on the current execution host"]
+            report["execution_problems"].append(
+                "npm is unavailable on the current execution host"
+            )
         else:
             for command in commands:
                 result = _run(command, project, env, timeout)
@@ -196,6 +199,9 @@ def verify_generated_repository(root: Path | str, *, receipt_dir: Path | str | N
                     # Timeout/tool startup is an execution-environment failure,
                     # not proof that the product's tests themselves failed.
                     report["state"] = "BLOCKED_EXECUTION"
+                    report["execution_problems"].append(
+                        result.get("failure", "native tool exited without a result")
+                    )
                     break
                 if result["exit_code"] != 0:
                     report["state"] = "FAILED_TESTS"
