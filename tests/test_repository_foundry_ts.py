@@ -1,107 +1,116 @@
-"""Independent, adversarial TypeScript full-stack acceptance from Mastery."""
+"""Executable acceptance for the standalone TypeScript taskboard profile."""
 from __future__ import annotations
 
 import hashlib
 import json
 import os
-from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
+import jsonschema
 
 from genius.repository_foundry import MISSION_SCHEMA
-from genius.repository_foundry_ts import TS_PROFILE, generate_typescript_text_workbench
+from genius.repository_foundry_ts import PROFILE, generate_typescript_taskboard
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
-def build(tmp_path: Path) -> Path:
-    return generate_typescript_text_workbench(
-        "Build a real TypeScript frontend, JSON API and Unicode word analysis",
-        "TS Workbench", tmp_path
-    )
+def build(root: Path, *, objective="Build a local task tracker with real browser and REST behavior") -> Path:
+    return generate_typescript_taskboard(objective, "Taskboard", root)
 
 
-def node(*argv, cwd: Path) -> subprocess.CompletedProcess:
-    return subprocess.run(
-        ["node", *argv], cwd=cwd,
-        env={"PATH": os.environ.get("PATH", ""), "HOME": str(cwd)},
-        text=True, capture_output=True, timeout=40
-    )
-
-
-def test_generated_typescript_executes_native_api_tests_without_teacher(tmp_path):
+def test_versioned_mission_and_full_byte_manifest(tmp_path):
     project = build(tmp_path)
-    assert (project / "web/index.html").exists()
-    assert (project / "src/server.ts").exists()
-    assert (project / ".github/workflows/test.yml").exists()
-    assert not (project / "src/genius").exists()
-    assert shutil.which("node"), "Node >=22.16 must be provisioned in native CI"
-    version = node("--version", cwd=project)
-    assert version.returncode == 0
-    assert int(version.stdout.strip().lstrip("v").split(".")[0]) >= 22
-    result = node("--experimental-strip-types", "--test", "tests/fullstack.test.ts", cwd=project)
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert "# pass 2" in result.stdout
-    assert "# fail 0" in result.stdout
-
-
-def test_manifest_and_mission_schema_and_determinism(tmp_path):
-    a = build(tmp_path / "one")
-    b = build(tmp_path / "two")
-    manifest = json.loads((a / "source-manifest.json").read_text())
-    assert manifest["status"] == "GENERATED_UNVERIFIED"
-    checksums = manifest["files_sha256"]
-    assert len(checksums) >= 12
-    assert checksums == json.loads((b / "source-manifest.json").read_text())["files_sha256"]
-    for name, digest in checksums.items():
-        assert hashlib.sha256((a / name).read_bytes()).hexdigest() == digest
-    mission = json.loads((a / "mission.json").read_text())
-    assert mission["schema_version"] == MISSION_SCHEMA
-    assert mission["profile"] == TS_PROFILE
-    assert "TypeScript frontend" in mission["original_objective"]
-    assert mission["status"] == "GENERATED_UNVERIFIED"
-    import jsonschema
-    schema = json.loads((Path(__file__).resolve().parents[1] / "schemas/repository-mission.schema.json").read_text())
+    mission = json.loads((project / "mission.json").read_text())
+    schema = json.loads((ROOT / "schemas/repository-mission.schema.json").read_text())
     jsonschema.validate(mission, schema)
+    assert mission["schema_version"] == MISSION_SCHEMA
+    assert mission["profile"] == PROFILE
+    assert mission["status"] == "GENERATED_UNVERIFIED"
+    assert "arbitrary" in mission["unverified_requirements"]
+    assert "npm ci" in mission["acceptance_command"]
+    manifest = json.loads((project / "source-manifest.json").read_text())
+    assert manifest["status"] == "GENERATED_UNVERIFIED"
+    assert len(manifest["files_sha256"]) >= 12
+    for relative, expected_hash in manifest["files_sha256"].items():
+        assert hashlib.sha256((project / relative).read_bytes()).hexdigest() == expected_hash
+    assert not any("genius-mastery" in content for content in
+                   (project / "package.json").read_text().splitlines())
+    assert not (project / "node_modules").exists()
 
 
-def test_identical_rerun_preserves_bytes_and_operator_edits(tmp_path):
-    target = build(tmp_path)
-    original = (target / "source-manifest.json").read_bytes()
-    assert build(tmp_path) == target
-    assert (target / "source-manifest.json").read_bytes() == original
-    (target / "operator-note.md").write_text("must not disappear", encoding="utf-8")
+def test_repeat_is_idempotent_and_preserves_durable_user_edits(tmp_path):
+    project = build(tmp_path)
+    file = project / "src/store.ts"
+    original = file.read_bytes()
+    stamp = file.stat().st_mtime_ns
+    assert build(tmp_path) == project
+    assert file.read_bytes() == original
+    assert file.stat().st_mtime_ns == stamp
+    (project / ".private-operator-note").write_text("do not alter", encoding="utf-8")
     with pytest.raises(FileExistsError, match="changed or unrelated"):
         build(tmp_path)
-    assert (target / "operator-note.md").read_text() == "must not disappear"
-    assert not list(tmp_path.glob(".Genius-TS-Workbench.stage-*"))
+    assert (project / ".private-operator-note").read_text() == "do not alter"
 
 
-def test_invalid_objective_is_rejected_without_publication(tmp_path):
-    for objective in ("", " ", 17):
+def test_no_implicit_scope_inflation_and_original_objective_retained(tmp_path):
+    objective = 'Build my tasks app </script><script>alert(1)</script> with custom business rules'
+    project = build(tmp_path, objective=objective)
+    mission = json.loads((project / "mission.json").read_text())
+    assert mission["original_objective"] == objective
+    assert mission["profile"] == "typescript-taskboard"
+    assert objective not in (project / "public/index.html").read_text()
+    assert "unverified_requirements" in mission
+    assert (project / "src/store.ts").read_text().find("export type Task") >= 0
+
+
+def test_invalid_mission_fails_before_any_publication(tmp_path):
+    for objective in ("", " ", None, 123, "x" * 20_001):
         with pytest.raises(ValueError, match="objective"):
-            generate_typescript_text_workbench(objective, "TS Workbench", tmp_path)
-    with pytest.raises(ValueError, match="objective"):
-        generate_typescript_text_workbench("x" * 20_001, "TS Workbench", tmp_path)
-    assert not list(tmp_path.iterdir())
+            generate_typescript_taskboard(objective, "Taskboard", tmp_path)
+    assert not (tmp_path / "Genius-Taskboard").exists()
 
 
-def test_existing_cli_supports_both_profiles_and_rejects_unsupported(tmp_path):
-    result = subprocess.run(
+def test_cli_dispatches_new_profile_but_keeps_previous_profile(tmp_path):
+    new = subprocess.run(
         [sys.executable, "-m", "genius.cli", "foundry", "new",
-         "--name", "TS Workbench", "--objective", "A working browser and API",
-         "--profile", TS_PROFILE, "--dest", str(tmp_path)],
-        text=True, capture_output=True, timeout=30
+         "--name", "Taskboard", "--objective", "Build a persistent taskboard",
+         "--profile", "typescript-taskboard", "--dest", str(tmp_path)],
+        capture_output=True, text=True
     )
-    assert result.returncode == 0, result.stderr
-    assert "GENERATED_UNVERIFIED" in result.stdout
-    assert (tmp_path / "Genius-TS-Workbench/src/server.ts").is_file()
-    bad = subprocess.run(
+    assert new.returncode == 0, new.stderr
+    assert "typescript-taskboard" in new.stdout
+    assert "GENERATED_UNVERIFIED" in new.stdout
+    assert (tmp_path / "Genius-Taskboard" / "src/server.ts").is_file()
+    previous = subprocess.run(
         [sys.executable, "-m", "genius.cli", "foundry", "new",
-         "--name", "Unsupported", "--objective", "unsupported",
-         "--profile", "fake-profile", "--dest", str(tmp_path)],
-        text=True, capture_output=True, timeout=30
+         "--name", "Text Audit", "--objective", "Count input word frequencies",
+         "--profile", "python-text-audit", "--dest", str(tmp_path)],
+        capture_output=True, text=True
     )
-    assert bad.returncode != 0
-    assert not (tmp_path / "Genius-Unsupported").exists()
+    assert previous.returncode == 0, previous.stderr
+    assert (tmp_path / "Genius-Text-Audit" / "src/genius_text_audit/app.py").is_file()
+
+
+def test_generated_fullstack_application_compiles_runs_and_passes_native_http_tests(tmp_path):
+    if not shutil.which("node") or not shutil.which("npm"):
+        pytest.skip("Node and npm unavailable; GitHub workflow separately installs Node 22")
+    version = subprocess.run(["node", "--version"], capture_output=True, text=True, check=True).stdout.strip()
+    major = int(re.match(r"v(\d+)", version).group(1))
+    if major < 22:
+        pytest.skip("Node 22 or newer required")
+    project = build(tmp_path)
+    installed = subprocess.run(["npm", "ci", "--offline", "--ignore-scripts", "--no-audit"],
+                               cwd=project, capture_output=True, text=True, timeout=60)
+    assert installed.returncode == 0, installed.stdout + installed.stderr
+    tested = subprocess.run(["npm", "test"], cwd=project,
+                            capture_output=True, text=True, timeout=100)
+    assert tested.returncode == 0, tested.stdout + tested.stderr
+    assert "pass 5" in tested.stdout
+    assert (project / "dist/server.js").is_file()
+    assert (project / "dist/store.js").is_file()
+    assert not (project / "node_modules" / "genius-mastery").exists()

@@ -140,6 +140,64 @@ pip install -e .
 
 Requires Python >= 3.10 and PyYAML.
 
+
+## Foundry: fully typechecked TypeScript text workbench
+
+The existing Foundry CLI has a third independently runnable product profile.
+It provides a browser UI, Unicode text statistics, a loopback HTTP API,
+negative-path tests, and explicit TypeScript typechecking plus a compiled build.
+
+```sh
+genius foundry new --name 'My Workbench' --objective 'Build a text-analysis web app' --profile typescript-text-workbench --dest ./workspace
+cd ./workspace/Genius-My-Workbench
+npm test
+npm start
+# open http://127.0.0.1:3000
+npm install --ignore-scripts --no-audit --no-fund
+npm run typecheck && npm run build
+```
+
+The taskboard and Python profiles remain available and unchanged.
+The text workbench is generated-unverified until independently executed.
+The developer toolchain is pinned; this profile does not yet ship an npm
+lockfile or claim external production deployment.
+## Foundry Phase 3: independently runnable TypeScript taskboard
+
+The existing `genius foundry new` front door now supports an additional product
+profile, `typescript-taskboard`, alongside the existing `python-text-audit`:
+
+```sh
+genius foundry new --profile typescript-taskboard --name Taskboard \
+  --objective "Build a local task manager with a browser UI and persistent REST API" \
+  --dest ./workspaces
+
+cd ./workspaces/Genius-Taskboard
+npm ci
+npm test
+npm start
+```
+
+This produces a **standalone** Node 22 app, not a Genius-runtime-dependent
+scaffold: a browser UI, TypeScript HTTP backend, JSON task persistence, real
+create/list/update/delete operations, negative-path handling, and native
+integration tests using a live ephemeral HTTP port. The output includes its
+own package metadata, lockfile, GitHub Actions workflow, source digests,
+original objective, and exact run instructions. The server defaults to
+`127.0.0.1:3000` and deliberately has no public authentication.
+
+The build uses Node 22's dependency-free TypeScript stripping API. This
+runs genuine erasable TypeScript and builds JavaScript but **does not perform
+static TypeScript typechecking**; richer compiler-driven assurance remains
+a separate future Foundry task. Use only with Node 22.13 or later. The generated
+`mission.json` remains `GENERATED_UNVERIFIED` at creation. Tests and provider
+receipts must be checked separately; generated source is not a production
+deployment or proof that an arbitrary original objective was satisfied.
+
+The same callable `genius foundry new --profile python-text-audit` remains
+supported. Both profiles share the existing staged, preserving publication
+mechanism. See the [Foundry master plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md)
+for remaining execution, rehabilitation, delivery and verification phases.
+
 ## Foundry Phase 2: portable Lineage forge (implemented)
 
 The existing registered Lineage domain generator now has a directly usable, portable command:
@@ -153,27 +211,6 @@ genius forge aerospace --dest ./workspaces --force
 An omitted `--dest` uses `./Genius-Lineage` relative to the current working directory. It does not assume `/root/projects/Genius-Lineage`. The forge validates the selected archetype, refuses unsafe names and symlink destinations, rejects case-folded collisions, and preserves existing files unless explicitly given `--force`. It renders to a private sibling staging directory, compiles generated Python, emits a deterministic `evidence/MANIFEST.json` with SHA-256 file identities, and atomically publishes the result. A timestamped forge receipt is retained separately; generated targets are **mapped and unverified** until they pass independent tests and execution.
 
 `genius forge` operates on registered Lineage implementations. This is not yet a complete mission-to-production repository compiler; the complete lifecycle, repair, CI, deployment and three acceptance missions remain governed by the [Foundry master plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md). Generating files alone is not independent execution proof.
-
-
-## Foundry: real TypeScript web + API profile
-
-The existing `genius foundry new` command also compiles an independent,
-local full-stack TypeScript application with Node HTTP endpoints, a browser
-interface, Unicode text analysis, negative-case tests and a source SHA-256 manifest.
-
-```sh
-genius foundry new --name 'My Workbench' --objective 'Build a text analysis web app' --profile typescript-text-workbench --dest ./workspace
-cd ./workspace/Genius-My-Workbench
-npm test
-npm start
-# open http://127.0.0.1:3000
-npm install --ignore-scripts --no-audit --no-fund
-npm run typecheck && npm run build
-```
-
-Both Python and TypeScript Foundry products remain `GENERATED_UNVERIFIED`
-until independent execution and acceptance proof is collected. The template
-is intentionally loopback-only. It is not a deployed or arbitrary-objective compiler.
 
 ## Forge a Genius entity
 
