@@ -18,6 +18,7 @@ from genius.scaffold import create_domain
 from genius.repository_foundry import generate_python_text_audit, PROFILE
 from genius.repository_foundry_ts import generate_typescript_taskboard, PROFILE as TYPESCRIPT_PROFILE
 from genius.repository_foundry_text_workbench import generate_typescript_text_workbench, TS_PROFILE
+from genius.foundry_verification import verify_generated_repository
 from genius.lineage.forge import forge_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
@@ -297,6 +298,20 @@ def cmd_synthesize(args: argparse.Namespace) -> int:
 
 
 def cmd_foundry(args: argparse.Namespace) -> int:
+    if args.foundry_action == "verify":
+        try:
+            result = verify_generated_repository(
+                args.path, receipt_dir=args.receipt_dir, timeout=args.timeout
+            )
+        except (OSError, ValueError) as error:
+            print(f"ERROR: {error}", file=sys.stderr)
+            return 1
+        if args.json:
+            print(json.dumps(result, indent=2, sort_keys=True))
+        else:
+            print(f"Foundry verification: {result['state']}")
+            print(f"Receipt: {result['receipt_path']}")
+        return 0 if result["state"] == "TESTED" else 2
     if args.foundry_action != "new":
         print("ERROR: unsupported Foundry action", file=sys.stderr)
         return 1
@@ -616,6 +631,17 @@ def main(argv: list[str] | None = None) -> int:
     p_foundry_new.add_argument("--profile", default=PROFILE, help="Profiles: python-text-audit, typescript-taskboard, typescript-text-workbench")
     p_foundry_new.add_argument("--dest", default=None, help="Parent output directory (default: cwd/Genius-Lineage)")
     p_foundry_new.set_defaults(func=cmd_foundry)
+
+    p_foundry_verify = p_foundry_sub.add_parser(
+        "verify", help="Validate source hashes, execute native tests, and preserve verification receipts"
+    )
+    p_foundry_verify.add_argument("--path", required=True, help="Generated repository directory")
+    p_foundry_verify.add_argument("--receipt-dir", default=None,
+                                  help="Optional separate directory for immutable verification receipts")
+    p_foundry_verify.add_argument("--timeout", type=int, default=120,
+                                  help="Maximum seconds per native tool execution")
+    p_foundry_verify.add_argument("--json", action="store_true", help="Print complete machine receipt")
+    p_foundry_verify.set_defaults(func=cmd_foundry)
 
     p_arch = sub.add_parser("archetype", help="Inspect and forge Genius Lineage Archetypes")
     p_arch_sub = p_arch.add_subparsers(dest="archetype_action", required=True)
