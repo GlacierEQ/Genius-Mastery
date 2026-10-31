@@ -190,7 +190,7 @@ jobs:
           cp "$workspace/workbench-verified.json" "$GITHUB_WORKSPACE/.verification-artifacts/foundry/typescript-text-workbench.json"
 
       - name: Preserve all three native Foundry verification receipts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: genius-foundry-native-verification
           path: .verification-artifacts/foundry/*.json
@@ -234,7 +234,7 @@ jobs:
           cp -a /tmp/Genius-Business-Process-Automation .verification-artifacts/bpa-synthetic-output
 
       - name: Preserve generated specialist smoke artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: genius-bpa-synthetic-smoke
           path: .verification-artifacts/bpa-synthetic-output
