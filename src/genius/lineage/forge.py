@@ -1,6 +1,6 @@
 """Genius Lineage domain repository synthesis forge.
 
-Forges autonomous domain repositories under /root/projects/Genius-Lineage/
+Forges standalone domain repositories under an explicit or cwd-relative root,
 complying with the Universal Pillar Invariant, the 9+ Quality Standard,
 foundational specifications, and daily-updating front-runner news/blog feeds.
 """
@@ -373,9 +373,21 @@ def _generated_files(root: Path) -> dict[str, bytes]:
             data = path.read_bytes()
             if rel == "evidence/RECEIPTS.jsonl":
                 # Receipt time is an observation, not part of the code identity.
-                receipt = json.loads(data)
-                receipt.pop("timestamp", None)
-                data = json.dumps(receipt, sort_keys=True).encode("utf-8")
+                try:
+                    records = []
+                    for line in data.splitlines():
+                        if not line.strip():
+                            continue
+                        receipt = json.loads(line)
+                        if not isinstance(receipt, dict):
+                            raise ValueError("receipt record must be an object")
+                        receipt.pop("timestamp", None)
+                        records.append(json.dumps(receipt, sort_keys=True))
+                    data = ("\n".join(records) + "\n").encode("utf-8")
+                except (ValueError, TypeError) as exc:
+                    raise FileExistsError(
+                        f"receipt cannot be safely compared; preserving existing data: {path}"
+                    ) from exc
             result[rel] = data
     return result
 
