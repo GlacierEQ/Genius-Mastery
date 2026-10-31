@@ -9,6 +9,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
+import tempfile
 import time
 from pathlib import Path
 from typing import Any
@@ -24,18 +26,19 @@ from .references import (
     get_domain_daily_feeds,
 )
 
-DEFAULT_OUTPUT_ROOT = Path("/root/projects/Genius-Lineage")
+# Relative to the caller's working directory, never a machine-specific /root path.
+DEFAULT_OUTPUT_ROOT = Path("Genius-Lineage")
 
 
 def _sanitize_slug(text: str) -> str:
     return text.lower().replace("-", "_").replace(" ", "_")
 
 
-def forge_domain(
+def _render_domain(
     arch: ArchetypeDefinition,
-    output_root: Path = DEFAULT_OUTPUT_ROOT,
+    output_root: Path,
 ) -> Path:
-    """Materialize a single domain repository with complete 9+ quality anatomy."""
+    """Render to a fresh staging directory, never directly to a user destination."""
     impl = get_domain_implementation(arch.id)
     if not impl:
         raise ValueError(f"No domain implementation found for archetype '{arch.id}'")
@@ -125,7 +128,8 @@ def forge_domain(
         "edges": [],
         "coupling": "NONE (Universal Pillar Invariant)",
         "capabilities": [
-            {"target": t, "verified": True} for t in arch.targets
+            {"target": t, "status": "mapped", "verified": False, "evidence_refs": []}
+            for t in arch.targets
         ],
     }
     with open(repo_dir / "capabilities" / "GRAPH.yaml", "w", encoding="utf-8") as f:
@@ -348,12 +352,76 @@ pytest tests/ -v
         "tests_sha256": test_hash,
         "specification_count": len(refs),
         "daily_feed_count": len(feeds),
-        "status": "FORGED",
+        "status": "GENERATED_UNVERIFIED",
     }
     with open(repo_dir / "evidence" / "RECEIPTS.jsonl", "w", encoding="utf-8") as f:
         f.write(json.dumps(receipt) + "\n")
 
     return repo_dir
+
+
+def _generated_files(root: Path) -> dict[str, bytes]:
+    """Compare a generated tree without following symlinks or trusting old receipts."""
+    if root.is_symlink() or not root.is_dir():
+        raise FileExistsError(f"unsafe or non-directory destination: {root}")
+    result = {}
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            raise FileExistsError(f"refusing to follow a symlink in generated tree: {path}")
+        if path.is_file():
+            rel = path.relative_to(root).as_posix()
+            data = path.read_bytes()
+            if rel == "evidence/RECEIPTS.jsonl":
+                # Receipt time is an observation, not part of the code identity.
+                receipt = json.loads(data)
+                receipt.pop("timestamp", None)
+                data = json.dumps(receipt, sort_keys=True).encode("utf-8")
+            result[rel] = data
+    return result
+
+
+def forge_domain(
+    arch: ArchetypeDefinition,
+    output_root: Path = DEFAULT_OUTPUT_ROOT,
+) -> Path:
+    """Stage, validate, then publish without overwriting existing user work.
+
+    A repeat with identical generated content is read-only and returns the
+    existing directory. Any changed output or symlink collision is rejected.
+    This is a safe generator, not an assertion that its code passed tests.
+    """
+    repo_name = arch.name
+    if re.fullmatch(r"Genius-[A-Za-z0-9][A-Za-z0-9_-]*", repo_name) is None:
+        raise ValueError("unsafe repository name in archetype")
+    impl = get_domain_implementation(arch.id)
+    if not impl:
+        raise ValueError(f"No domain implementation found for archetype '{arch.id}'")
+    if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", impl["module_name"]) is None:
+        raise ValueError("unsafe generated Python module name")
+    root = Path(output_root).expanduser().absolute()
+    if root.is_symlink():
+        raise ValueError(f"output root must not be a symlink: {root}")
+    root.mkdir(parents=True, exist_ok=True)
+    if root.is_symlink() or not root.is_dir():
+        raise ValueError(f"output root must be a real directory: {root}")
+    destination = root / repo_name
+    # Stage under the same output filesystem so publication uses rename.
+    with tempfile.TemporaryDirectory(prefix=".genius-forge-stage-", dir=root) as scratch:
+        staged = _render_domain(arch, Path(scratch))
+        generated = _generated_files(staged)
+        if not generated or "GENIUS.yaml" not in generated:
+            raise ValueError("forge produced no complete materialization")
+        if destination.is_symlink():
+            raise FileExistsError(f"refusing to overwrite symlink: {destination}")
+        if destination.exists():
+            if _generated_files(destination) == generated:
+                return destination  # genuine idempotency, no write to old files
+            raise FileExistsError(f"existing output differs; preserving user work: {destination}")
+        # No user files are written before this final rename.
+        # Non-cooperating cross-process destination races still require an
+        # external filesystem-level lock if the provider allows concurrent writes.
+        os.rename(staged, destination)
+    return destination
 
 
 def forge_all(output_root: Path = DEFAULT_OUTPUT_ROOT) -> list[Path]:
