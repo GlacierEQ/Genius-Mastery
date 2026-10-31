@@ -64,7 +64,24 @@ jobs:
           test -s public/index.html
           test -s source-manifest.json
           node -e 'const m=require("./source-manifest.json"); if(m.status!=="GENERATED_UNVERIFIED") process.exit(1)'
+          genius foundry verify --path "$workspace/Genius-Taskboard" --json > "$workspace/taskboard-verified.json"
+          python -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["state"]=="TESTED" and len(r["native_executions"])==2 and not r["deployment_verified"]' "$workspace/taskboard-verified.json"
+          mkdir -p "$GITHUB_WORKSPACE/.verification-artifacts/foundry"
+          cp "$workspace/taskboard-verified.json" "$GITHUB_WORKSPACE/.verification-artifacts/foundry/typescript-taskboard.json"
 
+
+
+      - name: Verify independently generated Python application and receipt
+        run: |
+          set -euo pipefail
+          workspace="$(mktemp -d)"
+          genius foundry new --name "Text Audit" --profile python-text-audit \
+            --objective "Build a working Unicode text analysis CLI with tests" \
+            --dest "$workspace"
+          genius foundry verify --path "$workspace/Genius-Text-Audit" --json > "$workspace/python-verified.json"
+          python -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["state"]=="TESTED" and r["native_executions"][0]["exit_code"]==0 and not r["external_provider_verified"]' "$workspace/python-verified.json"
+          mkdir -p "$GITHUB_WORKSPACE/.verification-artifacts/foundry"
+          cp "$workspace/python-verified.json" "$GITHUB_WORKSPACE/.verification-artifacts/foundry/python-text-audit.json"
 
       - name: Exercise forge and mission intelligence
         run: |
@@ -159,6 +176,26 @@ jobs:
           with urllib.request.urlopen(request) as response:
               assert json.load(response)["top_words"][0] == {"word": "one", "count": 2}
           PY
+
+      - name: Independently receipt compiler-verified TypeScript workbench
+        run: |
+          set -euo pipefail
+          workspace="$(mktemp -d)"
+          genius foundry new --name "Evidence Workbench" --profile typescript-text-workbench \
+            --objective "Build a browser API Unicode workbench with native TypeScript compilation" \
+            --dest "$workspace"
+          genius foundry verify --path "$workspace/Genius-Evidence-Workbench" --json > "$workspace/workbench-verified.json"
+          python -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["state"]=="TESTED" and len(r["native_executions"])==4 and not r["deployment_verified"]' "$workspace/workbench-verified.json"
+          mkdir -p "$GITHUB_WORKSPACE/.verification-artifacts/foundry"
+          cp "$workspace/workbench-verified.json" "$GITHUB_WORKSPACE/.verification-artifacts/foundry/typescript-text-workbench.json"
+
+      - name: Preserve all three native Foundry verification receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: genius-foundry-native-verification
+          path: .verification-artifacts/foundry/*.json
+          retention-days: 14
+          if-no-files-found: error
 
       - name: Exercise family analyzer
         run: genius family . --top 3

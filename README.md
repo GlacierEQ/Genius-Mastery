@@ -161,6 +161,51 @@ The taskboard and Python profiles remain available and unchanged.
 The text workbench is generated-unverified until independently executed.
 The developer toolchain is pinned; this profile does not yet ship an npm
 lockfile or claim external production deployment.
+## Foundry Phase 5: execution-backed local verification
+
+The existing `genius foundry verify` command is explicitly invoked **after**
+generating a repository. It supports all three current application profiles:
+
+```sh
+genius foundry verify --path ./workspaces/Genius-Text-Audit --json
+genius foundry verify --path ./workspaces/Genius-Taskboard --json
+genius foundry verify --path ./workspaces/Genius-CI-Web-Workbench --json
+# Optional: --receipt-dir ./evidence --timeout 120
+```
+
+It first checks the versioned mission and SHA-256 digest of every
+manifest-listed source file. A mismatch, corrupt manifest or unsafe path
+prevents execution. It then runs fixed, profile-specific native commands,
+never executable strings supplied in a mission:
+
+- Python text audit: independent unittest suite.
+- TypeScript taskboard: offline `npm ci` and native live-HTTP test suite.
+  Its separate optional `tsc` typecheck is also exercised in CI and is **not**
+  silently promoted by this shorter native receipt.
+- TypeScript text workbench: native tests, dependency installation with
+  scripts disabled, strict typecheck and actual compiled build.
+
+Results are written as distinct timestamped JSON receipts outside the generated
+source tree, under `.foundry-receipts/<repository>/`. The receipt preserves
+the source-manifest hash, actual commands and exit codes, output digests,
+diagnostics and explicit status:
+
+- `TESTED`: the declared *local native checks* passed; not a claim of
+  production deployment, provider acceptance, or every arbitrary objective.
+- `FAILED_INTEGRITY`: source identity untrusted; **no code executed**.
+- `FAILED_TESTS`: a native command returned a real nonzero test/build exit.
+- `BLOCKED_TOOLCHAIN`: a required native executable was absent.
+- `BLOCKED_EXECUTION`: a timeout or tool invocation fault made the result
+  inconclusive; it is not falsely labeled a failed product test.
+
+Generated code is executed **only when the operator invokes verification**.
+Use this command only on trusted repositories. Native execution receives a
+limited environment that excludes inherited provider tokens and unrelated
+secrets. Local source-manifest checks prove byte consistency relative to a
+self-supplied manifest, **not** externally authenticated source provenance.
+Genius-Engineering integration, EVOLVE/REPAIR acceptance and production
+readback remain separate Foundry milestones.
+
 ## Foundry Phase 3: independently runnable TypeScript taskboard
 
 The existing `genius foundry new` front door now supports an additional product
