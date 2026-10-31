@@ -75,7 +75,7 @@ def test_different_input_cannot_silently_overwrite_a_completed_generation(tmp_pa
 
 def test_unsafe_names_and_casefold_collisions_rejected(tmp_path, arch):
     for bad in ("Genius-../escape", "Genius-../../unsafe", "Genius-.hidden", "Genius-"):
-        with pytest.raises(ValueError, match="unsafe Genius repository"):
+        with pytest.raises(ValueError, match="unsafe generated repository"):
             foundry.forge_domain(replace(arch, name=bad), tmp_path)
     alias = tmp_path / arch.name.lower()
     alias.mkdir()
