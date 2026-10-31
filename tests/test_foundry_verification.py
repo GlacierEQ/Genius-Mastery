@@ -3,7 +3,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
+import subprocess
+import sys
+import time
 from pathlib import Path
 from unittest.mock import patch
 
@@ -11,7 +15,7 @@ import pytest
 
 from genius.repository_foundry import generate_python_text_audit
 from genius.repository_foundry_ts import generate_typescript_taskboard
-from genius.foundry_verification import verify_generated_repository
+from genius.foundry_verification import verify_generated_repository, _run
 from genius.cli import main
 
 
@@ -183,6 +187,63 @@ def test_native_execution_environment_does_not_inherit_provider_secrets(tmp_path
     assert inspected
     assert "GITHUB_TOKEN" not in inspected[0]
     assert "PRIVATE_OPERATOR_PASSWORD" not in inspected[0]
+
+
+
+def test_dependency_registry_failure_is_not_misreported_as_product_test_failure(tmp_path):
+    from genius.repository_foundry_text_workbench import generate_typescript_text_workbench
+    project = generate_typescript_text_workbench(
+        "Build TypeScript workbench", "WorkBench", tmp_path
+    )
+    invoked = []
+
+    def fake_run(command, root, env, timeout):
+        invoked.append(command)
+        code = 0 if len(invoked) == 1 else 1
+        return {
+            "argv": command, "exit_code": code,
+            "stdout_sha256": "0" * 64, "stderr_sha256": "1" * 64,
+            "stderr_excerpt": "ENETUNREACH registry unreachable" if code else "",
+            "elapsed_ms": 1,
+        }
+
+    with patch("genius.foundry_verification._run", side_effect=fake_run):
+        result = verify_generated_repository(project)
+    assert result["state"] == "BLOCKED_TOOLCHAIN"
+    assert len(result["native_executions"]) == 2
+    assert result["native_executions"][0]["exit_code"] == 0
+    assert result["native_executions"][1]["exit_code"] == 1
+    assert "dependency installation" in result["execution_problems"][0]
+    assert result["integrity_problems"] == []
+
+
+@pytest.mark.skipif(os.name != "posix", reason="process group tree test targets POSIX")
+def test_timed_out_native_executor_terminates_descendant_processes(tmp_path):
+    pidfile = tmp_path / "child.pid"
+    child_code = "import time; time.sleep(120)"
+    parent_code = (
+        "import subprocess,sys,time;"
+        "p=subprocess.Popen([sys.executable,'-c',sys.argv[2]]);"
+        "open(sys.argv[1],'w').write(str(p.pid));"
+        "time.sleep(120)"
+    )
+    result = _run(
+        [sys.executable, "-c", parent_code, str(pidfile), child_code],
+        tmp_path, os.environ.copy(), timeout=1,
+    )
+    assert result["exit_code"] is None
+    assert "process group terminated" in result["failure"]
+    assert pidfile.exists(), "fixture must have spawned child before timeout"
+    pid = int(pidfile.read_text())
+    # Reaping by init may lag; zombie state means the child is no longer running.
+    for _ in range(30):
+        ps = subprocess.run(["ps", "-o", "stat=", "-p", str(pid)],
+                            capture_output=True, text=True, check=False)
+        if ps.returncode != 0 or not ps.stdout.strip() or ps.stdout.lstrip().startswith("Z"):
+            break
+        time.sleep(0.1)
+    else:
+        pytest.fail(f"timed-out native descendant {pid} is still running")
 
 
 def test_invalid_root_or_invalid_timeout_refused(tmp_path):
