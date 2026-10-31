@@ -1,6 +1,6 @@
 """Genius Lineage domain repository synthesis forge.
 
-Forges autonomous domain repositories under /root/projects/Genius-Lineage/
+Forges domain repositories under a caller-controlled, portable output root
 complying with the Universal Pillar Invariant, the 9+ Quality Standard,
 foundational specifications, and daily-updating front-runner news/blog feeds.
 """
@@ -17,6 +17,7 @@ import yaml
 
 from ..archetypes import ARCHETYPES, ArchetypeDefinition
 from .registry import LINEAGE_DOMAINS, get_domain_implementation
+from .publication import checked_root, publish_domain
 from .references import (
     DOMAIN_REFERENCES,
     DOMAIN_DAILY_FEEDS,
@@ -24,7 +25,7 @@ from .references import (
     get_domain_daily_feeds,
 )
 
-DEFAULT_OUTPUT_ROOT = Path("/root/projects/Genius-Lineage")
+DEFAULT_OUTPUT_ROOT = None  # Runtime default: current working directory / Genius-Lineage
 
 
 def _sanitize_slug(text: str) -> str:
@@ -33,9 +34,16 @@ def _sanitize_slug(text: str) -> str:
 
 def forge_domain(
     arch: ArchetypeDefinition,
-    output_root: Path = DEFAULT_OUTPUT_ROOT,
+    output_root: Path | str | None = DEFAULT_OUTPUT_ROOT,
 ) -> Path:
-    """Materialize a single domain repository with complete 9+ quality anatomy."""
+    """Safely publish one generated domain without overwriting existing work."""
+    return publish_domain(
+        output_root, arch.name, lambda staging: _render_domain(arch, staging),
+    )
+
+
+def _render_domain(arch: ArchetypeDefinition, output_root: Path) -> Path:
+    """Build a domain in the isolated staging directory, not the destination."""
     impl = get_domain_implementation(arch.id)
     if not impl:
         raise ValueError(f"No domain implementation found for archetype '{arch.id}'")
@@ -125,7 +133,7 @@ def forge_domain(
         "edges": [],
         "coupling": "NONE (Universal Pillar Invariant)",
         "capabilities": [
-            {"target": t, "verified": True} for t in arch.targets
+            {"target": t, "verified": False, "evidence_state": "mapped", "evidence_refs": []} for t in arch.targets
         ],
     }
     with open(repo_dir / "capabilities" / "GRAPH.yaml", "w", encoding="utf-8") as f:
@@ -356,8 +364,20 @@ pytest tests/ -v
     return repo_dir
 
 
-def forge_all(output_root: Path = DEFAULT_OUTPUT_ROOT) -> list[Path]:
+def forge_all(output_root: Path | str | None = DEFAULT_OUTPUT_ROOT) -> list[Path]:
     """Forge all 26 canonical Genius Lineage domain repositories with specifications and daily feeds."""
+    output_root = checked_root(output_root)
+    # Check all destinations before generating the first domain.
+    # Each domain publishes atomically; the multi-domain run as a whole
+    # is not a single filesystem transaction.
+    for archetype in ARCHETYPES.values():
+        candidate = output_root / archetype.name
+        if candidate.exists() or candidate.is_symlink():
+            raise FileExistsError(f"refusing to overwrite existing destination: {candidate}")
+    for filename in ("GENIUS_LIBRARY.yaml", "LIBRARY.md"):
+        candidate = output_root / filename
+        if candidate.exists() or candidate.is_symlink():
+            raise FileExistsError(f"refusing to overwrite existing catalog: {candidate}")
     output_root.mkdir(parents=True, exist_ok=True)
     results: list[Path] = []
     total_specs = sum(len(r) for r in DOMAIN_REFERENCES.values())

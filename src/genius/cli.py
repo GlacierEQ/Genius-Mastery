@@ -15,6 +15,7 @@ from genius.intelligence import analyze_capability_graph, capability_intelligenc
 from genius.naming import genius_name
 from genius.operating_loop import EVIDENCE_STATES, OUTCOME_STATUSES, build_loop, loop_report, validate_loop
 from genius.scaffold import create_domain
+from genius.lineage.forge import forge_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
 from genius.impact import impact_report
@@ -296,6 +297,22 @@ def cmd_archetype(args: argparse.Namespace) -> int:
             print(archetype_report(arch))
         return 0
 
+    if action == "forge":
+        arch = get_archetype(args.name)
+        if not arch:
+            print(f"ERROR: Archetype not found: {args.name!r}", file=sys.stderr)
+            return 1
+        try:
+            root = forge_domain(arch, output_root=args.dest)
+        except (OSError, ValueError) as error:
+            print(f"ERROR: {error}", file=sys.stderr)
+            return 1
+        print(f"Forged {root}")
+        print(f"Archetype: {arch.name} ({arch.id})")
+        print("State: generated implementation; capability targets mapped, not verified.")
+        print("Next: run native tests independently from the generated repository.")
+        return 0
+
     if action == "synthesize":
         arch = get_archetype(args.name)
         if not arch:
@@ -554,6 +571,11 @@ def main(argv: list[str] | None = None) -> int:
     p_arch_info.add_argument("name", help="Archetype name or id (e.g. aerospace, microcode, law, ios, etc.)")
     p_arch_info.add_argument("--json", action="store_true", help="Emit JSON output")
     p_arch_info.set_defaults(func=cmd_archetype)
+
+    p_arch_forge = p_arch_sub.add_parser("forge", help="Materialize real lineage source and tests safely")
+    p_arch_forge.add_argument("name", help="Existing domain archetype id or name")
+    p_arch_forge.add_argument("--dest", default=None, help="Output parent (default: cwd/Genius-Lineage)")
+    p_arch_forge.set_defaults(func=cmd_archetype)
 
     p_arch_syn = p_arch_sub.add_parser("synthesize", help="Synthesize a specialized Genius entity for an archetype")
     p_arch_syn.add_argument("name", help="Archetype name or id (e.g. aerospace, microcode, law, etc.)")
