@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Genius Text Workbench</title><style>
+:root{font-family:system-ui,sans-serif;color-scheme:dark;background:#101520;color:#ebf0f8}
+main{max-width:48rem;margin:4rem auto;padding:0 1rem}h1{letter-spacing:-.04em}
+textarea{width:100%;min-height:12rem;box-sizing:border-box;background:#202a3b;color:#fff;border:1px solid #687992;border-radius:8px;padding:1rem;font:inherit}
+button{background:#9ce8cf;border:0;border-radius:6px;padding:.8rem 1.2rem;margin-top:1rem;font:inherit;cursor:pointer;color:#10261e}
+output{display:block;margin-top:1.4rem;white-space:pre-wrap;line-height:1.6}button:focus-visible,textarea:focus-visible{outline:3px solid #e9ca87}
+</style></head><body><main><h1>Genius Text Workbench</h1><p>Analyze Unicode text locally through a loopback API.</p>
+<form id="analyze-form"><label for="text">Text to analyze</label><textarea id="text" required>Hawaiʻi Hawaiʻi. Build, verify, improve.</textarea>
+<button type="submit">Analyze text</button></form><output id="result" role="status" aria-live="polite">Ready.</output>
+</main><script type="module" src="/app.js"></script></body></html>

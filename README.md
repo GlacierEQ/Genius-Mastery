@@ -141,6 +141,26 @@ pip install -e .
 Requires Python >= 3.10 and PyYAML.
 
 
+## Foundry: fully typechecked TypeScript text workbench
+
+The existing Foundry CLI has a third independently runnable product profile.
+It provides a browser UI, Unicode text statistics, a loopback HTTP API,
+negative-path tests, and explicit TypeScript typechecking plus a compiled build.
+
+```sh
+genius foundry new --name 'My Workbench' --objective 'Build a text-analysis web app' --profile typescript-text-workbench --dest ./workspace
+cd ./workspace/Genius-My-Workbench
+npm test
+npm start
+# open http://127.0.0.1:3000
+npm install --ignore-scripts --no-audit --no-fund
+npm run typecheck && npm run build
+```
+
+The taskboard and Python profiles remain available and unchanged.
+The text workbench is generated-unverified until independently executed.
+The developer toolchain is pinned; this profile does not yet ship an npm
+lockfile or claim external production deployment.
 ## Foundry Phase 3: independently runnable TypeScript taskboard
 
 The existing `genius foundry new` front door now supports an additional product

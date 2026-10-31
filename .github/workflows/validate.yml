@@ -124,6 +124,40 @@ jobs:
             exit 1
           fi
 
+      - name: Independently typecheck, build, and run full-stack text workbench
+        run: |
+          set -euo pipefail
+          dest="$(mktemp -d)"
+          genius foundry new --name "CI Web Workbench" \
+            --objective "Build a functional full-stack TypeScript text analyzer" \
+            --profile typescript-text-workbench --dest "$dest"
+          cd "$dest/Genius-CI-Web-Workbench"
+          npm test
+          npm install --ignore-scripts --no-audit --no-fund
+          npm run typecheck
+          npm run build
+          node --check dist/src/server.js
+          PORT=39765 npm run serve >/tmp/ci-foundry-ts.log 2>&1 &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:39765/health >/tmp/ci-foundry-health.json; then break; fi
+            sleep 1
+          done
+          python - <<'PY'
+          import json, urllib.request
+          with urllib.request.urlopen("http://127.0.0.1:39765/health") as response:
+              assert json.load(response)["profile"] == "typescript-text-workbench"
+          request = urllib.request.Request(
+              "http://127.0.0.1:39765/api/analyze",
+              data=json.dumps({"text": "one one two"}).encode("utf-8"),
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          with urllib.request.urlopen(request) as response:
+              assert json.load(response)["top_words"][0] == {"word": "one", "count": 2}
+          PY
+
       - name: Exercise family analyzer
         run: genius family . --top 3
 
