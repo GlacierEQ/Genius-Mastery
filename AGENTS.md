@@ -1,5 +1,8 @@
 # AGENTS.md — Genius-Mastery
 
+**Delegated ChatGPT coding intelligence:** use the existing [Pro_Code Duality multi-agent execution route](https://github.com/GlacierEQ/Pro_Code/blob/main/DUALITY.md#multi-chatgpt-coding-intelligence) for task-scoped context recovery, non-overlapping implementation and exact CI/native receipts. This does not replace the Mastery generator's source ownership, native tests, or this repository's execution rules.
+
+
 ## Buildkite execution contract
 
 Expected Buildkite pipeline slug: `genius-mastery`.
