@@ -109,6 +109,63 @@ def test_forge_cli_emits_usable_independent_project(tmp_path, aerospace):
     assert receipt["status"] == "FORGED"  # Never confused with test verification.
 
 
+
+def test_exact_second_generation_is_idempotent_and_does_not_rewrite_files(tmp_path, aerospace):
+    generated = forge_domain(aerospace, tmp_path)
+    code = next((generated / "src").rglob("tools.py"))
+    before = (code.read_bytes(), code.stat().st_mtime_ns)
+    original_receipt = (generated / "evidence/RECEIPTS.jsonl").read_bytes()
+    assert forge_domain(aerospace, tmp_path) == generated
+    assert (code.read_bytes(), code.stat().st_mtime_ns) == before
+    assert (generated / "evidence/RECEIPTS.jsonl").read_bytes() == original_receipt
+    assert not list(tmp_path.glob(".*.stage-*"))
+    assert not list(tmp_path.glob("*.genius-forge.lock"))
+
+
+def test_user_modified_existing_source_never_replaced(tmp_path, aerospace):
+    generated = forge_domain(aerospace, tmp_path)
+    file = generated / "GENIUS.yaml"
+    file.write_text(file.read_text() + "\n# retain user edit\n")
+    with pytest.raises(FileExistsError, match="changed or unrelated"):
+        forge_domain(aerospace, tmp_path)
+    assert file.read_text().endswith("# retain user edit\n")
+
+
+def test_added_receipt_record_preserved_without_jsonl_parse_failure(tmp_path, aerospace):
+    generated = forge_domain(aerospace, tmp_path)
+    file = generated / "evidence/RECEIPTS.jsonl"
+    original = file.read_text()
+    user_data = original + json.dumps({"event": "USER_ATTESTED", "verified": True}) + "\n"
+    file.write_text(user_data)
+    with pytest.raises(FileExistsError, match="changed or unrelated"):
+        forge_domain(aerospace, tmp_path)
+    assert file.read_text() == user_data
+
+
+def test_malformed_existing_receipt_does_not_destroy_any_files(tmp_path, aerospace):
+    generated = forge_domain(aerospace, tmp_path)
+    file = generated / "evidence/RECEIPTS.jsonl"
+    file.write_text("{unclosed")
+    with pytest.raises(FileExistsError, match="cannot compare existing receipt"):
+        forge_domain(aerospace, tmp_path)
+    assert file.read_text() == "{unclosed"
+
+
+def test_added_empty_directory_counts_as_changed_output(tmp_path, aerospace):
+    generated = forge_domain(aerospace, tmp_path)
+    (generated / "empty-user-dir").mkdir()
+    with pytest.raises(FileExistsError, match="changed or unrelated"):
+        forge_domain(aerospace, tmp_path)
+    assert (generated / "empty-user-dir").is_dir()
+
+
+def test_materialization_receipt_explicitly_lacks_verification(tmp_path, aerospace):
+    generated = forge_domain(aerospace, tmp_path)
+    evidence = json.loads((generated / "evidence/RECEIPTS.jsonl").read_text())
+    assert evidence["status"] == "FORGED"
+    assert evidence["verification_status"] == "UNVERIFIED"
+
+
 def test_generated_files_reproducible_except_runtime_receipt(tmp_path, aerospace):
     first = forge_domain(aerospace, tmp_path / "one")
     second = forge_domain(aerospace, tmp_path / "two")
