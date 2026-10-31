@@ -11,7 +11,7 @@ import pytest
 
 from genius.repository_foundry import generate_python_text_audit
 from genius.repository_foundry_ts import generate_typescript_taskboard
-from genius.foundry_verification import verify_generated_repository, _verify_integrity
+from genius.foundry_verification import verify_generated_repository
 from genius.cli import main
 
 
@@ -114,6 +114,30 @@ def test_cli_native_verification_exit_codes_and_json_output(tmp_path, capsys):
     (project / "README.md").write_text("tampered")
     assert main(["foundry", "verify", "--path", str(project), "--json"]) == 2
     assert json.loads(capsys.readouterr().out)["state"] == "FAILED_INTEGRITY"
+
+
+def test_runner_timeout_is_not_mislabeled_as_native_test_failure(tmp_path):
+    project = python_repo(tmp_path)
+    interruption = {
+        "argv": ["python", "-m", "unittest"], "exit_code": None,
+        "failure": "timeout after 120s", "elapsed_ms": 120000,
+    }
+    with patch("genius.foundry_verification._run", return_value=interruption):
+        result = verify_generated_repository(project)
+    assert result["state"] == "BLOCKED_EXECUTION"
+    assert result["native_executions"][0]["failure"] == "timeout after 120s"
+    assert Path(result["receipt_path"]).is_file()
+
+
+def test_missing_native_binary_is_separate_from_failed_tests(tmp_path):
+    project = generate_typescript_taskboard(
+        "Build browser taskboard", "Taskboard", tmp_path
+    )
+    with patch("genius.foundry_verification.shutil.which", return_value=None):
+        result = verify_generated_repository(project)
+    assert result["state"] == "BLOCKED_TOOLCHAIN"
+    assert result["native_executions"] == []
+    assert Path(result["receipt_path"]).is_file()
 
 
 def test_invalid_root_or_invalid_timeout_refused(tmp_path):
