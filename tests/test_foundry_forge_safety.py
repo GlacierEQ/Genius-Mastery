@@ -152,16 +152,18 @@ def test_force_publication_failure_restores_every_existing_user_byte(tmp_path, m
     original = target / "user-work.md"
     original.write_text("important uncommitted edits", encoding="utf-8")
     before = original.read_bytes()
-    real_rename = Path.rename
+    import genius.lineage.publication as publication
+    real_rename = publication.os.rename
 
     def fail_staged_publish(source, destination):
+        source = Path(source)
         if (source.name == arch.name
                 and source.parent.name.startswith(f".{arch.name}.stage-")
                 and Path(destination) == target):
             raise OSError("injected atomic publish failure")
         return real_rename(source, destination)
 
-    monkeypatch.setattr(Path, "rename", fail_staged_publish)
+    monkeypatch.setattr(publication.os, "rename", fail_staged_publish)
     with pytest.raises(OSError, match="injected atomic publish failure"):
         foundry.forge_domain(replace(arch, description="new build"), tmp_path, force=True)
 
