@@ -171,6 +171,7 @@ identity, observed environment and an explicit state:
   No generated code was executed.
 - `FAILED_TESTS`: a native tool returned a failure or timed out.
 - `BLOCKED_TOOLCHAIN`: a required native executable was unavailable.
+- `BLOCKED_EXECUTION`: a tool invocation or timeout prevented a conclusive test result.
 
 The CLI exits nonzero when native verification is not `TESTED`. It executes
 generated code **only when explicitly invoked**, so use this command for
