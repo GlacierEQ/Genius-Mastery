@@ -11,6 +11,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -84,23 +85,61 @@ def _verify_integrity(root: Path) -> tuple[dict[str, Any] | None, str | None, li
 
 
 def _run(command: list[str], root: Path, env: dict[str, str], timeout: int) -> dict[str, Any]:
-    """Run fixed profile-specific native commands, never commands from a manifest."""
+    """Run native tests in an isolated process group, reaping on timeout.
+
+    Killing only a shell/npm parent does not stop its compiler/test children.
+    Process-group isolation is essential before writing a terminal receipt.
+    """
     started = time.monotonic()
     try:
-        process = subprocess.run(command, cwd=root, env=env, capture_output=True, text=True,
-                                 encoding="utf-8", errors="replace", timeout=timeout)
-        return {
-            "argv": command, "exit_code": process.returncode,
-            "stdout_sha256": _hash(process.stdout.encode("utf-8")),
-            "stderr_sha256": _hash(process.stderr.encode("utf-8")),
-            "stdout_excerpt": process.stdout[-3000:], "stderr_excerpt": process.stderr[-3000:],
+        options: dict[str, Any] = {
+            "cwd": root, "env": env, "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE, "text": True, "encoding": "utf-8",
+            "errors": "replace",
+        }
+        if os.name == "posix":
+            options["start_new_session"] = True
+        elif os.name == "nt":
+            options["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        process = subprocess.Popen(command, **options)
+        try:
+            stdout, stderr = process.communicate(timeout=timeout)
+            result_code = process.returncode
+            failure = None
+        except subprocess.TimeoutExpired:
+            # Kill the entire descendant process group, not only npm/python.
+            if os.name == "posix":
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            elif os.name == "nt":
+                try:
+                    subprocess.run(
+                        ["taskkill", "/T", "/F", "/PID", str(process.pid)],
+                        capture_output=True, timeout=8, check=False,
+                    )
+                except (OSError, subprocess.TimeoutExpired):
+                    process.kill()
+            else:
+                process.kill()
+            try:
+                stdout, stderr = process.communicate(timeout=10)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                stdout, stderr = process.communicate()
+            result_code = None
+            failure = f"timeout after {timeout}s; native process group terminated"
+        result = {
+            "argv": command, "exit_code": result_code,
+            "stdout_sha256": _hash(stdout.encode("utf-8")),
+            "stderr_sha256": _hash(stderr.encode("utf-8")),
+            "stdout_excerpt": stdout[-3000:], "stderr_excerpt": stderr[-3000:],
             "elapsed_ms": round((time.monotonic() - started) * 1000),
         }
-    except subprocess.TimeoutExpired as exc:
-        return {
-            "argv": command, "exit_code": None, "failure": f"timeout after {timeout}s",
-            "elapsed_ms": round((time.monotonic() - started) * 1000),
-        }
+        if failure:
+            result["failure"] = failure
+        return result
     except OSError as exc:
         return {
             "argv": command, "exit_code": None, "failure": f"tool invocation error: {type(exc).__name__}",
@@ -204,7 +243,15 @@ def verify_generated_repository(root: Path | str, *, receipt_dir: Path | str | N
                     )
                     break
                 if result["exit_code"] != 0:
-                    report["state"] = "FAILED_TESTS"
+                    if profile != "python-text-audit" and len(command) > 1 and command[1] in {"ci", "install"}:
+                        # Registry/lock/package acquisition failure is not a
+                        # completed native test or compiler result.
+                        report["state"] = "BLOCKED_TOOLCHAIN"
+                        report["execution_problems"].append(
+                            f"dependency installation exited {result['exit_code']}; inspect native stderr"
+                        )
+                    else:
+                        report["state"] = "FAILED_TESTS"
                     break
             else:
                 report["state"] = "TESTED"
