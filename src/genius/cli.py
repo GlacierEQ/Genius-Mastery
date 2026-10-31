@@ -15,6 +15,7 @@ from genius.intelligence import analyze_capability_graph, capability_intelligenc
 from genius.naming import genius_name
 from genius.operating_loop import EVIDENCE_STATES, OUTCOME_STATUSES, build_loop, loop_report, validate_loop
 from genius.scaffold import create_domain
+from genius.lineage.forge import forge_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
 from genius.impact import impact_report
@@ -296,6 +297,20 @@ def cmd_archetype(args: argparse.Namespace) -> int:
             print(archetype_report(arch))
         return 0
 
+    if action == "forge":
+        arch = get_archetype(args.name)
+        if not arch:
+            print(f"ERROR: Archetype not found: {args.name!r}", file=sys.stderr)
+            return 1
+        try:
+            root = forge_domain(arch, output_root=Path(args.dest))
+        except (ValueError, FileExistsError, OSError) as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return 1
+        print(f"Generated {root}")
+        print("State: generated, unverified. Run descendant native tests before promotion.")
+        return 0
+
     if action == "synthesize":
         arch = get_archetype(args.name)
         if not arch:
@@ -560,6 +575,12 @@ def main(argv: list[str] | None = None) -> int:
     p_arch_syn.add_argument("--dest", default=".", help="Parent directory for generated repo (default: cwd)")
     p_arch_syn.add_argument("--force", action="store_true", help="Allow writing into an existing non-empty directory")
     p_arch_syn.set_defaults(func=cmd_archetype)
+
+    p_arch_forge = p_arch_sub.add_parser("forge", help="Safely generate a standalone domain implementation")
+    p_arch_forge.add_argument("name", help="Registered archetype ID or name")
+    p_arch_forge.add_argument("--dest", "--output-root", dest="dest", default="Genius-Lineage",
+                              help="Output parent (default: ./Genius-Lineage); no existing work overwritten")
+    p_arch_forge.set_defaults(func=cmd_archetype)
 
     p_imp = sub.add_parser("impact", help="Rank bottlenecks")
     p_imp.add_argument("path", nargs="?", default=".")
