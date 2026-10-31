@@ -611,7 +611,7 @@ def main(argv: list[str] | None = None) -> int:
     p_foundry_new = p_foundry_sub.add_parser("new", help="Create a real, independently runnable repository")
     p_foundry_new.add_argument("--name", required=True, help="Project name")
     p_foundry_new.add_argument("--objective", required=True, help="Original mission in the Operator's words")
-    p_foundry_new.add_argument("--profile", default=PROFILE, choices=[PROFILE, TYPESCRIPT_PROFILE], help="Executable product profile")
+    p_foundry_new.add_argument("--profile", default=PROFILE, help="Executable product profile: python-text-audit or typescript-task-board")
     p_foundry_new.add_argument("--dest", default=None, help="Parent output directory (default: cwd/Genius-Lineage)")
     p_foundry_new.set_defaults(func=cmd_foundry)
 
