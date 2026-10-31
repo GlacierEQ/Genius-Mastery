@@ -357,6 +357,7 @@ pytest tests/ -v
         "specification_count": len(refs),
         "daily_feed_count": len(feeds),
         "status": "FORGED",
+        "verification_status": "UNVERIFIED",
     }
     with open(repo_dir / "evidence" / "RECEIPTS.jsonl", "w", encoding="utf-8") as f:
         f.write(json.dumps(receipt) + "\n")
