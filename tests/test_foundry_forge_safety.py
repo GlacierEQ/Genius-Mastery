@@ -21,10 +21,10 @@ def arch():
 def test_default_is_portable_current_workspace(monkeypatch, tmp_path, arch):
     monkeypatch.chdir(tmp_path)
     root = foundry.forge_domain(arch)
-    assert root == tmp_path / arch.name
+    assert root == tmp_path / 'Genius-Lineage' / arch.name
     assert (root / "src").is_dir()
     assert (root / "pyproject.toml").is_file()
-    assert not (tmp_path / ".genius-forge-").exists()
+    assert not list((tmp_path / 'Genius-Lineage').glob('.*.stage-*'))
 
 
 def test_generated_capabilities_are_mapped_not_prematurely_verified(tmp_path, arch):
@@ -89,13 +89,13 @@ def test_symlink_destination_is_rejected_without_following_it(tmp_path, arch):
     outside.mkdir()
     (outside / "keep.txt").write_text("keep", encoding="utf-8")
     (tmp_path / arch.name).symlink_to(outside, target_is_directory=True)
-    with pytest.raises(ValueError, match="symbolic-link"):
+    with pytest.raises(FileExistsError, match="refusing to overwrite"):
         foundry.forge_domain(arch, tmp_path, force=True)
     assert (outside / "keep.txt").read_text(encoding="utf-8") == "keep"
 
 
 def test_interrupted_generation_leaves_no_partial_target_or_stage(monkeypatch, tmp_path, arch):
-    original = foundry._forge_domain_unpublished
+    original = foundry._render_domain
 
     def crash(spec, staging):
         target = staging / spec.name
@@ -103,12 +103,12 @@ def test_interrupted_generation_leaves_no_partial_target_or_stage(monkeypatch, t
         (target / "partial.txt").write_text("interrupted")
         raise RuntimeError("simulated interrupted write")
 
-    monkeypatch.setattr(foundry, "_forge_domain_unpublished", crash)
+    monkeypatch.setattr(foundry, "_render_domain", crash)
     with pytest.raises(RuntimeError, match="simulated"):
         foundry.forge_domain(arch, tmp_path)
     assert not (tmp_path / arch.name).exists()
     assert list(tmp_path.iterdir()) == []
-    monkeypatch.setattr(foundry, "_forge_domain_unpublished", original)
+    monkeypatch.setattr(foundry, "_render_domain", original)
     assert foundry.forge_domain(arch, tmp_path).exists(), "lock must be cleaned after a failure"
 
 
@@ -122,7 +122,7 @@ def test_explicit_force_replaces_existing_directory_without_silent_default(tmp_p
 
 
 def test_existing_lock_does_not_mutate_target(tmp_path, arch):
-    lock = tmp_path / f".{arch.name}.forge.lock"
+    lock = tmp_path / f".{arch.name}.genius-forge.lock"
     lock.write_text("other process", encoding="utf-8")
     with pytest.raises(FileExistsError, match="forge already active"):
         foundry.forge_domain(arch, tmp_path)

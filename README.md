@@ -150,7 +150,7 @@ genius forge aerospace --dest ./workspaces
 genius forge aerospace --dest ./workspaces --force
 ```
 
-An omitted `--dest` uses the current working directory. It does not assume `/root/projects/Genius-Lineage`. The forge validates the selected archetype, refuses unsafe names and symlink destinations, rejects case-folded collisions, and preserves existing files unless explicitly given `--force`. It renders to a private sibling staging directory, compiles generated Python, emits a deterministic `evidence/MANIFEST.json` with SHA-256 file identities, and atomically publishes the result. A timestamped forge receipt is retained separately; generated targets are **mapped and unverified** until they pass independent tests and execution.
+An omitted `--dest` uses `./Genius-Lineage` relative to the current working directory. It does not assume `/root/projects/Genius-Lineage`. The forge validates the selected archetype, refuses unsafe names and symlink destinations, rejects case-folded collisions, and preserves existing files unless explicitly given `--force`. It renders to a private sibling staging directory, compiles generated Python, emits a deterministic `evidence/MANIFEST.json` with SHA-256 file identities, and atomically publishes the result. A timestamped forge receipt is retained separately; generated targets are **mapped and unverified** until they pass independent tests and execution.
 
 `genius forge` operates on registered Lineage implementations. This is not yet a complete mission-to-production repository compiler; the complete lifecycle, repair, CI, deployment and three acceptance missions remain governed by the [Foundry master plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md). Generating files alone is not independent execution proof.
 
