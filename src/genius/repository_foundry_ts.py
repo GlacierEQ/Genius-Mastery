@@ -357,6 +357,24 @@ const json = (body, method = "POST") => ({ method, headers: {"Content-Type":"app
  }));
 '''
 
+_TSCONFIG = r'''{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "types": ["node"],
+    "skipLibCheck": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts"]
+}
+'''
+
 _CI = '''name: Native TypeScript product verification
 on:
   push:
@@ -397,13 +415,14 @@ def generate_typescript_taskboard(objective: str, name: str, output_root: Path |
         root = staging / repo
         pkg = {"name": package, "version": "0.1.0", "private": True, "type": "module",
                "engines": {"node": ">=22.13.0"},
-               "scripts": {"build": "node scripts/build.mjs", "test": "npm run build && node --test tests/*.test.mjs", "start": "npm run build && node dist/main.js"}}
+               "scripts": {"build": "node scripts/build.mjs", "test": "npm run build && node --test tests/*.test.mjs", "start": "npm run build && node dist/main.js", "typecheck": "tsc --noEmit -p tsconfig.json"}}
         lock = {"name": package, "version": "0.1.0", "lockfileVersion": 3,
                 "requires": True, "packages": {"": {"name": package, "version": "0.1.0", "engines": {"node": ">=22.13.0"}}}}
         files = {
             "mission.json": json.dumps(mission, sort_keys=True, ensure_ascii=False, indent=2) + "\n",
             "package.json": json.dumps(pkg, sort_keys=True, indent=2) + "\n",
             "package-lock.json": json.dumps(lock, sort_keys=True, indent=2) + "\n",
+            "tsconfig.json": _TSCONFIG,
             "src/store.ts": _STORE,
             "src/server.ts": _SERVER,
             "src/main.ts": _MAIN,
@@ -418,7 +437,11 @@ def generate_typescript_taskboard(objective: str, name: str, output_root: Path |
                           "Original mission and scope are preserved in `mission.json`.\n\n"
                           "## Clean checkout\n\nRequires Node.js >=22.13. `npm ci` requires no third-party packages. "
                           "The Node native TypeScript-stripping build API is experimental in this runtime; "
-                          "this profile does not claim `tsc` typechecking.\n\n"
+                          "the default offline `npm test` does not itself run `tsc` typechecking.\n\n"
+                          "## Optional independent strict TypeScript typecheck\n\n"
+                          "Install pinned verifier tools without changing the saved dependency lock:\n\n"
+                          "```sh\nnpm install --no-save --package-lock=false --ignore-scripts typescript@5.8.3 @types/node@22.15.3\nnpm run typecheck\n```\n\n"
+                          "The repository factory CI performs this extra compiler verification.\n\n"
                           "```sh\nnpm ci\nnpm test\nnpm start\n```\n\n"
                           "Open http://127.0.0.1:3000 . The server listens on loopback by default. "
                           "Set PORT and TASKBOARD_DATA to configure the port and durable JSON path. "

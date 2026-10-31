@@ -58,6 +58,8 @@ jobs:
           cd "$workspace/Genius-Taskboard"
           npm ci --offline --ignore-scripts --no-audit
           npm test
+          npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund typescript@5.8.3 @types/node@22.15.3
+          npm run typecheck
           test -s dist/server.js
           test -s public/index.html
           test -s source-manifest.json

@@ -114,3 +114,20 @@ def test_generated_fullstack_application_compiles_runs_and_passes_native_http_te
     assert (project / "dist/server.js").is_file()
     assert (project / "dist/store.js").is_file()
     assert not (project / "node_modules" / "genius-mastery").exists()
+
+def test_generated_typescript_profile_has_strict_optional_compiler_contract(tmp_path):
+    project = build(tmp_path)
+    import json
+    config = json.loads((project / "tsconfig.json").read_text())
+    package = json.loads((project / "package.json").read_text())
+    manifest = json.loads((project / "source-manifest.json").read_text())
+    assert config["compilerOptions"]["strict"] is True
+    assert config["compilerOptions"]["erasableSyntaxOnly"] is True
+    assert config["compilerOptions"]["noEmit"] is True
+    assert package["scripts"]["typecheck"] == "tsc --noEmit -p tsconfig.json"
+    assert "tsconfig.json" in manifest["files_sha256"]
+    # Preserve native no-install baseline: pin verifier tools only in the
+    # optional CI typecheck lane, not in package runtime dependencies.
+    assert "devDependencies" not in package
+    assert "dependencies" not in package
+
