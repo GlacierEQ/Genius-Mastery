@@ -1,5 +1,25 @@
 # Genius-Mastery
 
+## Repository Foundry: executable application profiles
+
+Two implemented profiles are available under the existing `genius foundry new` CLI:
+
+- `python-text-audit`: standalone Python Unicode text analysis (CLI + native tests).
+- `typescript-task-board`: standalone full-stack TypeScript HTTP API, persistent local task data, compiled browser client, and HTTP integration tests.
+
+Example:
+
+```bash
+genius foundry new --profile typescript-task-board --name "Task Board" \
+  --objective "Deliver a working TypeScript task board" --dest ./output
+cd ./output/Genius-Task-Board
+npm ci --ignore-scripts
+npm run build && npm test && npm start
+```
+
+The generated program binds to localhost and is not an authenticated Internet service. Generation does not claim successful deployment or support arbitrary software objectives. See the canonical Foundry master plan for remaining milestones.
+
+
 **Repository-building program:** [GENIUS REPOSITORY FOUNDRY — canonical end-to-end master implementation plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md). This is a planned, source-grounded upgrade of the **existing** Genius-Mastery generator and Genius-Engineering execution spine, not a claim that all new factory capabilities have already been implemented. The plan's Phase 0–2 work resolves actual forge portability and capability-verification defects before claiming production generation.
 
 [![Buildkite](https://badge.buildkite.com/53fcc89c70c0eb2508067aa8108bf0f15d27da721a94f8c63c.svg)](https://buildkite.com/casey-1/genius-mastery)
