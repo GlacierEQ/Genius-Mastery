@@ -140,6 +140,44 @@ pip install -e .
 
 Requires Python >= 3.10 and PyYAML.
 
+
+## Foundry Phase 3: independently runnable TypeScript taskboard
+
+The existing `genius foundry new` front door now supports an additional product
+profile, `typescript-taskboard`, alongside the existing `python-text-audit`:
+
+```sh
+genius foundry new --profile typescript-taskboard --name Taskboard \
+  --objective "Build a local task manager with a browser UI and persistent REST API" \
+  --dest ./workspaces
+
+cd ./workspaces/Genius-Taskboard
+npm ci
+npm test
+npm start
+```
+
+This produces a **standalone** Node 22 app, not a Genius-runtime-dependent
+scaffold: a browser UI, TypeScript HTTP backend, JSON task persistence, real
+create/list/update/delete operations, negative-path handling, and native
+integration tests using a live ephemeral HTTP port. The output includes its
+own package metadata, lockfile, GitHub Actions workflow, source digests,
+original objective, and exact run instructions. The server defaults to
+`127.0.0.1:3000` and deliberately has no public authentication.
+
+The build uses Node 22's dependency-free TypeScript stripping API. This
+runs genuine erasable TypeScript and builds JavaScript but **does not perform
+static TypeScript typechecking**; richer compiler-driven assurance remains
+a separate future Foundry task. Use only with Node 22.13 or later. The generated
+`mission.json` remains `GENERATED_UNVERIFIED` at creation. Tests and provider
+receipts must be checked separately; generated source is not a production
+deployment or proof that an arbitrary original objective was satisfied.
+
+The same callable `genius foundry new --profile python-text-audit` remains
+supported. Both profiles share the existing staged, preserving publication
+mechanism. See the [Foundry master plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md)
+for remaining execution, rehabilitation, delivery and verification phases.
+
 ## Foundry Phase 2: portable Lineage forge (implemented)
 
 The existing registered Lineage domain generator now has a directly usable, portable command:
