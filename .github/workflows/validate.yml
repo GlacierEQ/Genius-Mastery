@@ -98,7 +98,10 @@ jobs:
           assert len(manifest["files"]) > 5
           print("Independently installed descendant: native tests and functional smoke passed")
           PY
-          "$envdir/venv/bin/python" -m pip show genius-mastery >/dev/null && exit 1 || true
+          if "$envdir/venv/bin/python" -m pip show genius-mastery >/dev/null 2>&1; then
+            echo "Generated package unexpectedly depends on the Mastery checkout" >&2
+            exit 1
+          fi
 
       - name: Exercise family analyzer
         run: genius family . --top 3
