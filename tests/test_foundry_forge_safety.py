@@ -15,7 +15,7 @@ from genius.lineage import forge as foundry
 
 @pytest.fixture
 def arch():
-    return get_archetype("engineering")
+    return get_archetype("aerospace")
 
 
 def test_default_is_portable_current_workspace(monkeypatch, tmp_path, arch):
@@ -128,3 +128,20 @@ def test_existing_lock_does_not_mutate_target(tmp_path, arch):
         foundry.forge_domain(arch, tmp_path)
     assert lock.read_text() == "other process"
     assert not (tmp_path / arch.name).exists()
+
+
+def test_cli_forge_executes_existing_archetype_and_preserves_repeated_output(tmp_path):
+    import subprocess
+    import sys
+
+    command = [sys.executable, "-m", "genius.cli", "forge", "aerospace",
+               "--dest", str(tmp_path)]
+    result = subprocess.run(command, capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "generated_unverified" in result.stdout
+    assert (tmp_path / "Genius-Aerospace" / "evidence/MANIFEST.json").exists()
+
+    rerun = subprocess.run(command, capture_output=True, text=True)
+    assert rerun.returncode != 0
+    assert "refusing to overwrite" in rerun.stderr
+    assert (tmp_path / "Genius-Aerospace" / "GENIUS.yaml").is_file()
