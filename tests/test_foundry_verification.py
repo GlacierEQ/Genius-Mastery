@@ -126,6 +126,8 @@ def test_runner_timeout_is_not_mislabeled_as_native_test_failure(tmp_path):
         result = verify_generated_repository(project)
     assert result["state"] == "BLOCKED_EXECUTION"
     assert result["native_executions"][0]["failure"] == "timeout after 120s"
+    assert result["execution_problems"] == ["timeout after 120s"]
+    assert result["integrity_problems"] == []
     assert Path(result["receipt_path"]).is_file()
 
 
@@ -137,6 +139,7 @@ def test_missing_native_binary_is_separate_from_failed_tests(tmp_path):
         result = verify_generated_repository(project)
     assert result["state"] == "BLOCKED_TOOLCHAIN"
     assert result["native_executions"] == []
+    assert result["execution_problems"] and not result["integrity_problems"]
     assert Path(result["receipt_path"]).is_file()
 
 
@@ -195,8 +198,12 @@ def test_typescript_native_execution_is_independently_verified(tmp_path):
     if not shutil.which("node") or not shutil.which("npm"):
         pytest.skip("Node/npm missing, fixed CI runner config supplies Node 22")
     import subprocess
-    version = subprocess.run(["node", "--version"], capture_output=True, text=True).stdout
-    if int(version.lstrip("v").split(".")[0]) < 22:
+    version = subprocess.run(["node", "--version"], capture_output=True, text=True).stdout.strip()
+    try:
+        major = int(version.removeprefix("v").split(".")[0])
+    except (ValueError, IndexError):
+        pytest.skip(f"unrecognized Node version output: {version!r}")
+    if major < 22:
         pytest.skip("Node 22 required")
     project = generate_typescript_taskboard(
         "Build a real local taskboard browser API", "Taskboard", tmp_path
