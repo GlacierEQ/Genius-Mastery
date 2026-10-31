@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://glaciereq.dev/schemas/repository-mission.v1.json",
+  "title": "Genius Repository Foundry mission v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mode",
+    "original_objective",
+    "project",
+    "profile",
+    "status",
+    "implemented_behavior",
+    "acceptance_command"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "glaciereq.repo-foundry.mission.v1"
+    },
+    "mode": {
+      "enum": [
+        "NEW",
+        "EVOLVE",
+        "REPAIR",
+        "VERIFY"
+      ]
+    },
+    "original_objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project": {
+      "type": "string",
+      "pattern": "^Genius-[A-Za-z0-9._-]+$"
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "GENERATED_UNVERIFIED",
+        "TESTED",
+        "VERIFIED_OPERATIONAL",
+        "DELIVERED"
+      ]
+    },
+    "implemented_behavior": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unverified_requirements": {
+      "type": "string"
+    },
+    "acceptance_command": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": true
+}
