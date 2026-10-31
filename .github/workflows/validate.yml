@@ -62,7 +62,20 @@ jobs:
           test -s public/index.html
           test -s source-manifest.json
           node -e 'const m=require("./source-manifest.json"); if(m.status!=="GENERATED_UNVERIFIED") process.exit(1)'
+          genius foundry verify --path "$workspace/Genius-Taskboard" --json > "$workspace/foundry-verified.json"
+          python -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["state"]=="TESTED" and not r["deployment_verified"]; assert len(r["native_executions"])==2' "$workspace/foundry-verified.json"
 
+
+
+      - name: Prove Python Foundry native verification and receipts
+        run: |
+          set -euo pipefail
+          workspace="$(mktemp -d)"
+          genius foundry new --name "Text Audit" --profile python-text-audit \
+            --objective "Generate a functional text analysis CLI and independently execute its tests" \
+            --dest "$workspace"
+          genius foundry verify --path "$workspace/Genius-Text-Audit" --json > "$workspace/verification.json"
+          python -c 'import json,sys; r=json.load(open(sys.argv[1])); assert r["state"]=="TESTED" and r["native_executions"][0]["exit_code"]==0 and not r["external_provider_verified"]' "$workspace/verification.json"
 
       - name: Exercise forge and mission intelligence
         run: |
