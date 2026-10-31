@@ -141,6 +141,46 @@ pip install -e .
 Requires Python >= 3.10 and PyYAML.
 
 
+## Foundry Phase 5: execute native verification and retain receipts
+
+The existing factory has an explicit **execute-and-prove** command for both
+supported application profiles, separate from source generation:
+
+```sh
+genius foundry verify --path ./workspaces/Genius-Taskboard --json
+genius foundry verify --path ./workspaces/Genius-Text-Audit --json
+# Optional: --receipt-dir ./evidence --timeout 120
+```
+
+The verifier confirms the mission schema and SHA-256 digests for every
+manifest-listed source file **before** executing code. It then runs fixed
+native commands for the supported product profile, not commands from a
+user-editable manifest. For Python it runs the generated unittest suite; for
+TypeScript it runs `npm ci --offline --ignore-scripts` followed by the
+generated Node test suite, including real HTTP calls.
+
+A distinct, timestamped JSON receipt is saved under the sibling
+`.foundry-receipts/<generated-repository>/`, preserving any previous
+receipts without changing the generated source tree. Receipts capture actual
+exit codes, output digests and bounded diagnostic excerpts, source manifest
+identity, observed environment and an explicit state:
+
+- `TESTED`: byte-check and **local** native tests passed, not a claim of
+  end-to-end mission completion, external deployment, or provider acceptance.
+- `FAILED_INTEGRITY`: source, mission, manifest, or symlink validation failed.
+  No generated code was executed.
+- `FAILED_TESTS`: a native tool returned a failure or timed out.
+- `BLOCKED_TOOLCHAIN`: a required native executable was unavailable.
+
+The CLI exits nonzero when native verification is not `TESTED`. It executes
+generated code **only when explicitly invoked**, so use this command for
+trusted local repositories. Verification cannot establish the identity or
+trustworthiness of a self-supplied manifest without a separate external
+provenance anchor. This implementation provides measurable local evidence
+for the supported profiles; the full Genius-Engineering executor,
+independent provider readback, EVOLVE/REPAIR completion, and production
+health-check requirements remain under the canonical Foundry plan.
+
 ## Foundry Phase 3: independently runnable TypeScript taskboard
 
 The existing `genius foundry new` front door now supports an additional product
