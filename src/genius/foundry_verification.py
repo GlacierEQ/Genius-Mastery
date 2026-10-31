@@ -171,6 +171,11 @@ def verify_generated_repository(root: Path | str, *, receipt_dir: Path | str | N
             for command in commands:
                 result = _run(command, project, env, timeout)
                 report["native_executions"].append(result)
+                if result["exit_code"] is None:
+                    # Timeout/tool startup is an execution-environment failure,
+                    # not proof that the product's tests themselves failed.
+                    report["state"] = "BLOCKED_EXECUTION"
+                    break
                 if result["exit_code"] != 0:
                     report["state"] = "FAILED_TESTS"
                     break
