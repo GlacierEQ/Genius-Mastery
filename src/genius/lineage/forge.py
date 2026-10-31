@@ -1,15 +1,18 @@
 """Genius Lineage domain repository synthesis forge.
 
-Forges autonomous domain repositories under /root/projects/Genius-Lineage/
-complying with the Universal Pillar Invariant, the 9+ Quality Standard,
-foundational specifications, and daily-updating front-runner news/blog feeds.
+Generates portable domain repository starting points from registered archetypes.
+Generation is not evidence of independently verified capability.
 """
 from __future__ import annotations
 
 import hashlib
 import json
 import os
+import re
+import shutil
+import tempfile
 import time
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -24,7 +27,7 @@ from .references import (
     get_domain_daily_feeds,
 )
 
-DEFAULT_OUTPUT_ROOT = Path("/root/projects/Genius-Lineage")
+DEFAULT_OUTPUT_ROOT: Path | None = None
 
 
 def _sanitize_slug(text: str) -> str:
@@ -33,9 +36,114 @@ def _sanitize_slug(text: str) -> str:
 
 def forge_domain(
     arch: ArchetypeDefinition,
-    output_root: Path = DEFAULT_OUTPUT_ROOT,
+    output_root: Path | None = DEFAULT_OUTPUT_ROOT,
+    *,
+    force: bool = False,
 ) -> Path:
-    """Materialize a single domain repository with complete 9+ quality anatomy."""
+    """Generate to a private staging directory, validate, then publish.
+
+    Reusing an existing target never overwrites it by default. An explicitly
+    requested force replacement retains the previous tree for rollback until
+    publication succeeds. This is a local filesystem transaction, not proof
+    of installed or operating capability.
+    """
+    repo_name = arch.name
+    if not isinstance(repo_name, str) or not re.fullmatch(
+        r"Genius-[A-Za-z0-9][A-Za-z0-9._-]*", repo_name
+    ) or repo_name.endswith((".", "-")) or ".." in repo_name:
+        raise ValueError(f"unsafe Genius repository name: {repo_name!r}")
+    impl = get_domain_implementation(arch.id)
+    if not impl:
+        raise ValueError(f"No domain implementation found for archetype {arch.id!r}")
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", impl["module_name"]):
+        raise ValueError("unsafe Python module name in archetype implementation")
+
+    requested = Path.cwd() if output_root is None else Path(output_root).expanduser()
+    if requested.is_symlink():
+        raise ValueError("output root must not be a symlink")
+    parent = requested.resolve()
+    parent.mkdir(parents=True, exist_ok=True)
+    if not parent.is_dir():
+        raise NotADirectoryError(parent)
+    destination = parent / repo_name
+    # Catch aliases even on case-sensitive developer filesystems.
+    if any(name.casefold() == repo_name.casefold() and name != repo_name for name in os.listdir(parent)):
+        raise FileExistsError(f"case-insensitive repository collision: {destination}")
+    if destination.is_symlink():
+        raise ValueError(f"refusing to replace a symbolic-link destination: {destination}")
+    if destination.exists() and (not force or not destination.is_dir()):
+        raise FileExistsError(f"refusing to overwrite existing repository: {destination}")
+
+    lock = parent / f".{repo_name}.forge.lock"
+    try:
+        handle = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError as error:
+        raise FileExistsError(f"forge already active or lock requires recovery: {lock}") from error
+    os.close(handle)
+    staged_parent: Path | None = None
+    backup: Path | None = None
+    try:
+        # Recheck under the cooperative lock before preparing changes.
+        if destination.is_symlink():
+            raise ValueError(f"refusing symbolic-link destination: {destination}")
+        if destination.exists() and not force:
+            raise FileExistsError(f"refusing to overwrite existing repository: {destination}")
+        staged_parent = Path(tempfile.mkdtemp(prefix=".genius-forge-", dir=parent))
+        staged = _forge_domain_unpublished(arch, staged_parent)
+        # Reject malformed generated Python before exposing any destination tree.
+        for generated in sorted(staged.rglob("*.py")):
+            compile(generated.read_bytes(), str(generated.relative_to(staged)), "exec")
+
+        # Stable file index excludes timestamped execution receipt and itself.
+        entries = []
+        for generated in sorted(staged.rglob("*")):
+            if not generated.is_file():
+                continue
+            relative = generated.relative_to(staged).as_posix()
+            if relative in {"evidence/RECEIPTS.jsonl", "evidence/MANIFEST.json"}:
+                continue
+            entries.append({
+                "path": relative,
+                "sha256": hashlib.sha256(generated.read_bytes()).hexdigest(),
+            })
+        manifest = {
+            "schema_version": "genius.foundry.manifest.v1",
+            "repository": repo_name,
+            "archetype": arch.id,
+            "verification_state": "generated_unverified",
+            "files": entries,
+        }
+        (staged / "evidence" / "MANIFEST.json").write_text(
+            json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+
+        if destination.exists():
+            if not force or not destination.is_dir():
+                raise FileExistsError(f"refusing existing destination: {destination}")
+            backup = parent / f".{repo_name}.backup-{uuid.uuid4().hex}"
+            destination.rename(backup)
+        try:
+            staged.rename(destination)
+        except Exception:
+            if backup is not None:
+                backup.rename(destination)
+                backup = None
+            raise
+        if backup is not None:
+            shutil.rmtree(backup)
+        return destination
+    finally:
+        if staged_parent is not None:
+            shutil.rmtree(staged_parent, ignore_errors=True)
+        lock.unlink(missing_ok=True)
+
+
+def _forge_domain_unpublished(
+    arch: ArchetypeDefinition,
+    output_root: Path,
+) -> Path:
+    """Render an archetype into a private, unpublished staging tree."""
     impl = get_domain_implementation(arch.id)
     if not impl:
         raise ValueError(f"No domain implementation found for archetype '{arch.id}'")
@@ -111,7 +219,7 @@ def forge_domain(
     stack_data = {
         "domain_id": arch.id,
         "stack_layers": {
-            layer: {"status": "ACTIVE", "sovereignty": "FIRST_PRINCIPLES"}
+            layer: {"status": "MAPPED", "sovereignty": "FIRST_PRINCIPLES"}
             for layer in arch.layers
         },
     }
@@ -125,7 +233,7 @@ def forge_domain(
         "edges": [],
         "coupling": "NONE (Universal Pillar Invariant)",
         "capabilities": [
-            {"target": t, "verified": True} for t in arch.targets
+            {"target": t, "state": "mapped", "verified": False, "evidence_refs": []} for t in arch.targets
         ],
     }
     with open(repo_dir / "capabilities" / "GRAPH.yaml", "w", encoding="utf-8") as f:
@@ -356,9 +464,16 @@ pytest tests/ -v
     return repo_dir
 
 
-def forge_all(output_root: Path = DEFAULT_OUTPUT_ROOT) -> list[Path]:
-    """Forge all 26 canonical Genius Lineage domain repositories with specifications and daily feeds."""
+def forge_all(output_root: Path | None = DEFAULT_OUTPUT_ROOT) -> list[Path]:
+    """Forge registered domains under a portable, caller-selected workspace."""
+    output_root = Path.cwd() if output_root is None else Path(output_root).expanduser()
+    if output_root.is_symlink():
+        raise ValueError("output root must not be a symlink")
+    output_root = output_root.resolve()
     output_root.mkdir(parents=True, exist_ok=True)
+    for name in ("GENIUS_LIBRARY.yaml", "LIBRARY.md"):
+        if (output_root / name).exists() or (output_root / name).is_symlink():
+            raise FileExistsError(f"refusing to overwrite existing index: {output_root / name}")
     results: list[Path] = []
     total_specs = sum(len(r) for r in DOMAIN_REFERENCES.values())
     total_feeds = sum(len(f) for f in DOMAIN_DAILY_FEEDS.values())
