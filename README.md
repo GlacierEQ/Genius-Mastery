@@ -154,6 +154,27 @@ An omitted `--dest` uses `./Genius-Lineage` relative to the current working dire
 
 `genius forge` operates on registered Lineage implementations. This is not yet a complete mission-to-production repository compiler; the complete lifecycle, repair, CI, deployment and three acceptance missions remain governed by the [Foundry master plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md). Generating files alone is not independent execution proof.
 
+
+## Foundry: real TypeScript web + API profile
+
+The existing `genius foundry new` command also compiles an independent,
+local full-stack TypeScript application with Node HTTP endpoints, a browser
+interface, Unicode text analysis, negative-case tests and a source SHA-256 manifest.
+
+```sh
+genius foundry new --name 'My Workbench' --objective 'Build a text analysis web app' --profile typescript-text-workbench --dest ./workspace
+cd ./workspace/Genius-My-Workbench
+npm test
+npm start
+# open http://127.0.0.1:3000
+npm install --ignore-scripts --no-audit --no-fund
+npm run typecheck && npm run build
+```
+
+Both Python and TypeScript Foundry products remain `GENERATED_UNVERIFIED`
+until independent execution and acceptance proof is collected. The template
+is intentionally loopback-only. It is not a deployed or arbitrary-objective compiler.
+
 ## Forge a Genius entity
 
 Preferred high-level operation:
