@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -35,11 +36,43 @@ def _sanitize_slug(text: str) -> str:
 def forge_domain(
     arch: ArchetypeDefinition,
     output_root: Path | str | None = DEFAULT_OUTPUT_ROOT,
+    *,
+    force: bool = False,
 ) -> Path:
-    """Safely publish one generated domain without overwriting existing work."""
-    return publish_domain(
-        output_root, arch.name, lambda staging: _render_domain(arch, staging),
-    )
+    """Compile and hash a full staged tree before safe, idempotent publication."""
+    def prepared(staging: Path) -> Path:
+        impl = get_domain_implementation(arch.id)
+        if not impl:
+            raise ValueError(f"No domain implementation found for archetype {arch.id!r}")
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", impl["module_name"]):
+            raise ValueError("unsafe Python module name")
+        generated = _render_domain(arch, staging)
+        for path in sorted(generated.rglob("*.py")):
+            compile(path.read_bytes(), path.relative_to(generated).as_posix(), "exec")
+        entries = []
+        for path in sorted(generated.rglob("*")):
+            if not path.is_file():
+                continue
+            relative = path.relative_to(generated).as_posix()
+            if relative in {"evidence/RECEIPTS.jsonl", "evidence/MANIFEST.json"}:
+                continue
+            entries.append({
+                "path": relative,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            })
+        (generated / "evidence/MANIFEST.json").write_text(
+            json.dumps({
+                "schema_version": "genius.foundry.manifest.v1",
+                "repository": arch.name,
+                "archetype": arch.id,
+                "verification_state": "generated_unverified",
+                "files": entries,
+            }, sort_keys=True, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        return generated
+
+    return publish_domain(output_root, arch.name, prepared, force=force)
 
 
 def _render_domain(arch: ArchetypeDefinition, output_root: Path) -> Path:
@@ -119,7 +152,7 @@ def _render_domain(arch: ArchetypeDefinition, output_root: Path) -> Path:
     stack_data = {
         "domain_id": arch.id,
         "stack_layers": {
-            layer: {"status": "ACTIVE", "sovereignty": "FIRST_PRINCIPLES"}
+            layer: {"status": "MAPPED", "sovereignty": "FIRST_PRINCIPLES"}
             for layer in arch.layers
         },
     }
@@ -133,7 +166,7 @@ def _render_domain(arch: ArchetypeDefinition, output_root: Path) -> Path:
         "edges": [],
         "coupling": "NONE (Universal Pillar Invariant)",
         "capabilities": [
-            {"target": t, "verified": False, "evidence_state": "mapped", "evidence_refs": []} for t in arch.targets
+            {"target": t, "state": "mapped", "verified": False, "evidence_state": "mapped", "evidence_refs": []} for t in arch.targets
         ],
     }
     with open(repo_dir / "capabilities" / "GRAPH.yaml", "w", encoding="utf-8") as f:

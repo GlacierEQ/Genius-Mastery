@@ -1,7 +1,7 @@
 """Portable, guarded, staged publication for generated Genius repositories.
 
 Only completed generated directories are published. Existing destinations are
-never intentionally overwritten. A host/process crash may leave a hidden stage
+preserved by default; explicit replacements retain a rollback copy. A host/process crash may leave a hidden stage
 or lock behind; inspect and recover that path before retrying.
 """
 from __future__ import annotations
@@ -11,6 +11,7 @@ import os
 import re
 import shutil
 import tempfile
+import uuid
 from pathlib import Path
 from typing import Callable
 
@@ -73,6 +74,8 @@ def publish_domain(
     output_root: Path | str | None,
     repo_name: str,
     render: Callable[[Path], Path],
+    *,
+    force: bool = False,
 ) -> Path:
     """Render a complete tree in a hidden sibling stage before publication.
 
@@ -80,7 +83,9 @@ def publish_domain(
     Uncooperative filesystem writers need external coordination; no
     cross-machine atomic transaction is claimed.
     """
-    if not isinstance(repo_name, str) or not _NAME.fullmatch(repo_name):
+    if (not isinstance(repo_name, str) or not repo_name.startswith("Genius-")
+            or not _NAME.fullmatch(repo_name) or ".." in repo_name
+            or repo_name.endswith((".", "-")) or repo_name.startswith("Genius-.")):
         raise ValueError("unsafe generated repository name")
     root = checked_root(output_root)
     root.mkdir(parents=True, exist_ok=True)
@@ -88,9 +93,14 @@ def publish_domain(
     target = root / repo_name
     if target.is_symlink() or (target.exists() and not target.is_dir()):
         raise FileExistsError(f"refusing to overwrite existing destination: {target}")
+    if any(p.name.casefold() == repo_name.casefold() and p.name != repo_name for p in root.iterdir()):
+        raise FileExistsError(f"case-insensitive destination collision: {target}")
 
     lock = root / f".{repo_name}.genius-forge.lock"
-    descriptor = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        descriptor = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError as error:
+        raise FileExistsError(f"forge already active or stale lock requires recovery: {lock}") from error
     try:
         os.write(descriptor, str(os.getpid()).encode("ascii"))
         if target.is_symlink() or (target.exists() and not target.is_dir()):
@@ -106,15 +116,25 @@ def publish_domain(
                     raise ValueError(f"forge emitted an unsafe symlink: {entry}")
             if target.is_symlink():
                 raise FileExistsError(f"refusing to overwrite symlink: {target}")
+            backup = None
             if target.exists():
                 if _tree_signature(target) == _tree_signature(expected):
-                    return target  # No file modified; repeatable intent is safe.
-                raise FileExistsError(
-                    f"refusing to overwrite changed or unrelated destination: {target}"
-                )
-            # Same-directory publication makes completed source files visible
-            # together. Lock prevents cooperating forges racing this rename.
-            os.rename(expected, target)
+                    return target  # Same intent: no write, preserving prior receipts.
+                if not force:
+                    raise FileExistsError(
+                        f"refusing to overwrite changed or unrelated destination: {target}"
+                    )
+                # Explicit replacement retains the original until publication succeeds.
+                backup = root / f".{repo_name}.backup-{uuid.uuid4().hex}"
+                target.rename(backup)
+            try:
+                os.rename(expected, target)
+            except Exception:
+                if backup is not None:
+                    backup.rename(target)
+                raise
+            if backup is not None:
+                shutil.rmtree(backup)
         finally:
             shutil.rmtree(staging)
     finally:
