@@ -17,6 +17,7 @@ from genius.lineage import forge as forge_module
 
 
 ARCH = get_archetype("aerospace")
+assert ARCH is not None, "required aerospace archetype missing from Genius-Mastery registry"
 
 
 def test_safe_relative_default_and_no_root_projects_assumption(tmp_path, monkeypatch):
@@ -41,10 +42,9 @@ def test_generated_capabilities_are_unverified_until_execution(tmp_path):
 
 def test_retry_is_read_only_for_identical_intent(tmp_path):
     repo = forge_domain(ARCH, output_root=tmp_path)
-    file = repo / "src" / "genius_aerospace" / "tools.py"
-    # Actual implementation module name may differ per archetype.
-    if not file.exists():
-        file = next((repo / "src").rglob("tools.py"))
+    files = list((repo / "src").rglob("tools.py"))
+    assert len(files) == 1, f"expected one generated tool implementation, found {files!r}"
+    file = files[0]
     prior_bytes = file.read_bytes()
     prior_stamp = file.stat().st_mtime_ns
     receipt = (repo / "evidence/RECEIPTS.jsonl").read_bytes()
@@ -73,6 +73,27 @@ def test_modified_generated_file_is_preserved(tmp_path):
     with pytest.raises(FileExistsError, match="preserving user work"):
         forge_domain(ARCH, output_root=tmp_path)
     assert file.read_text().endswith("# user change\n")
+
+
+
+def test_existing_multiline_receipt_is_preserved_without_json_crash(tmp_path):
+    repo = forge_domain(ARCH, output_root=tmp_path)
+    file = repo / "evidence/RECEIPTS.jsonl"
+    first = file.read_text(encoding="utf-8")
+    appended = first + json.dumps({"event": "USER_ADDED_PROOF", "verified": True}) + "\n"
+    file.write_text(appended, encoding="utf-8")
+    with pytest.raises(FileExistsError, match="preserving user work"):
+        forge_domain(ARCH, output_root=tmp_path)
+    assert file.read_text(encoding="utf-8") == appended
+
+
+def test_corrupt_existing_jsonl_fails_closed_without_touching_data(tmp_path):
+    repo = forge_domain(ARCH, output_root=tmp_path)
+    file = repo / "evidence/RECEIPTS.jsonl"
+    file.write_text("{incomplete\n", encoding="utf-8")
+    with pytest.raises(FileExistsError, match="receipt cannot be safely compared"):
+        forge_domain(ARCH, output_root=tmp_path)
+    assert file.read_text(encoding="utf-8") == "{incomplete\n"
 
 
 def test_directory_symlink_not_followed(tmp_path):
