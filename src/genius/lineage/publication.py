@@ -1,7 +1,7 @@
 """Portable, guarded, staged publication for generated Genius repositories.
 
 Only completed generated directories are published. Existing destinations are
-never intentionally overwritten. A host/process crash may leave a hidden stage
+preserved by default; explicit replacement keeps a rollback copy. A host/process crash may leave a hidden stage
 or lock behind; inspect and recover that path before retrying.
 """
 from __future__ import annotations
@@ -56,7 +56,10 @@ def publish_domain(
         raise FileExistsError(f"case-insensitive destination collision: {target}")
 
     lock = root / f".{repo_name}.genius-forge.lock"
-    descriptor = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        descriptor = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError as error:
+        raise FileExistsError(f"forge already active or stale lock requires recovery: {lock}") from error
     try:
         os.write(descriptor, str(os.getpid()).encode("ascii"))
         if target.is_symlink() or (target.exists() and (not force or not target.is_dir())):
@@ -70,7 +73,7 @@ def publish_domain(
             for entry in expected.rglob("*"):
                 if entry.is_symlink():
                     raise ValueError(f"forge emitted an unsafe symlink: {entry}")
-            if target.exists() or target.is_symlink():
+            if target.is_symlink() or (target.exists() and (not force or not target.is_dir())):
                 raise FileExistsError(f"refusing to overwrite existing destination: {target}")
             # Force replacement is explicit, with the old tree kept until
             # the newly staged tree has been published successfully.
