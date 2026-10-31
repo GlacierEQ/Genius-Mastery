@@ -39,7 +39,7 @@ def forge_domain(
     *,
     force: bool = False,
 ) -> Path:
-    """Compile and manifest a staged domain before publishing it safely."""
+    """Compile and hash a full staged tree before safe, idempotent publication."""
     def prepared(staging: Path) -> Path:
         impl = get_domain_implementation(arch.id)
         if not impl:
@@ -390,6 +390,7 @@ pytest tests/ -v
         "specification_count": len(refs),
         "daily_feed_count": len(feeds),
         "status": "FORGED",
+        "verification_status": "UNVERIFIED",
     }
     with open(repo_dir / "evidence" / "RECEIPTS.jsonl", "w", encoding="utf-8") as f:
         f.write(json.dumps(receipt) + "\n")

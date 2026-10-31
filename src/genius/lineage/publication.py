@@ -1,11 +1,12 @@
 """Portable, guarded, staged publication for generated Genius repositories.
 
 Only completed generated directories are published. Existing destinations are
-preserved by default; explicit replacement keeps a rollback copy. A host/process crash may leave a hidden stage
+preserved by default; explicit replacements retain a rollback copy. A host/process crash may leave a hidden stage
 or lock behind; inspect and recover that path before retrying.
 """
 from __future__ import annotations
 
+import json
 import os
 import re
 import shutil
@@ -15,6 +16,46 @@ from pathlib import Path
 from typing import Callable
 
 _NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
+def _tree_signature(root: Path) -> dict[str, tuple[str, bytes]]:
+    """Compare complete generated trees without following links or losing receipts.
+
+    The forge materialization timestamp is the only volatile data excluded
+    from the content identity. Additional receipts remain significant.
+    """
+    if root.is_symlink() or not root.is_dir():
+        raise FileExistsError(f"unsafe existing generated destination: {root}")
+    signature: dict[str, tuple[str, bytes]] = {}
+    for path in root.rglob("*"):
+        if path.is_symlink():
+            raise FileExistsError(f"refusing to follow generated symlink: {path}")
+        key = path.relative_to(root).as_posix()
+        if path.is_dir():
+            signature[key] = ("directory", b"")
+            continue
+        if not path.is_file():
+            raise FileExistsError(f"unsupported generated entry: {path}")
+        data = path.read_bytes()
+        if key == "evidence/RECEIPTS.jsonl":
+            try:
+                records = []
+                for line in data.splitlines():
+                    if not line.strip():
+                        continue
+                    entry = json.loads(line)
+                    if not isinstance(entry, dict):
+                        raise ValueError("receipt must be an object")
+                    entry.pop("timestamp", None)
+                    records.append(json.dumps(entry, sort_keys=True, separators=(",", ":")))
+                data = ("\n".join(records) + "\n").encode("utf-8")
+            except (ValueError, TypeError, UnicodeDecodeError) as error:
+                raise FileExistsError(
+                    f"cannot compare existing receipt safely: {path}"
+                ) from error
+        signature[key] = ("file", data)
+    return signature
+
 
 
 def checked_root(value: Path | str | None) -> Path:
@@ -50,7 +91,7 @@ def publish_domain(
     root.mkdir(parents=True, exist_ok=True)
     root = checked_root(root)
     target = root / repo_name
-    if target.is_symlink() or (target.exists() and (not force or not target.is_dir())):
+    if target.is_symlink() or (target.exists() and not target.is_dir()):
         raise FileExistsError(f"refusing to overwrite existing destination: {target}")
     if any(p.name.casefold() == repo_name.casefold() and p.name != repo_name for p in root.iterdir()):
         raise FileExistsError(f"case-insensitive destination collision: {target}")
@@ -62,7 +103,7 @@ def publish_domain(
         raise FileExistsError(f"forge already active or stale lock requires recovery: {lock}") from error
     try:
         os.write(descriptor, str(os.getpid()).encode("ascii"))
-        if target.is_symlink() or (target.exists() and (not force or not target.is_dir())):
+        if target.is_symlink() or (target.exists() and not target.is_dir()):
             raise FileExistsError(f"refusing to overwrite existing destination: {target}")
         staging = Path(tempfile.mkdtemp(prefix=f".{repo_name}.stage-", dir=root))
         try:
@@ -73,12 +114,17 @@ def publish_domain(
             for entry in expected.rglob("*"):
                 if entry.is_symlink():
                     raise ValueError(f"forge emitted an unsafe symlink: {entry}")
-            if target.is_symlink() or (target.exists() and (not force or not target.is_dir())):
-                raise FileExistsError(f"refusing to overwrite existing destination: {target}")
-            # Force replacement is explicit, with the old tree kept until
-            # the newly staged tree has been published successfully.
+            if target.is_symlink():
+                raise FileExistsError(f"refusing to overwrite symlink: {target}")
             backup = None
             if target.exists():
+                if _tree_signature(target) == _tree_signature(expected):
+                    return target  # Same intent: no write, preserving prior receipts.
+                if not force:
+                    raise FileExistsError(
+                        f"refusing to overwrite changed or unrelated destination: {target}"
+                    )
+                # Explicit replacement retains the original until publication succeeds.
                 backup = root / f".{repo_name}.backup-{uuid.uuid4().hex}"
                 target.rename(backup)
             try:

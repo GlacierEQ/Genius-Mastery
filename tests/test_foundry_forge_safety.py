@@ -142,8 +142,8 @@ def test_cli_forge_executes_existing_archetype_and_preserves_repeated_output(tmp
     assert (tmp_path / "Genius-Aerospace" / "evidence/MANIFEST.json").exists()
 
     rerun = subprocess.run(command, capture_output=True, text=True)
-    assert rerun.returncode != 0
-    assert "refusing to overwrite" in rerun.stderr
+    assert rerun.returncode == 0, rerun.stdout + rerun.stderr
+    assert "generated_unverified" in rerun.stdout
     assert (tmp_path / "Genius-Aerospace" / "GENIUS.yaml").is_file()
 
 
