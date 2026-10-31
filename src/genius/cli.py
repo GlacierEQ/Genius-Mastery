@@ -16,6 +16,7 @@ from genius.naming import genius_name
 from genius.operating_loop import EVIDENCE_STATES, OUTCOME_STATUSES, build_loop, loop_report, validate_loop
 from genius.scaffold import create_domain
 from genius.synthesize import synthesize_role
+from genius.lineage.forge import forge_domain
 from genius.validate import validate_repo
 from genius.impact import impact_report
 from genius.discovery import full_discovery_report, write_discovery_inventory
@@ -53,6 +54,23 @@ from genius.archetypes import (
 
 def cmd_name(args: argparse.Namespace) -> int:
     print(genius_name(args.purpose))
+    return 0
+
+
+def cmd_forge(args: argparse.Namespace) -> int:
+    """Materialize one registered archetype with a safe workspace boundary."""
+    archetype = get_archetype(args.archetype)
+    if archetype is None:
+        print(f"ERROR: unknown archetype: {args.archetype!r}", file=sys.stderr)
+        return 2
+    try:
+        destination = forge_domain(archetype, Path(args.dest), force=args.force)
+    except (OSError, ValueError, TypeError) as exc:
+        print(f"ERROR: forge did not publish: {exc}", file=sys.stderr)
+        return 1
+    print(f"Generated {destination}")
+    print(f"Manifest: {destination / 'evidence' / 'MANIFEST.json'}")
+    print("State: generated_unverified (native execution proof still required)")
     return 0
 
 
@@ -524,6 +542,12 @@ def main(argv: list[str] | None = None) -> int:
     p_progress.add_argument("--code", action="append", default=[], help="Additional prompt code or stack; repeat as needed")
     p_progress.add_argument("--json", action="store_true", help="Emit the machine-readable progress contract")
     p_progress.set_defaults(func=cmd_progress)
+
+    p_forge = sub.add_parser("forge", help="Safely generate an existing Genius Lineage archetype")
+    p_forge.add_argument("archetype", help="Existing archetype ID or name (e.g. engineering)")
+    p_forge.add_argument("--dest", default=".", help="Workspace parent directory (default: cwd)")
+    p_forge.add_argument("--force", action="store_true", help="Explicitly replace an existing generated directory with rollback protection")
+    p_forge.set_defaults(func=cmd_forge)
 
     p_new = sub.add_parser("new", help="Create a bare Genius-{purpose} domain scaffold")
     p_new.add_argument("purpose", help="e.g. Code | 'Distributed Systems'")
