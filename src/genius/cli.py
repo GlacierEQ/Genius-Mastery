@@ -15,6 +15,7 @@ from genius.intelligence import analyze_capability_graph, capability_intelligenc
 from genius.naming import genius_name
 from genius.operating_loop import EVIDENCE_STATES, OUTCOME_STATUSES, build_loop, loop_report, validate_loop
 from genius.scaffold import create_domain
+from genius.repository_foundry import generate_python_text_audit, PROFILE
 from genius.lineage.forge import forge_domain
 from genius.synthesize import synthesize_role
 from genius.validate import validate_repo
@@ -273,6 +274,23 @@ def cmd_synthesize(args: argparse.Namespace) -> int:
     for outcome in args.outcome:
         print(f"  - {outcome}")
     print("State: mapped hypotheses; research, challenge, execute, verify, teach.")
+    return 0
+
+
+def cmd_foundry(args: argparse.Namespace) -> int:
+    if args.foundry_action != "new":
+        print("ERROR: unsupported Foundry action", file=sys.stderr)
+        return 1
+    if args.profile != PROFILE:
+        print(f"ERROR: unsupported Foundry profile: {args.profile}", file=sys.stderr)
+        return 1
+    try:
+        output = generate_python_text_audit(args.objective, args.name, args.dest)
+    except (OSError, ValueError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+    print(f"Generated independent Python application: {output}")
+    print("State: GENERATED_UNVERIFIED. Run the generated native tests and CLI.")
     return 0
 
 
@@ -558,6 +576,15 @@ def main(argv: list[str] | None = None) -> int:
     p_syn.add_argument("--dest", default=".", help="Parent directory for the generated repo (default: cwd)")
     p_syn.add_argument("--force", action="store_true", help="Allow writing into an existing non-empty directory")
     p_syn.set_defaults(func=cmd_synthesize)
+
+    p_foundry = sub.add_parser("foundry", help="Generate independent applications from supported Foundry profiles")
+    p_foundry_sub = p_foundry.add_subparsers(dest="foundry_action", required=True)
+    p_foundry_new = p_foundry_sub.add_parser("new", help="Create a real, independently runnable repository")
+    p_foundry_new.add_argument("--name", required=True, help="Project name")
+    p_foundry_new.add_argument("--objective", required=True, help="Original mission in the Operator's words")
+    p_foundry_new.add_argument("--profile", default=PROFILE, help="Supported profile: python-text-audit")
+    p_foundry_new.add_argument("--dest", default=None, help="Parent output directory (default: cwd/Genius-Lineage)")
+    p_foundry_new.set_defaults(func=cmd_foundry)
 
     p_arch = sub.add_parser("archetype", help="Inspect and forge Genius Lineage Archetypes")
     p_arch_sub = p_arch.add_subparsers(dest="archetype_action", required=True)
