@@ -3,6 +3,7 @@
 **Repository-building program:** [GENIUS REPOSITORY FOUNDRY — canonical end-to-end master implementation plan](docs/REPOSITORY_FOUNDRY_MASTER_PLAN.md). This is a planned, source-grounded upgrade of the **existing** Genius-Mastery generator and Genius-Engineering execution spine, not a claim that all new factory capabilities have already been implemented. The plan's Phase 0–2 work resolves actual forge portability and capability-verification defects before claiming production generation.
 
 [![Buildkite](https://badge.buildkite.com/53fcc89c70c0eb2508067aa8108bf0f15d27da721a94f8c63c.svg)](https://buildkite.com/casey-1/genius-mastery)
+[![validate-contract](https://github.com/GlacierEQ/Genius-Mastery/actions/workflows/validate.yml/badge.svg)](https://github.com/GlacierEQ/Genius-Mastery/actions/workflows/validate.yml)
 
 **Teacher-forge, family kernel, and entity compiler for the Genius repository ecosystem.**
 

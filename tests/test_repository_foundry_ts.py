@@ -103,6 +103,9 @@ def test_generated_fullstack_application_compiles_runs_and_passes_native_http_te
     major = int(re.match(r"v(\d+)", version).group(1))
     if major < 22:
         pytest.skip("Node 22 or newer required")
+    node_ts = subprocess.run(["node", "-e", "process.exit(process.features.typescript ? 0 : 1)"], capture_output=True)
+    if node_ts.returncode != 0:
+        pytest.skip("Node environment not built with native TypeScript support (process.features.typescript is false)")
     project = build(tmp_path)
     installed = subprocess.run(["npm", "ci", "--offline", "--ignore-scripts", "--no-audit"],
                                cwd=project, capture_output=True, text=True, timeout=60)

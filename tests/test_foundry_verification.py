@@ -266,6 +266,9 @@ def test_typescript_native_execution_is_independently_verified(tmp_path):
         pytest.skip(f"unrecognized Node version output: {version!r}")
     if major < 22:
         pytest.skip("Node 22 required")
+    node_ts = subprocess.run(["node", "-e", "process.exit(process.features.typescript ? 0 : 1)"], capture_output=True)
+    if node_ts.returncode != 0:
+        pytest.skip("Node environment not built with native TypeScript support (process.features.typescript is false)")
     project = generate_typescript_taskboard(
         "Build a real local taskboard browser API", "Taskboard", tmp_path
     )

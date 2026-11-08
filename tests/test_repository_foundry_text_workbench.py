@@ -40,6 +40,9 @@ def test_generated_typescript_executes_native_api_tests_without_teacher(tmp_path
     version = node("--version", cwd=project)
     assert version.returncode == 0
     assert int(version.stdout.strip().lstrip("v").split(".")[0]) >= 22
+    node_ts = subprocess.run(["node", "-e", "process.exit(process.features.typescript ? 0 : 1)"], capture_output=True)
+    if node_ts.returncode != 0:
+        pytest.skip("Node environment not built with native TypeScript support (process.features.typescript is false)")
     result = node("--experimental-strip-types", "--test", "tests/fullstack.test.ts", cwd=project)
     assert result.returncode == 0, result.stdout + result.stderr
     assert "# pass 2" in result.stdout
