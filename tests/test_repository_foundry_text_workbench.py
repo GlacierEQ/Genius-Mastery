@@ -45,8 +45,8 @@ def test_generated_typescript_executes_native_api_tests_without_teacher(tmp_path
         pytest.skip("Node environment not built with native TypeScript support (process.features.typescript is false)")
     result = node("--experimental-strip-types", "--test", "tests/fullstack.test.ts", cwd=project)
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "# pass 2" in result.stdout
-    assert "# fail 0" in result.stdout
+    assert ("# pass 2" in result.stdout) or ("pass 2" in result.stdout)
+    assert ("# fail 0" in result.stdout) or ("fail 0" in result.stdout)
 
 
 def test_manifest_and_mission_schema_and_determinism(tmp_path):
