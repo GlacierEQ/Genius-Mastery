@@ -16,6 +16,7 @@ This repository is the **control kernel**, not a domain. Its mastery surface is 
 8. **Aspiration ≠ verified capability** — label both honestly.
 9. **Progress is state change** — planning is not execution and execution is not verification.
 10. **Completion is executable** — the 1.0 core is complete only when `genius closure .` passes.
+11. **Harmonious transcription is the sovereign capstone** — evaluate benefits independent of surrounding code, place upgrades into main without overwriting, verify 100% green test execution, and retire branches only when zero stranded benefit remains ("when no more benefit, then no more branch").
 
 ## Kernel capability dimensions
 

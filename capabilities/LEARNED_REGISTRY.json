@@ -379,6 +379,41 @@
         "Genius-VillAIge:tests/test_unified_memory_mcp.py",
         "Genius-VillAIge:ops/runs/receipts/receipt_13af96452a2280de.json"
       ]
+    },
+    {
+      "id": "lifecycle.harmonious-transcription",
+      "description": "Harmonious branch superpower extraction independent of surrounding code, surgical placement into main without overwriting, 100% green test verification, and fail-closed zero-benefit retirement.",
+      "input_contract": {
+        "requires": [
+          "target repository slug or path",
+          "target branch name",
+          "main branch baseline"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "cryptographic transcription receipt",
+          "zero stranded benefit verification",
+          "retired branch proof"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "apex-codec-kanban-harmonious-transcription",
+      "source_revision": "2fe7ae7",
+      "tags": [
+        "lifecycle",
+        "git",
+        "branches",
+        "harmonious-transcription",
+        "superpowers",
+        "fail-closed"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:scripts/harmonious_transcription.py",
+        "Genius-VillAIge:tests/test_harmonious_transcription.py",
+        "Genius-VillAIge:coordination/teams/repo-lifecycle/personas/harmonious-transcription-specialist.json",
+        "Genius-VillAIge:ops/runs/transcriptions/"
+      ]
     }
   ],
   "schema_version": 1

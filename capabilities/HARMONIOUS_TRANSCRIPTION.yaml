@@ -1,0 +1,41 @@
+schema_version: 1
+id: genius-mastery.harmonious-transcription
+name: Harmonious Transcription & Sovereign Branch Harvest
+purpose: Surgically harvest superpowers trapped in remote tracking branches independent of surrounding code, placing upgrades into main without overwriting, verifying 100% test integrity, and retiring zero-benefit branches fail-closed.
+state: implemented
+
+governing_doctrine:
+  directive: Directive 2026-11-13
+  sovereign_law: >
+    Harmonious transcription is the last upgrade as it is placed into main, instead of overwriting it.
+    It is an assessment of benefit independent of the surrounding code.
+    Every repo has special powers trapped in hundreds of branches.
+    When no more benefit, then no more branch.
+  invariants:
+    - Benefit assessment is strictly independent of surrounding legacy code
+    - Transcribe upgrades into main surgically and additively, never overwriting existing architecture
+    - Require 100% passing automated test suite execution on main before retirement
+    - Fail-closed branch retirement: refuse branch deletion if any unharvested patches or unique file changes remain
+    - Mint cryptographic SHA-256 transcription receipts in ops/runs/transcriptions/
+
+layers:
+  scan:
+    required: [enumerate branches, identify untranscribed benefits, cherry patch delta]
+    available: [scripts/harmonious_transcription.py, scripts/repo_pipeline.py]
+    failure_modes: [branch bloat, stale tracking refs, orphaned superpowers]
+  assessment:
+    required: [git cherry evaluation, diff shortstat, category classification: security, regression, doctrinal, adapters]
+    available: [HarmoniousTranscriptionEngine.assess_branch]
+    failure_modes: [overlooking trapped security patches, treating branch age as obsolescence]
+  transcription:
+    required: [surgical merge, non-destructive additive integration, zero clobbering]
+    available: [HarmoniousTranscriptionEngine.transcribe_branch]
+    failure_modes: [merge conflict clobbering, regression failures, breaking main]
+  verification:
+    required: [100% green test execution, cryptographic transcription receipt]
+    available: [HarmoniousTranscriptionEngine.execute_test_suite, HarmoniousTranscriptionEngine._mint_receipt]
+    failure_modes: [unverified merge, false pass claims]
+  retirement:
+    required: [zero-benefit proof, fail-closed branch deletion, local and remote tracking cleanup]
+    available: [HarmoniousTranscriptionEngine.retire_branch]
+    failure_modes: [premature branch deletion, stranded superpowers]
