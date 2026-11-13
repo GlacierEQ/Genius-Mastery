@@ -345,6 +345,40 @@
         "Genius-VillAIge:scripts/mainframe_hud.py",
         "Genius-VillAIge:tests/test_mainframe_hud.py"
       ]
+    },
+    {
+      "id": "memory.three-layer-unified-mcp",
+      "description": "Three-layer FastMCP memory server unifying Layer 1 (Supabase truth ledger), Layer 2 (Supermemory, Mem0, Pinecone semantic fan-out), and Layer 3 (portable cross-AI MemoryPlugin) with SHA-256 local query cache.",
+      "input_contract": {
+        "requires": [
+          "fact or query string",
+          "target semantic engine or user identifier"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "cached or fresh search matches",
+          "memory write receipt",
+          "semantic routing dispatch"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "three-layer-memory-mcp-distillation",
+      "source_revision": "65917e801cf0bb3ffcece7b5453e990c7efd758f",
+      "tags": [
+        "memory",
+        "mcp",
+        "fastmcp",
+        "supermemory",
+        "mem0",
+        "pinecone",
+        "cache"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:connectors/servers/unified_memory_mcp.py",
+        "Genius-VillAIge:tests/test_unified_memory_mcp.py",
+        "Genius-VillAIge:ops/runs/receipts/receipt_13af96452a2280de.json"
+      ]
     }
   ],
   "schema_version": 1
