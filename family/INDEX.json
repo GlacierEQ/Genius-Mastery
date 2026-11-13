@@ -107,14 +107,15 @@
         "Genius-Mastery",
         "Genius-Engineering"
       ],
-      "verified_at": "2026-11-13T12:15:00Z",
-      "revision": "7ddadf2",
+      "verified_at": "2026-11-13T12:18:00Z",
+      "revision": "a739078",
       "url": "https://github.com/GlacierEQ/villaiage-workspace",
-      "notes": "APEX Sovereign Mainframe and Specialist Kanban Teams: Unified Backplane Event Bus, Epistemic Convergence Engine, Unified Mesh Gateway, Telemetry Cockpit HUD, Three-Layer Unified Memory MCP, Forensic Audio & Exhibit Auditing, and 5-specialist Estate Processing Kanban Team.",
+      "notes": "APEX Sovereign Mainframe and Specialist Kanban Teams: Unified Backplane Event Bus, Epistemic Convergence Engine, Unified Mesh Gateway, Telemetry Cockpit HUD, Three-Layer Unified Memory MCP, Forensic Audio & Exhibit Auditing, WhisperX PR Curation, and 6/6 Converged & Sealed Estate Processing Kanban Cards.",
       "verification_evidence": [
         "receipt_0274f8e281c834fd",
         "receipt_13af96452a2280de",
         "receipt_b2d4ebf8217603bb",
+        "receipt_0d086c2c079b594c",
         "ev-villaiage-test-suite-349-pass",
         "ev-sop-invariant-check-100-pass"
       ]
