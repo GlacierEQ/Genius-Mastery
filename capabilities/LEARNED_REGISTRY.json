@@ -158,6 +158,193 @@
         "execution-graph",
         "mission"
       ]
+    },
+    {
+      "id": "coordination.estate-processing-kanban",
+      "description": "5-lane specialist kanban board engine with deliberate column advancement, invariant enforcement, and live event bus emission.",
+      "input_contract": {
+        "requires": [
+          "kanban card payload",
+          "source lane",
+          "target column",
+          "verification gates"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "board state update",
+          "KANBAN_CARD_ADVANCED event",
+          "ANSI board render"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "mainframe-wiring-estate-kanban",
+      "source_revision": "7fd3fa440848bbdc0f37d7a46452243d67f1ee5b",
+      "tags": [
+        "coordination",
+        "kanban",
+        "estate-processing",
+        "events",
+        "verification"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:receipt_0274f8e281c834fd",
+        "Genius-VillAIge:tests/test_estate_processor_team.py",
+        "ev-villaiage-test-suite-342-pass"
+      ]
+    },
+    {
+      "id": "coordination.specialist-kanban-team",
+      "description": "5-specialist autonomous agent team (master-controller, triage-engineer, memory-distiller, docket-processor, sentry-auditor) for high-scale operations.",
+      "input_contract": {
+        "requires": [
+          "workstream signal",
+          "assigned specialist persona",
+          "tool constraints"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "structured dispatch artifact",
+          "card state transition",
+          "specialist output"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "mainframe-wiring-estate-kanban",
+      "source_revision": "7fd3fa440848bbdc0f37d7a46452243d67f1ee5b",
+      "tags": [
+        "coordination",
+        "personas",
+        "subagents",
+        "specialist-team",
+        "autonomous"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:subagents/estate-master-controller.json",
+        "Genius-VillAIge:tests/test_subagents.py"
+      ]
+    },
+    {
+      "id": "mainframe.backplane-event-bus",
+      "description": "Thread-safe publish/subscribe event bus backplane with persistent JSONL event streams and correlation IDs.",
+      "input_contract": {
+        "requires": [
+          "event_type",
+          "source",
+          "payload",
+          "optional correlation_id"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "persisted EventRecord",
+          "dispatched subscriber callbacks"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "mainframe-wiring-estate-kanban",
+      "source_revision": "7fd3fa440848bbdc0f37d7a46452243d67f1ee5b",
+      "tags": [
+        "mainframe",
+        "event-bus",
+        "pubsub",
+        "runtime",
+        "persistence"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:ops/runtime/event_bus.py",
+        "Genius-VillAIge:tests/test_event_bus.py"
+      ]
+    },
+    {
+      "id": "mainframe.epistemic-memory-convergence",
+      "description": "Convergence engine subscribing to synthesis, handoffs, and transitions, generating structured epistemic claims, confidence, corroboration, and counterevidence.",
+      "input_contract": {
+        "requires": [
+          "SYNTHESIS_REACHED or HANDOFF_EMITTED event"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "epistemic ledger append",
+          "searchable memory index",
+          "convergence summary"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "mainframe-wiring-estate-kanban",
+      "source_revision": "7fd3fa440848bbdc0f37d7a46452243d67f1ee5b",
+      "tags": [
+        "mainframe",
+        "epistemology",
+        "memory",
+        "convergence",
+        "confidence"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:ops/runtime/memory_convergence.py",
+        "Genius-VillAIge:tests/test_memory_convergence.py"
+      ]
+    },
+    {
+      "id": "mainframe.mesh-gateway",
+      "description": "Unified MCP gateway aggregating Aspen topology, APEX capabilities, continuity, live status, event publishing, and sequential reasoning.",
+      "input_contract": {
+        "requires": [
+          "MCP tool call invocation"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "mainframe telemetry",
+          "status snapshot",
+          "tool results"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "mainframe-wiring-estate-kanban",
+      "source_revision": "7fd3fa440848bbdc0f37d7a46452243d67f1ee5b",
+      "tags": [
+        "mainframe",
+        "mesh-gateway",
+        "mcp",
+        "connectors",
+        "federation"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:connectors/mesh_gateway.py",
+        "Genius-VillAIge:tests/test_mesh_gateway.py"
+      ]
+    },
+    {
+      "id": "mainframe.telemetry-cockpit-hud",
+      "description": "Real-time Glass Cockpit HUD displaying host health, active thinking engine, event stream, and epistemic memory convergence.",
+      "input_contract": {
+        "requires": [
+          "--watch, --snapshot, or --json command flag"
+        ]
+      },
+      "output_contract": {
+        "emits": [
+          "ANSI glass cockpit HUD",
+          "JSON telemetry snapshot"
+        ]
+      },
+      "stage": "operationally_verified",
+      "source_mission_id": "mainframe-wiring-estate-kanban",
+      "source_revision": "7fd3fa440848bbdc0f37d7a46452243d67f1ee5b",
+      "tags": [
+        "mainframe",
+        "telemetry",
+        "hud",
+        "glass-cockpit",
+        "observability"
+      ],
+      "evidence_refs": [
+        "Genius-VillAIge:scripts/mainframe_hud.py",
+        "Genius-VillAIge:tests/test_mainframe_hud.py"
+      ]
     }
   ],
   "schema_version": 1
