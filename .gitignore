@@ -35,3 +35,6 @@ evidence/receipts/local/
 .env
 .env.*
 !.env.example
+
+# Chunking scratch report (regenerable)
+.chunk_report.json
